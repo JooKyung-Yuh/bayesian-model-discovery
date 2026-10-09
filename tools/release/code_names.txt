@@ -1,0 +1,26 @@
+# Internal code names that must not appear in the public tree. One entry per line: regular expression <TAB> meaning.
+# Lines starting with # are comments. Used by release_checks.sh (grep -P) and by the release inventory.
+\bFUGU\b	the project's internal review board
+\bDecision D[0-9]+\b	numbered internal decisions
+\brow C-D[0-9]+\b	rows of an internal decision table
+\b(?:unit|Unit) W[0-9]\b	work units of the public-release overhaul
+\bMIDC(?:-[0-9])?\b	an internal engine unit
+\bAGX[0-9]?\b	an internal engine unit
+\bCIC-[0-9]\b	an internal engine unit
+\bCL-1\b	an internal engine unit
+\bTRM\b	an internal engine unit
+\bBGU\b	an internal engine unit
+\bBGA\b	an internal engine unit
+\bEIGV\b	an internal engine unit
+\bCANON\b	an internal engine unit
+\bUNI-[A-Z0-9]+\b	an internal protocol unit
+\bK1C\b	an internal engine unit
+\bS0F0\b	an internal engine unit
+\bPCX\b	an internal engine unit
+\bSITE-[A-Z0-9-]+\b	paper-site work units
+\bREADING_RULES(?:_U3)?\b	an internal reading-rules document
+\bE1[0-9][a-z]?\b|\bE2[0-9][a-z]?\b	numbered experiment phases of the lab
+\bsub-fable\b|\bfable-coding\b|\bFable fork\b	internal agent session names
+\bmain session\b	an internal agent session name
+\b[Ff]ugu\b	the project's internal review board (lower-case spelling)
+\bbai\b	an internal host name

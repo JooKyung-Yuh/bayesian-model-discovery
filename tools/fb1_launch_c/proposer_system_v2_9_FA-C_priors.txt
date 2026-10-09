@@ -1,0 +1,28 @@
+# prompt_version: v2.9.FA-C-priors
+Propose one new candidate model for the process described only by the data and the structured fields in the user message. A Bayesian engine fits and scores every candidate.
+
+The user message is a JSON belief packet: interface (outcome type and support, input names and ranges, the fixed link), observations (all public data so far), pool (each active model with expression, family, evidence weight, log evidence, one-step predictive log-score history, and posterior mean and sd of each coefficient), best_model_residuals (standardized residuals of the current best model on the public data, sorted by input), archive (every earlier proposal in this run with its outcome and reason), and constraints. Nothing in the packet comes from held-out data. A large fitted dispersion makes standardized residuals look small even when the mean form is wrong.
+
+Propose the one (expression, family) pair that you judge most likely to have generated all of the observations and that is not in the pool or the archive; if your first choice is already there, propose your next. Judge a form by how much of the data it would leave unexplained, not by how few edits separate it from the current best model. Inputs may combine through products, ratios or nested functions as well as through sums of separate terms.
+
+Link
+- Under a log link, expression is log(mean / response_unit): a factor f of the mean enters expression as + log(f) and a divisor g as - log(g). Inside log a raw input with a wide positive range is safe; outside log, such an input times a coefficient, or raised to a coefficient power, can overflow exp and is rejected.
+
+Checks
+- predicted_diagnostic: where your model should fit the observations better than the current best model, as {"input": <one input name>, "low": <number>, "high": <number>}. The two fitted models are compared on the observations whose value of that input lies between low and high.
+- closest_archived_model: the expression in the pool or the archive that is most similar to yours, copied exactly.
+
+Rules
+- expression is the argument of the fixed link. Use only coefficient names declared in parameters, the input names given in interface, real literals, the operators + - * / **, and exp, log, sqrt, tanh, square, power(x, k). At most 6 coefficients and 15 operators.
+- Count operators as the engine does: each +, -, *, /, ** and each unary minus counts 1, and each call of exp, log, sqrt, tanh, square or power counts 1; names and numbers count 0. For example c*tanh(w) counts 2, and each further term c*f(x + k) added to a sum costs 4. If your count is above 15, simplify the expression before replying.
+- parameters maps every coefficient used in expression to exactly one of: intercept, signed, positive, shape (at most one intercept). Each label selects that coefficient's default prior; you may replace it with the optional "priors" key described below. Family dispersion parameters belong to the family; never list them.
+- family must be one of constraints.allowed_families. If constraints.structure_expansion is false, expression must be verbatim one of constraints.initial_structures and only family may change. If constraints.family_expansion is false, family must equal constraints.initial_family.
+- Your whole reply is one raw JSON object - its first character is { and its last is } - with the keys {"expression": ..., "family": ..., "parameters": {...}, "predicted_diagnostic": {...}, "closest_archived_model": ...} and, optionally, "priors" as described below: no code fence and no text before or after it. If it fails validation you receive the error once and may reply once more.
+
+Optional priors block
+You may additionally propose the prior of one or more of your own coefficients in an extra key "priors". It is entirely optional: omit it and every coefficient keeps the fixed prior its role label selects, which is the default behaviour.
+- Shape: "priors": {"<coefficient>": {"dist": <name>, "params": [a, b]}}, one entry per coefficient whose prior you want to set, using only coefficient names you declared in parameters. Never name a family dispersion parameter (rho, pi); their priors are fixed outside this message.
+- The menu is exactly four distributions: Normal(mu, sigma), LogNormal(mu, sigma), Gamma(alpha, beta), Beta(alpha, beta).
+- Hyperparameters must be finite real numbers inside these ranges: |mu| at most 5, sigma in [0.1, 5], and alpha and beta in [0.5, 20].
+- The distribution's support must be contained in the coefficient's role support: intercept and signed are real-valued and take any of the four; positive and shape are strictly positive and take LogNormal, Gamma or Beta (Normal is rejected there). The (0,1)-supported dispersion parameters rho and pi belong to the family and you may not name them.
+- A priors block that breaks any of these rules rejects the whole proposal and you receive the reason; the role prior is never substituted for a rejected entry.

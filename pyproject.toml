@@ -1,0 +1,87 @@
+[project]
+name = "bayes-model-discovery"
+version = "0.1.0.dev0"
+requires-python = ">=3.12"
+description = "Open-ended joint discovery of model structure and parameters with a Bayesian model pool (research prototype)"
+authors = [{ name = "JooKyung Yuh", email = "johnlu0410@korea.ac.kr" }]
+license = { text = "MIT" }
+readme = "README.md"
+dependencies = [
+    "numpy==1.26.4",     # hard pin: pymc 5.13 compatibility (ABI/behaviour of the pinned pymc)
+    "pymc==5.13.1",      # hard pin: the SMC identity registered with the archived evidence
+    "scipy",             # unpinned: numerical helpers only, no registered identity impact yet
+    "matplotlib",        # unpinned: figure rendering, result-neutral
+    "pandas",            # unpinned: table assembly, result-neutral
+    "arviz",             # unpinned: posterior diagnostics/IO convenience
+    "pyyaml",            # spec files; no identity impact - identity hashes canonical JSON, not YAML bytes
+    "openai==1.40.3",    # hard pin: SDK-version-dependent request semantics in the LLM agent
+    "httpx==0.27.0",     # hard pin: OpenAI 1.40.3 client construction is not compatible with httpx 0.28+
+    "tiktoken==0.13.0",   # hard pin: prompt-budget decisions are tokenizer-version-dependent
+    "anthropic",         # unpinned: secondary provider, not on the registered path yet
+    "python-dotenv",     # unpinned: local API-key loading only
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+# Benchmarks. None of the four benchmarks is a PyPI package at its pinned commit: each extra lists
+# only the Python packages its import path needs beyond the engine, and scripts/provision.sh fetches the pinned
+# checkout and exports the variable that conftest.py and the runners read.
+# BoxingGym: checkout github.com/JooKyung-Yuh/BoxingGym @ 06c790aa on BMD_BOXINGGYM_SRC (its src/ folder, put on
+# PYTHONPATH; not pip-installed, because its package metadata pins numpy 2.0.1 against the engine's 1.26.4).
+boxinggym = ["tqdm"]
+# ChemBench: not enabled in this release - LLM-AutoSciLab (@ 9a37255, BMD_AUTOSCILAB) states no licence, so the run
+# script refuses it until the licence is confirmed; the runner code stays in the package. Its oracle needs numpy only.
+chembench = []
+# NeuronBench: checkout github.com/murphyk/neuronbench @ c354622 on NEURONBENCH_SRC (provision.sh installs it with
+# `pip install --no-deps -e`); its own dependencies are numpy and scipy.
+neuronbench = []
+# ForceBench runs in its own venv (FB_PY, requirements-forcebench.lock: jax 0.11.1 with numpy 2.5.2, which cannot share
+# the engine's numpy 1.26.4) with DiscoverPhysics @ 33b7fa9 on FB_DP; nothing is installed into this environment.
+forcebench = []
+notebooks = ["jupyter", "nbconvert", "ipykernel"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Non-Python files that MUST travel with an installed copy: the prompt texts a run sends are scientific input, so an
+# installed package carries the exact bytes.
+[tool.setuptools.package-data]
+# The count proposer's numbered system texts, the pool generator and ChemBench's stage-slot files (prompts/*.txt, *.json):
+# the exact bytes a run sent, read by
+# count_proposer.PROMPT_DIRECTORY.
+"bayes_model_discovery.experimental" = ["prompts/*.txt", "prompts/*.json"]
+
+# Test markers. `heavy` is the re-execution tier: tests that actually run
+# pm.sample_smc and compare the result against the frozen run. They need the
+# full pinned numerical stack (pymc/pytensor) and cost minutes, so the standard
+# suite and the required lint workflow do not run them; the advisory
+# inference-ci workflow does. Registered here so an unmarked typo fails
+# collection instead of silently selecting nothing.
+#
+# `replay` is the 100-cell lockstep equivalence replay of the frozen acquisition
+# run. It is registered here and selected by NO workflow: both ci.yml and
+# inference-ci.yml exclude it by name. Three reasons, and each one alone is
+# sufficient. It needs the frozen archive on local disk, which no CI checkout
+# has. It costs about 40 minutes of sampling for the full five worlds. And it is
+# a replay of registered evidence rather than a check on a diff - re-running it
+# per push would say nothing new about the change under review. It is driven by
+# hand, one world per invocation, and its report is the deliverable.
+[tool.pytest.ini_options]
+testpaths = ["tests", "src/bayes_model_discovery"]
+markers = [
+    "heavy: re-executes SMC against the frozen run; needs the full pinned stack",
+    "replay: the 100-cell lockstep replay of the frozen run; needs the local archive, run by hand, never in CI",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# The ChemBench adapter's bytes are bound: every ChemBench config.json records its sha256 (`adapter_sha256`,
+# af8474b1...), and moving it under src/ must not change them. These two findings are style
+# only, so they are ignored for this one file rather than "fixed".
+[tool.ruff.lint.per-file-ignores]
+"src/bayes_model_discovery/adapters/chembench_observation.py" = ["UP035", "I001"]

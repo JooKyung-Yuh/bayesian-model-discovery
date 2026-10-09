@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Bayesian Model Discovery"
+authors:
+  - family-names: "Yuh"
+    given-names: "JooKyung"
+    email: "johnlu0410@korea.ac.kr"
+version: "0.1.0.dev0"
+date-released: "2026-08-05"
+license: MIT

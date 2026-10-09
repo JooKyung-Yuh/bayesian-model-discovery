@@ -1,0 +1,3 @@
+Your previous reply failed validation with this error:
+{error}
+Reply with exactly one JSON object {{"expression": ..., "family": ..., "parameters": {{...}}}} and nothing else.

@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+.venv-forcebench/
+dist/
+build/
+*.egg-info/
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+
+# Run folders made by the quickstart, scripts/bmd_run.py and the example notebooks
+runs/
+examples/runs/
+# What scripts/provision.sh creates
+external/
+.bmd_env.sh
+.pytensor/
+.smoke_*
+# Jupyter's autosave copies
+.ipynb_checkpoints/

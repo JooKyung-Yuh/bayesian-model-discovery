@@ -1,0 +1,283 @@
+{
+  "schema": "fb1-fixed-initial-conditions-5",
+  "dp_commit": "33b7fa9",
+  "v4_to_v5_reason": "The forward-model equivalence check found the **periodic box** of the true world, so cap (c) was tightened to the executor's half-width. This is not an adjustment made after seeing results.",
+  "cap_rule": {
+    "field": "SimulationExecutor domain_size=20.0 (executor.py:262), half-width 10 -> 0.8x10 = 8.0. With periodic_boundaries=True (field_sampler.py) the true world wraps around outside it and diverges from our free-space predict()",
+    "nbody": "NBodySampler has **no** domain_size/periodic arguments (direct free-space integration). There is no boundary mismatch, but the same 8.0 is used for consistency; the reason is 'the force is too weak at long range to be identifiable'"
+  },
+  "accept": "noiseless true trajectory (t=0.5..5.0): (a) min r <= c_world (b) r >= 0.5 throughout (c) max r <= cap",
+  "c_world": {
+    "yukawa": 2.0,
+    "extra_dimensions": 1.0,
+    "gravity": 4.0,
+    "coulomb_easy": 4.0,
+    "fractional": 4.0,
+    "oscillator": 4.0
+  },
+  "cap": {
+    "gravity": 8.0,
+    "fractional": 8.0,
+    "yukawa": 8.0,
+    "coulomb_easy": 8.0,
+    "oscillator": 8.0,
+    "extra_dimensions": 8.0
+  },
+  "engine": {
+    "gravity": "field",
+    "fractional": "field",
+    "yukawa": "field",
+    "coulomb_easy": "nbody",
+    "oscillator": "nbody",
+    "extra_dimensions": "nbody"
+  },
+  "disclosure": "The initial conditions were selected as noiseless true trajectories that stay inside the true simulator's periodic box (|r| <= 0.8 x half-width), while our predict() integrates in free space. The same for our four methods; the native DP-Agent chooses its own initial conditions.",
+  "worlds": {
+    "gravity": {
+      "engine": "field",
+      "seed": 22,
+      "attempts": 12,
+      "rejects": {
+        "a": 10,
+        "b": 0,
+        "c": 1,
+        "err": 0
+      },
+      "c_world": 4.0,
+      "cap": 8.0,
+      "r_t_min": 3.1531,
+      "r_t_max": 5.7421,
+      "r0": 6.5814,
+      "speed0": 1.9575,
+      "pos2": [
+        -2.6731,
+        -6.0141
+      ],
+      "velocity2": [
+        -0.1627,
+        1.9507
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        0.9767,
+        6.5666
+      ]
+    },
+    "fractional": {
+      "engine": "field",
+      "seed": 22,
+      "attempts": 12,
+      "rejects": {
+        "a": 10,
+        "b": 0,
+        "c": 1,
+        "err": 0
+      },
+      "c_world": 4.0,
+      "cap": 8.0,
+      "r_t_min": 3.1622,
+      "r_t_max": 5.7424,
+      "r0": 6.5814,
+      "speed0": 1.9575,
+      "pos2": [
+        -2.6731,
+        -6.0141
+      ],
+      "velocity2": [
+        -0.1627,
+        1.9507
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        0.9767,
+        6.5666
+      ]
+    },
+    "yukawa": {
+      "engine": "field",
+      "seed": 24,
+      "attempts": 14,
+      "rejects": {
+        "a": 13,
+        "b": 0,
+        "c": 0,
+        "err": 0
+      },
+      "c_world": 2.0,
+      "cap": 8.0,
+      "r_t_min": 1.894,
+      "r_t_max": 3.707,
+      "r0": 3.8884,
+      "speed0": 0.379,
+      "pos2": [
+        -3.3946,
+        -1.8965
+      ],
+      "velocity2": [
+        0.2569,
+        0.2787
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        5.7899,
+        5.1134
+      ]
+    },
+    "coulomb_easy": {
+      "engine": "nbody",
+      "seed": 16,
+      "attempts": 6,
+      "rejects": {
+        "a": 4,
+        "b": 0,
+        "c": 1,
+        "err": 0
+      },
+      "c_world": 4.0,
+      "cap": 8.0,
+      "r_t_min": 2.7301,
+      "r_t_max": 7.9891,
+      "r0": 1.926,
+      "speed0": 1.9742,
+      "pos2": [
+        1.3383,
+        -1.3851
+      ],
+      "velocity2": [
+        0.486,
+        -1.9134
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        1.0313,
+        3.546
+      ]
+    },
+    "oscillator": {
+      "engine": "nbody",
+      "seed": 22,
+      "attempts": 12,
+      "rejects": {
+        "a": 10,
+        "b": 0,
+        "c": 1,
+        "err": 0
+      },
+      "c_world": 4.0,
+      "cap": 8.0,
+      "r_t_min": 3.1801,
+      "r_t_max": 5.7402,
+      "r0": 6.5814,
+      "speed0": 1.9575,
+      "pos2": [
+        -2.6731,
+        -6.0141
+      ],
+      "velocity2": [
+        -0.1627,
+        1.9507
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        0.9767,
+        6.5666
+      ]
+    },
+    "extra_dimensions": {
+      "engine": "nbody",
+      "seed": 128,
+      "attempts": 118,
+      "rejects": {
+        "a": 112,
+        "b": 4,
+        "c": 1,
+        "err": 0
+      },
+      "c_world": 1.0,
+      "cap": 8.0,
+      "r_t_min": 0.5566,
+      "r_t_max": 5.7571,
+      "r0": 3.2321,
+      "speed0": 1.7164,
+      "pos2": [
+        3.1836,
+        -0.5577
+      ],
+      "velocity2": [
+        -1.6812,
+        0.346
+      ],
+      "measurement_times": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0
+      ],
+      "_sampled_p1_p2_reference_only": [
+        4.3923,
+        4.0989
+      ]
+    }
+  }
+}

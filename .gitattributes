@@ -1,0 +1,28 @@
+# The vendored upstream tree is a byte-exact copy of the archive tag and the originals
+# contain trailing whitespace. Its bytes must not be modified: tests/unit/test_vendor_integrity.py
+# hashes them against the tag, and the NOTICE attributes them as unmodified upstream code.
+# So the whitespace check is switched off there - its only possible outcomes are noise on
+# every diff that touches the tree, or someone "fixing" the whitespace and silently forking
+# the vendored copy from the upstream it claims to be.
+src/bayes_model_discovery/_vendor/** -whitespace
+
+# Embedded equivalence evidence: particle arrays (.npz, binary) and the round-1 checkpoints,
+# hash-pinned by FIXTURE_MANIFEST.json. `-text` because any normalization git applied on
+# checkout - EOL conversion above all - would change the bytes and break the manifest hashes,
+# which is precisely the failure the fixture gate is built to catch.
+tests/fixtures/acquisition_round1/** -text -whitespace
+
+# The manifest itself is not hashed by anything, and it is the file a reviewer actually reads.
+tests/fixtures/acquisition_round1/FIXTURE_MANIFEST.json text -whitespace
+
+# The committed replay evidence: the five per-world reports are the harness's raw output and
+# are hash-bound by replay_receipt.json, so the same rule applies - any normalization git
+# applied on checkout would change the bytes and break the receipt.
+tests/equivalence/replay_evidence/replay_world_*.json -text -whitespace
+
+# The receipt is not hashed by anything and is what a reviewer reads.
+tests/equivalence/replay_evidence/replay_receipt.json text -whitespace
+# The superseded eig-equivalence-1 evidence keeps the same byte protection: it is the
+# record of what the code of its day executed, never edited, never normalized.
+tests/equivalence/replay_evidence/superseded/**/replay_world_*.json -text -whitespace
+tests/equivalence/replay_evidence/superseded/**/replay_receipt.json -text -whitespace

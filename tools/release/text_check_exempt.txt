@@ -1,0 +1,5 @@
+# Files exempt from the text checks of release_checks.sh (Korean text, code names, private paths). One path per line, then a
+# tab and the reason. Only files whose bytes must stay exactly as recorded belong here.
+tools/release/release_checks.sh	holds the search patterns themselves
+tools/release/code_names.txt	holds the search patterns themselves
+tools/release/text_check_exempt.txt	this list

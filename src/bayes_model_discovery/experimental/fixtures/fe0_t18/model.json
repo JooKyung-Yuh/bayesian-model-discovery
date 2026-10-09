@@ -1,0 +1,13 @@
+{
+  "expression": "b0+b1*tz+b2*square(tz)+b3*tanh(tz)+b4*power(tz,3)+b5*log(1+t)",
+  "family": "beta_binomial",
+  "log_evidence": -59.216352422767535,
+  "parameters": {
+    "b0": "intercept",
+    "b1": "signed",
+    "b2": "signed",
+    "b3": "signed",
+    "b4": "signed",
+    "b5": "positive"
+  }
+}

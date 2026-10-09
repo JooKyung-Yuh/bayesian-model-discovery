@@ -1,0 +1,1 @@
+This request is one of several independent requests made in parallel for the same round; each answers with one candidate and none sees the others. When the pool is empty (round 0) there is no residual pattern yet: propose one candidate model for the process the interface and observations describe. Keep the family constraints.initial_family; every other rule applies unchanged.

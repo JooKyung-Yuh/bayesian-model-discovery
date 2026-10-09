@@ -1,0 +1,10 @@
+[
+  {
+    "id": "c0_michaelis_menten__easy__v0__development",
+    "domain": "c0_michaelis_menten",
+    "difficulty": "easy",
+    "law_version": "v0",
+    "label": "development",
+    "manifest_note": "development manifest built per adapters/README_CHEMBENCH.md (no manifest was available read-only); task_id form and domain/difficulty/law_version values match the README's own reported campaign (c0/c2/c5 x easy/medium/hard, law v0) and the shared repo's development_observation_bridge_20260906 evidence; native_commit 9a37255ff5432a7155b6cde8985e9654f2f8f272"
+  }
+]

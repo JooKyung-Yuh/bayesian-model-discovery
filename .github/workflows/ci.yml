@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      # CI installs the tooling plus the packages the engine, the runners and their tests import,
+      # nothing else. Every version is constrained by requirements.lock, so CI resolves the same
+      # dependency graph a local checkout does. The two LLM clients (openai, anthropic) and httpx
+      # are needed by the tests that exercise the request transport against a mock transport;
+      # no test here makes a paid call.
+      - name: Install
+        run: pip install -c requirements.lock ruff==0.16.1 pytest pyyaml numpy scipy pymc pytensor arviz pandas openai anthropic httpx tiktoken matplotlib pillow
+
+      - name: Ruff
+        run: ruff check src tests scripts tools/release
+
+      - name: Install the package and import it
+        run: |
+          pip install -e . --no-deps
+          python -c "import bayes_model_discovery as b; print(b.__version__)"
+      - name: SynthCount mock smoke
+        timeout-minutes: 10
+        run: |
+          python scripts/bmd_run.py synthcount --rounds 2 --profile dev \
+            --output "$RUNNER_TEMP/synthcount_smoke" 2>&1 | tee "$RUNNER_TEMP/synthcount_smoke.log"
+          test -f "$RUNNER_TEMP/synthcount_smoke/summary.json"
+
+      - name: Upload the smoke log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthcount-smoke
+          path: |
+            ${{ runner.temp }}/synthcount_smoke.log
+            ${{ runner.temp }}/synthcount_smoke/summary.json
+            ${{ runner.temp }}/synthcount_smoke/failure.json
+          if-no-files-found: ignore
+
+      # `-m "not heavy"` keeps this workflow to what it can stand behind: the heavy tier
+      # re-executes SMC and compares particles against a frozen run, and its strongest
+      # comparisons depend on the BLAS the wheels were built against, which a pull request does
+      # not control. `and not replay` is a second exclusion, not a restatement: the replay tier is
+      # not marked heavy, and it replays a frozen run from a local archive no CI checkout has.
+      # `-rs` makes every skip name itself; the tests that need an external benchmark source
+      # (BoxingGym, AutoSciLab, NeuronBench) skip here because CI installs none of them.
+      # Collection follows `testpaths` in pyproject.toml (`tests/`, `src/bayes_model_discovery/`);
+      # the ForceBench kit's tests under `tools/fb1_snapshot/` need jax and run by hand.
+      - name: Pytest
+        run: PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"

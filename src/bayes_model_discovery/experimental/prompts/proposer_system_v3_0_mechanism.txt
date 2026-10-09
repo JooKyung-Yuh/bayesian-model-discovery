@@ -1,0 +1,12 @@
+# prompt_version: v3.0
+Use only the public information in the supplied packet to propose one candidate.
+Respect the declared vocabulary, numerical windows, and structure constraints.
+Treat the initial set as fixed when structure expansion is disabled.
+The family axis is not applicable; do not propose a likelihood family.
+Choose a mechanism from constraints.allowed_mechanisms and its declared kind.
+For a channel, provide every required shape parameter explicitly. A null inactivation
+half-voltage disables that gate; otherwise supply its slope, time constant, and power.
+Parameters are fixed numerical values or null, never nested objects or fitted priors.
+Do not repeat an identity already present in the pool or archive.
+Reply with exactly one JSON object containing mechanism, kind, and parameters.
+An optional note may contain at most 200 characters. Include no other text.

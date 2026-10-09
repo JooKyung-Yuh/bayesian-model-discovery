@@ -1,0 +1,66 @@
+[
+  {
+    "id": "c0_michaelis_menten__easy__v0",
+    "domain": "c0_michaelis_menten",
+    "difficulty": "easy",
+    "law_version": "v0",
+    "label": "paper",
+    "manifest_note": "paper manifest of the pre-registered ChemBench design. The nine `id` values are the no-leak ChemBench baseline's own task ids, copied VERBATIM (three components, no label suffix) from the shared read-only repository BoxingGym-Baseline-Evals commit aee7dff, path results/llm-autoscilab-chembench/p4_chembench_noleak_oracle_blocked_b40_gpt4omini_5runs/tables/per_seed_budget.csv column `task_id` (the 224 contract rows collect_points.py reads), so a points.csv row emitted for this manifest carries the same `task` key as the baseline's own rows; row order is the baseline CSV's first-appearance order. domain/difficulty/law_version are the same three fields adapters/README_CHEMBENCH.md reports and ChemBenchSession passes to ChemBenchOracle; native_commit 9a37255ff5432a7155b6cde8985e9654f2f8f272 (autoscilab, PYTHONPATH only, never installed)."
+  },
+  {
+    "id": "c2_product_inhibition__easy__v0",
+    "domain": "c2_product_inhibition",
+    "difficulty": "easy",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c5_pingpong_bisubstrate__easy__v0",
+    "domain": "c5_pingpong_bisubstrate",
+    "difficulty": "easy",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c0_michaelis_menten__hard__v0",
+    "domain": "c0_michaelis_menten",
+    "difficulty": "hard",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c0_michaelis_menten__medium__v0",
+    "domain": "c0_michaelis_menten",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c2_product_inhibition__hard__v0",
+    "domain": "c2_product_inhibition",
+    "difficulty": "hard",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c2_product_inhibition__medium__v0",
+    "domain": "c2_product_inhibition",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c5_pingpong_bisubstrate__hard__v0",
+    "domain": "c5_pingpong_bisubstrate",
+    "difficulty": "hard",
+    "law_version": "v0",
+    "label": "paper"
+  },
+  {
+    "id": "c5_pingpong_bisubstrate__medium__v0",
+    "domain": "c5_pingpong_bisubstrate",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "label": "paper"
+  }
+]
