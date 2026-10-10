@@ -76,8 +76,7 @@ safeguards and the tests.
 ![One round of the loop: the posterior predictive band narrows, the twelve model weights move, and the next experiment is placed at the expected information gain (EIG) maximum](docs/media/one_round.gif)
 
 *A September 2026 pilot of the engine on a synthetic binomial world (twelve fixed models, twenty rounds);
-it shows the mechanism only, and no number in it is an experimental result. The 90 s three-act explainer,
-`bmd_explainer_acts1-3.mp4`, is attached to the GitHub release.*
+it shows the mechanism only, and no number in it is an experimental result.*
 
 ## Benchmarks
 
