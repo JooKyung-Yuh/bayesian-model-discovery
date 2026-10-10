@@ -86,6 +86,7 @@ are placeholders.
 | `BMD_FAC_PROMPT` | the paper's system prompt, `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` | a protocol test that checks the prompt's digests when the variable is set |
 | `BMD_ROOT` | the repository root | convenience |
 | `PYTENSOR_FLAGS` | `base_compiledir=<root>/.pytensor`, the PyTensor compile cache | PyTensor |
+| `NPY_DISABLE_CPU_FEATURES` | not set by the script. On a CPU with AVX-512, `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"` turns numpy's SIMD power dispatch off; the NeuronBench batch forward backend (`--forward-backend batch`) needs it, and the batch-backend bit-identity tests skip without it | numpy, at import |
 
 API keys are read only from environment variables (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`); mock
 runs need none. A paid run takes the path of a dotenv file that holds the key; see
@@ -95,8 +96,8 @@ runs need none. A paid run takes the path of a dotenv file that holds the key; s
 
 | Tier | Needs |
 | --- | --- |
-| fast (`tests/unit`) | the engine environment with pytest |
-| standard (everything CI runs) | the same; tests that need an external checkout skip unless its variable is set, and fail if the checkout is not clean, not at the pinned commit, or not the copy on `PYTHONPATH` |
+| fast (`tests/`) | the engine environment with pytest |
+| standard (everything CI runs) | the same; tests that need an external checkout skip unless its variable is set, and fail if the checkout is not clean, not at the pinned commit, or not the copy on `PYTHONPATH`. Tests that only import `neuronbench` run whenever it is importable, which `provision.sh --with neuronbench` makes it. On an AVX-512 CPU the batch-backend bit-identity tests skip unless `NPY_DISABLE_CPU_FEATURES` is set as above |
 | heavy (re-runs sequential Monte Carlo (SMC) fits against frozen runs) | the full pinned stack of `requirements.lock`; the comparisons depend on the BLAS the wheels use |
 | ForceBench tests (`tools/fb1_snapshot/test_*.py`) | the ForceBench environment and DiscoverPhysics (`FB1_PYTHON`, `DP_SCIENCEAGENT_DIR`) |
 
@@ -117,6 +118,18 @@ Every variable a test reads is listed in [`USAGE.md`](USAGE.md#tests); every ski
   `dev`.
 - ForceBench needs several gigabytes of memory per run, and about 11 GB for an expected predictive information gain (EPIG) run on the
   gravity world; plan parallel runs by memory.
-- The fast test tier runs 1,208 tests in about three minutes; the standard tier, about 5,200
-  tests, took 2 h 7 min on one machine. Give every test run its own `--basetemp`: test
-  temporaries can fill a small disk.
+- Test tiers (`pytest -m "not heavy and not replay"`):
+  - fast (`tests/`): 259 tests, about one minute;
+  - standard: 3,739 tests collected, 1 of them deselected (`not replay`). On one 16-thread machine with no benchmark
+    source and no CPU policy (an AVX-512 host): 3,310 passed and 428 skipped in about 50 minutes. Every skip names
+    its input: the BoxingGym source (214), the ChemBench oracle (104), neuronbench (63 not importable, 22 without
+    `NEURONBENCH_SRC`), the CPU policy (24) and `BMD_FAC_PROMPT` (1). CI runs the same command without any benchmark
+    source; on a runner without AVX-512 the 24 policy tests run instead of skipping. After `provision.sh --with
+    neuronbench` the tests that only import neuronbench run as well;
+  - ForceBench kit (`tools/fb1_snapshot/`, the ForceBench environment): 405 tests.
+
+  Give every test run its own `--basetemp`: test temporaries can fill a small disk.
+- A one-round NeuronBench mock run in the `dev` profile spends most of its time in the round-1
+  design search. It took more than an hour at one core on a busy host, so allow an hour or more.
+- Importing PyTensor may print `WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS
+  functions.` This is harmless: it reports which BLAS path PyTensor found.

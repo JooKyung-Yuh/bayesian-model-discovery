@@ -149,13 +149,13 @@ Run them from the repository root with `PYTHONPATH=src`, so that the source tree
 rather than an installed copy. pytest comes with the `dev` extra.
 
 ```bash
-# fast: the unit tests under tests/ (a few minutes)
+# fast: the tests under tests/ (259 tests, about one minute)
 PYTHONPATH=src pytest -q -m "not heavy and not replay" tests
-# standard: everything CI runs, including the runners with mock proposers (about 4,000 tests)
+# standard: everything CI runs, including the runners with mock proposers (3,739 tests)
 PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
 ```
 
-- The standard tier takes about two hours, so after changing one runner run its own test files
+- The standard tier takes about 50 minutes on one machine, so after changing one runner run its own test files
   plus `test_run_label_policy.py` and `test_count_proposer.py`. Give every test run its own
   `--basetemp` and `PYTENSOR_FLAGS=base_compiledir=<folder>`.
 - Every skip prints its reason with `-rs`, naming the input it needs. The variables the tests read are:
@@ -173,9 +173,10 @@ PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
   instead of skipping.
 - On a host whose CPU has AVX-512, the NeuronBench test that checks the two forward backends bit for bit
   (`test_n1_the_two_backends_score_and_observe_the_same_rows`) skips unless numpy's SIMD power dispatch is off, as
-  the runner requires for `--forward-backend batch`: set
+  the runner requires for `--forward-backend batch`, and so do the 24 bit-identity tests of
+  `test_neuron_forward_batch.py` (25 tests in all, measured on an AVX-512 host). Set
   `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"`
-  before running it.
+  before running them.
 - The ForceBench tests are `tools/fb1_snapshot/test_*.py` and need the ForceBench environment.
   Run them from that folder with `JAX_PLATFORMS=cpu`, `FB1_PYTHON=$FB_PY`,
   `DP_SCIENCEAGENT_DIR=$FB_DP/ScienceAgent` and `FB1_OUT_DIR=<scratch folder>` set explicitly:

@@ -122,7 +122,7 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `tools/fb1_snapshot/test_fb1_unified_protocol.py` | 890 | (removed) |
 | `tools/fb1_snapshot/test_fb1_unified_protocol.py` | 891 | (removed) |
 
-## Files with a structural difference (37)
+## Files with a structural difference (38)
 
 | file | first differing statement (base line) | statements base → public | top-level definitions removed | added |
 | --- | --- | --- | --- | --- |
@@ -146,6 +146,7 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_gaussian_core.py` | Import  at line 5 | 40 → 36 | `#8`, `#9`, `test_opt_in_count_world_baseline_methods_and_values_are_unchanged`, `test_opt_in_legacy_count_runner_keeps_scientific_bytes` | - |
 | `src/bayes_model_discovery/experimental/test_grammar_version_binding.py` | FunctionDef test_the_generator_registers_the_grammar_only_when_it_is_not_the_default at line 252 | 34 → 29 | `test_the_generator_registers_the_grammar_only_when_it_is_not_the_default`, `test_the_generator_emits_the_driver_option_only_when_it_is_not_the_default`, `test_the_driver_passes_the_option_through_and_never_in_a_shakedown`, `_repository_root`, `_generator` | - |
 | `src/bayes_model_discovery/experimental/test_initial_pool_file.py` | Import  at line 5 | 50 → 32 | `#7`, `BASE_COMMIT`, `CHANGED_SOURCES`, `BRF_CONFIG_KEYS`, `BRF_POOL_FILE_KEYS`, `BRF_WAVE_KEYS`, `BRF_BURST_SETTINGS_KEYS`, `BRF_ACCOUNTING_KEYS`, `BRF_WAVE_PACKET`, `PCX2B_BURST_SETTINGS_KEYS`, `PCX1_PACKET_CONSTRAINT_KEYS`, `PCX1_PACKET_DIGEST_KEYS`, `PCX2_EVENT_KEYS`, `PCX2_ARCHIVE_KEYS`, `PCX2_ACCOUNTING_KEYS`, `ADMITTED_ID_KEYS`, `test_opt_in_catalogue_and_generation_match_hub_baseline`, `_drop_unit_record_keys` | - |
+| `src/bayes_model_discovery/experimental/test_neuron_forward_batch.py` | FunctionDef test_predict_batch_bank_is_c_contiguous_and_means_like_the_native_bank at line 343 | 55 → 55 | - | - |
 | `src/bayes_model_discovery/experimental/test_packet_constraints_explicit.py` | Import  at line 18 | 58 → 50 | `#7`, `#8`, `#9`, `#10`, `REPO_ROOT`, `DRIVER`, `driver_dry_run`, `test_the_driver_passes_an_explicit_v2_0_to_every_bmd_runner` | - |
 | `src/bayes_model_discovery/experimental/test_paid_call_guard.py` | Import  at line 11 | 46 → 41 | `#7`, `#8`, `BASE_COMMIT`, `base_transport`, `test_the_omitted_option_writes_the_base_commits_transport_bytes` | - |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | FunctionDef test_an_eig_part_needs_an_acquisition_bit_and_the_ascent at line 440 | 88 → 88 | - | - |

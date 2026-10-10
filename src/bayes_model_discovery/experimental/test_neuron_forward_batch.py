@@ -350,6 +350,7 @@ def test_report_cli_writes_the_named_file(tmp_path, capsys):
         nfb.equivalence_report("enormous")
 
 
+@needs_scalar_power
 @pytest.mark.usefixtures("require_neuronbench_source")
 def test_predict_batch_bank_is_c_contiguous_and_means_like_the_native_bank():
     """Check that predict batch bank is c contiguous and means like the native bank."""
