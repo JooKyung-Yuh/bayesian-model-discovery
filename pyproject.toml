@@ -26,7 +26,7 @@ dev = ["pytest", "ruff"]
 # Benchmarks. None of the four benchmarks is a PyPI package at its pinned commit: each extra lists
 # only the Python packages its import path needs beyond the engine, and scripts/provision.sh fetches the pinned
 # checkout and exports the variable that conftest.py and the runners read.
-# BoxingGym: checkout github.com/JooKyung-Yuh/BoxingGym @ 06c790aa on BMD_BOXINGGYM_SRC (its src/ folder, put on
+# BoxingGym: checkout github.com/kanishkg/boxing-gym @ b43e38cb on BMD_BOXINGGYM_SRC (its src/ folder, put on
 # PYTHONPATH; not pip-installed, because its package metadata pins numpy 2.0.1 against the engine's 1.26.4).
 boxinggym = ["tqdm"]
 # ChemBench: not enabled in this release - LLM-AutoSciLab (@ 9a37255, BMD_AUTOSCILAB) states no licence, so the run

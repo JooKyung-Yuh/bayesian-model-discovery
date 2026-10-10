@@ -1,13 +1,15 @@
 # Declared syntax-tree changes of the public tree against the verified development tree
 
-Every other difference between the trees is in comments, docstrings or formatting (see `tools/release/ast_equiv.py`). The changes below are the only ones that alter a Python syntax tree: string literals rewritten from Korean to English or with an internal code name spelled out (exception messages, assertion messages, record labels written into run folders, test skip reasons and match patterns), plus redundant `pass` statements removed after their function's docstring was rewritten. No condition, computation, default value or control flow changed.
+Every other difference between the trees is in comments, docstrings or formatting (see `tools/release/ast_equiv.py`). The changes below are the only ones that alter a Python syntax tree: string literals rewritten from non-English text to English or with an internal code name spelled out (exception messages, assertion messages, record labels written into run folders, test skip reasons and match patterns), plus redundant `pass` statements removed after their function's docstring was rewritten. No condition, computation, default value or control flow changed.
 
 Abbreviations in the quoted literals: EIG = expected information gain, EPIG = expected predictive information gain, BMA = Bayesian model averaging, SMC = sequential Monte Carlo, KL = Kullback-Leibler divergence, nMSE = normalized mean squared error, D0 = the initial design set.
 
-## Changed string literals (124)
+## Changed string literals (125)
 
 | file | line | the literal now reads |
 | --- | ---: | --- |
+| `conftest.py` | 13 | b43e38cb03d09c13efa9cf4d9bae740d51157bfd |
+| `scripts/bmd_run.py` | 56 | the src/ folder of the BoxingGym checkout @ b43e38cb |
 | `src/bayes_model_discovery/experimental/belief_packet.py` | 555 | link is fixed by the outcome type (the paper's task table) |
 | `src/bayes_model_discovery/experimental/boxinggym_core.py` | 530 | boxing_gym.envs.{moral_machines,emotion} construct openai.OpenAI() in __init__ (moral_machines.py:294, emotion.py:270) and call chat.completions.create inside step (moral_machines.py:529, emotion.py:4 |
 | `src/bayes_model_discovery/experimental/boxinggym_core.py` | 1886 | specification_only: the environment integrates a DETERMINISTIC Lotka-Volterra ODE (lotka_volterra.py:293-:306, scipy.integrate.odeint) and returns the two rounded, clipped populations at a queried tim |
@@ -43,6 +45,8 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_chembench_core.py` | 1834 | 9097d8cdb6f875f5bf42463e2acca5da6d99724197ec4bee12aa22b800f15459 |
 | `src/bayes_model_discovery/experimental/test_chembench_prewave_safeguards.py` | 379 | parity with the baseline recorded before the model-identity change crosses the identity boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_core_candidate_exclusion.py` | 144 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
+| `src/bayes_model_discovery/experimental/test_core_d0_policy.py` | 225 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
+| `src/bayes_model_discovery/experimental/test_core_d0_policy.py` | 229 | set BMD_BASELINE_COMPARE=1 and BMD_D0S_BASELINE_DIR for the baseline parity check |
 | `src/bayes_model_discovery/experimental/test_core_parallel_wave.py` | 325 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_core_parallel_wave.py` | 329 | set BMD_BASELINE_COMPARE=1 and BMD_PWC_BASELINE_DIR for the baseline parity check |
 | `src/bayes_model_discovery/experimental/test_count_pairing.py` | 67 | forbids proposal |
@@ -53,27 +57,24 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_epig_positivity_guard.py` | 297 | BMD_EPIG_GUARD_BASELINE_DIR must identify the pristine baseline source |
 | `src/bayes_model_discovery/experimental/test_epig_runners.py` | 196 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_epig_runners.py` | 201 | BMD_EPIG_BASELINE_DIR must name a read-only checkout of the baseline commit |
-| `src/bayes_model_discovery/experimental/test_named_inputs.py` | 1013 | the client must never be called for the fixed-pool cell |
+| `src/bayes_model_discovery/experimental/test_gaussian_core.py` | 384 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_model_id_commutativity.py` | 161 | b'synthetic identity-change control' |
+| `src/bayes_model_discovery/experimental/test_named_inputs.py` | 1013 | the client must never be called for the fixed-pool cell |
 | `src/bayes_model_discovery/experimental/test_prewave_fit_timeout.py` | 375 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_prior_switches_boxinggym.py` | 149 | the proposed-prior ablation is defined on the count path; scalar/real noise priors do not follow the template |
 | `src/bayes_model_discovery/experimental/test_space_filling_core_boxing.py` | 246 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
 | `src/bayes_model_discovery/experimental/test_space_filling_core_boxing.py` | 256 | set BMD_BASELINE_COMPARE=1 for the design-study baseline artifact parity |
 | `src/bayes_model_discovery/experimental/test_space_filling_core_boxing.py` | 259 | set BMD_DESIGN_STUDY_BASELINE to a read-only checkout of the design-study baseline |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 218 | f"chunked log-predictive, one input, 1000 particles, 64 draws: {differing} of 64 one-column reductions differ from the whole array's; two-column blocks: 0 differ" |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 221 | this numpy reduces a one-column block like the whole array: the one-column rule is inert |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 350 | set BMD_BASELINE_COMPARE=1 and BMD_TRM_BASELINE_DIR (a clean checkout of the parity baseline commit) |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 497 | chunked log-predictive, CORE parity: |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 529 | chunked log-predictive, ChemBench parity: |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 562 | chunked log-predictive, BoxingGym parity: |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | 467 | require_autoscilab_source |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | 731 | need a structure-expansion cell |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | 733 | require_autoscilab_source |
 | `src/bayes_model_discovery/experimental/test_wave_accounting.py` | 317 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
-| `src/bayes_model_discovery/experimental/test_core_d0_policy.py` | 225 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
-| `src/bayes_model_discovery/experimental/test_core_d0_policy.py` | 229 | set BMD_BASELINE_COMPARE=1 and BMD_D0S_BASELINE_DIR for the baseline parity check |
-| `src/bayes_model_discovery/experimental/test_gaussian_core.py` | 384 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 391 | f"chunked log-predictive, one input, 1000 particles, 64 draws: {differing} of 64 one-column reductions differ from the whole array's; two-column blocks: 0 differ" |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 394 | this numpy reduces a one-column block like the whole array: the one-column rule is inert |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 608 | f'chunked log-predictive, ChemBench guarded path: excluded={excluded} width={width} calls={new_calls} prediction_pools={new_pools} conditional_loglik_blocks={blocks} old==new bytes' |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 738 | set BMD_BASELINE_COMPARE=1 and BMD_TRM_BASELINE_DIR (a clean checkout of the parity baseline commit) |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 885 | chunked log-predictive, CORE parity: |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 917 | chunked log-predictive, ChemBench parity: |
-| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | 950 | chunked log-predictive, BoxingGym parity: |
 | `tools/fb1_snapshot/fb1_grammar.py` | 50 | bayesian-model-discovery canonical engine chain v2.9 (the version this kit vendored) |
 | `tools/fb1_snapshot/fb1_grammar.py` | 51 | count_models.py of the canonical engine chain v2.9, taken from the private development tree; the vendored copy is identified by VENDOR_SHA256 |
 | `tools/fb1_snapshot/fb1_grammar.py` | 226 | cos/sin are not in the vendored CALL_ARITY (exp·log·sqrt·tanh·square·power) |
@@ -133,7 +134,7 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `tools/fb1_snapshot/test_fb1_reasoning_and_paid_call_guard.py` | 372 | 7025bb0ac102f9c56c5ec4db99dcf32ec722595c072e89842eb780ed2647ef4c |
 | `tools/fb1_snapshot/world_constants.py` | 133 | r >= 1 (the grid-near-particle points at 0.5/0.75 are dropped; differs from the yukawa grid of FB1_FORCE_CURVE_WORLD_RULING.json); single-parameter fit of the amplitude A, no linear background term (B |
 
-## Files with a structural difference (13)
+## Files with a structural difference (15)
 
 | file | first differing statement (base line) | statements base → public | top-level definitions removed | added |
 | --- | --- | --- | --- | --- |
@@ -147,6 +148,8 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_grammar_version_binding.py` | FunctionDef test_the_generator_registers_the_grammar_only_when_it_is_not_the_default at line 252 | 34 → 29 | `test_the_generator_registers_the_grammar_only_when_it_is_not_the_default`, `test_the_generator_emits_the_driver_option_only_when_it_is_not_the_default`, `test_the_driver_passes_the_option_through_and_never_in_a_shakedown`, `_repository_root`, `_generator` | - |
 | `src/bayes_model_discovery/experimental/test_model_id_power_normal_form.py` | FunctionDef test_fugu_equal_spellings_are_one_model at line 74 | 59 → 59 | `test_fugu_equal_spellings_are_one_model`, `test_fugu_different_forms_stay_apart` | `test_equal_spellings_are_one_model`, `test_different_forms_stay_apart` |
 | `src/bayes_model_discovery/experimental/test_packet_constraints_explicit.py` | Import  at line 18 | 58 → 50 | `#7`, `#8`, `#9`, `#10`, `REPO_ROOT`, `DRIVER`, `driver_dry_run`, `test_the_driver_passes_an_explicit_v2_0_to_every_bmd_runner` | - |
+| `src/bayes_model_discovery/experimental/test_paid_call_guard.py` | Import  at line 11 | 46 → 41 | `#7`, `#8`, `BASE_COMMIT`, `base_transport`, `test_the_omitted_option_writes_the_base_commits_transport_bytes` | - |
+| `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | Import  at line 18 | 94 → 65 | `#10`, `#11`, `#9`, `#10`, `BASE_COMMIT`, `old_source`, `old`, `one_model`, `force_width`, `seen`, `assert_identical`, `expected_widths`, `assert_blocks`, `_top_level`, `test_only_log_predictive_changed_and_its_one_call_branch_is_the_old_body`, `test_every_family_and_width_is_byte_identical`, `test_pools_of_unequal_particle_counts_are_byte_identical`, `test_rule_r2_one_input_never_forms_a_one_column_block`, `test_the_default_budget_splits_the_dev_truncation_shape`, `test_a_call_within_one_block_runs_the_unchanged_path`, `test_refusals_are_unchanged`, `truncation_pool`, `test_gaussian_same_round_truncation_168_169`, `test_gaussian_checkpoint_scores_87_116_and_truth_law_369_371`, `test_core_one_step_log_score_920`, `test_joint_eig_638`, `chem_fit`, `counted_guarded`, `test_chembench_guarded_log_predictive_991_998` | - |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | FunctionDef test_an_eig_part_needs_an_acquisition_bit_and_the_ascent at line 440 | 88 → 88 | - | - |
 | `tools/fb1_snapshot/test_fb1_label_rule.py` | Import  at line 3 | 36 → 29 | `#10`, `#2`, `test_packager_keeps_production_only_from_bound_receipt`, `test_packager_rejects_unbound_or_changed_receipts_before_output`, `test_historical_unbound_production_string_stays_development`, `test_explicit_development_mock_receipt_reaches_packaged_provenance`, `test_packager_reopens_manifest_before_returning_success` | - |
 | `tools/fb1_snapshot/test_fb1_proposer.py` | FunctionDef test_21g2_real_sdk_mocktransport_debug_logs_and_traceback_are_masked at line 1097 | 133 → 131 | `_minimal_run_json_29fb`, `test_29fb_5_emitter_points_csv_kl_column_gets_a_value_other_columns_unchanged` | - |

@@ -53,13 +53,17 @@ and the run script and tests find them through environment variables.
 
 | Benchmark | Repository | Pinned commit | License | Variable |
 | --- | --- | --- | --- | --- |
-| BoxingGym | fork https://github.com/JooKyung-Yuh/BoxingGym of https://github.com/kanishkg/boxing-gym | `06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba` | MIT | `BMD_BOXINGGYM_SRC`: the checkout's `src/` folder |
+| BoxingGym | https://github.com/kanishkg/boxing-gym | `b43e38cb03d09c13efa9cf4d9bae740d51157bfd` | MIT | `BMD_BOXINGGYM_SRC`: the checkout's `src/` folder |
 | NeuronBench | https://github.com/murphyk/neuronbench | `c354622458c460b419cab821d482c879f0578377` | MIT | `NEURONBENCH_SRC`: the checkout |
 | ForceBench | DiscoverPhysics, https://github.com/SampsonML/DiscoverPhysics | `33b7fa9df96de9c35744efd181ca7e5a8dd60ad5` | MIT | `FB_DP`: the checkout; `FB_PY`: the ForceBench environment's python |
 
-- The BoxingGym environments the runner imports (`src/boxing_gym/envs/`) are identical in the
-  fork and in upstream BoxingGym at commit `b43e38cb03d09c13efa9cf4d9bae740d51157bfd`; the fork
-  changes four files under `src/boxing_gym/agents/`. The tests accept only the fork commit.
+- The paper runs used a fork of BoxingGym at commit `06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba`, which
+  changes four files under `src/boxing_gym/agents/` relative to upstream commit
+  `b43e38cb03d09c13efa9cf4d9bae740d51157bfd`. The environments the runner imports
+  (`src/boxing_gym/envs/`) are identical in both, and the only thing they import from `agents` is
+  `construct_dataframe`, which the fork leaves unchanged, so this release pins the public upstream
+  commit. The tests accept only that commit. `scripts/provision.sh` reads `BMD_BOXINGGYM_REPO` and
+  `BMD_BOXINGGYM_COMMIT` to fetch from another location.
 - **ChemBench is not enabled in this release.** Its true laws and input ranges come from
   LLM-AutoSciLab (https://github.com/scientific-discovery/LLM-AutoSciLab, commit
   `9a37255ff5432a7155b6cde8985e9654f2f8f272`), which states no license. The ChemBench code

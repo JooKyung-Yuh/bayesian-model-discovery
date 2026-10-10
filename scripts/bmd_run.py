@@ -53,7 +53,7 @@ MODULES = {"synthcount": "core_count", "chembench": "chembench_core", "boxinggym
 # The external checkout each benchmark needs, put on PYTHONPATH: (variable, what it must hold).
 EXTERNAL = {
     "chembench": ("BMD_AUTOSCILAB", "the LLM-AutoSciLab checkout @ 9a37255"),
-    "boxinggym": ("BMD_BOXINGGYM_SRC", "the src/ folder of the BoxingGym checkout @ 06c790aa"),
+    "boxinggym": ("BMD_BOXINGGYM_SRC", "the src/ folder of the BoxingGym checkout @ b43e38cb"),
     "neuronbench": ("NEURONBENCH_SRC", "the neuronbench checkout @ c354622"),
 }
 FORCEBENCH_WORLDS = ("gravity", "yukawa", "coulomb_easy", "oscillator", "extra_dimensions")

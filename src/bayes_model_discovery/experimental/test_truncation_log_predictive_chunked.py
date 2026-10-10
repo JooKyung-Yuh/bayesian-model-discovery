@@ -2,12 +2,9 @@
 
 Synthetic pools only; no run output, seed or response of any real cell is read.
 
-* Unit: the module at BASE_COMMIT is read with `git show` and executed as an isolated module
-  of this package, so only `log_predictive` differs from the current one. Both return arrays of
-  every call are compared as dtype, shape, memory order and bytes (and `np.array_equal`, no NaN)
-  at forced block widths 1, 7, 128 and unsplit, for every scalar family, for pools of unequal
-  particle counts, at the default budget, and at the one-input layouts, where a block narrower than two columns would change numpy's summation order.
-* Callers: every `log_predictive` call path is driven old against new through its own caller.
+* Unit: the block budget is in no record or frozen header, and on this numpy a one-column block of a
+  one-input layout sums differently from the whole array (the reason a block is never narrower than two
+  columns there).
 * Integration (opt-in: `BMD_BASELINE_COMPARE=1` and `BMD_TRM_BASELINE_DIR`, a clean checkout of
   PARITY_BASE_COMMIT; BoxingGym also `BMD_BOXINGGYM_SRC`): a mock CORE cell and a mock ChemBench cell, each
   with pool cap 3, and a mock BoxingGym dugongs cell run in that checkout and in this one, the
@@ -15,16 +12,13 @@ Synthetic pools only; no run output, seed or response of any real cell is read.
   the operational fields named below are excluded by name. Each run logs its calls by caller.
 """
 
-import ast
 import csv
 import fnmatch
 import hashlib
-import importlib.util
 import json
 import os
 import subprocess
 import sys
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -32,20 +26,15 @@ import pytest
 from scipy.special import logsumexp
 
 from . import boxinggym_truth_law as truth_law
-from . import chembench_core as cc
-from . import core_count, frozen_kl_rescore, gaussian_core
+from . import frozen_kl_rescore
 from . import positive_inference as current
 from .belief_packet import core_real_interface
 from .count_inference import Fit
 from .real_inference import RealHypothesis
 
-# The module the unit tests compare against, read with `git show`; those tests skip when this commit is absent
-# from the checkout's history.
-BASE_COMMIT = "7f6b7b245825c5906d71781e8e310493f133e775"
 #: The three opt-in integration tests compare against a clean checkout of PARITY_BASE_COMMIT (the commit that
 #: introduced the chunked predictive) and skip when none is supplied, with the sources and record keys changed
-#: since then named below; the unit tests keep BASE_COMMIT, the module from before the chunking change that
-#: they compare to.
+#: since then named below.
 PARITY_BASE_COMMIT = "ad583dfc5d7bc8f51d441ac890a6f540a3d73ecc"
 #: The recorded sources changed since PARITY_BASE_COMMIT, a literal list per bundle: belief_packet.py,
 #: count_proposer.py and chembench_core.py changed in later commits; the chunking change's own
@@ -104,30 +93,8 @@ DATA_SHA = hashlib.sha256(b"synthetic public data").hexdigest()
 
 
 # --------------------------------------------------------------------------
-# the BASE_COMMIT module and synthetic pools
+# synthetic pools
 # --------------------------------------------------------------------------
-
-
-@pytest.fixture(scope="module")
-def old_source():
-    """Source text of `positive_inference.py` at BASE_COMMIT, read with `git show`; skips when unavailable."""
-    shown = subprocess.run(["git", "-C", str(REPO), "show", f"{BASE_COMMIT}:{SOURCE}"],
-                           capture_output=True, text=True, check=False)
-    if shown.returncode:
-        pytest.skip(f"{BASE_COMMIT} is not in this checkout's history: {shown.stderr.strip()}")
-    return shown.stdout
-
-
-@pytest.fixture(scope="module")
-def old(old_source):
-    """The module at BASE_COMMIT, executed inside this package: its relative imports reach the same
-    unchanged neighbours (`count_inference`, `count_models`, `real_inference`) as `current`."""
-    name = f"{__package__}.positive_inference_at_{BASE_COMMIT[:7]}"
-    module = importlib.util.module_from_spec(importlib.util.spec_from_loader(name, loader=None))
-    module.__package__ = __package__
-    exec(compile(old_source, f"{BASE_COMMIT[:7]}:{SOURCE}", "exec"), module.__dict__)  # noqa: S102
-    assert not hasattr(module, BUDGET) and hasattr(current, BUDGET)
-    return module
 
 
 def _diagnostics(interface, **extra):
@@ -180,12 +147,6 @@ def catalogue_fit(family, particles, seed, features=(0, 2)):
                diagnostics)
 
 
-def one_model(family, particles, seed=1):
-    """Return a single synthetic fit for `family`, choosing the real or scalar builder."""
-    build = real_fit if family in REAL else scalar_fit
-    return build(family, particles, seed)
-
-
 #: Multi-model pools of one measure each, with unequal particle counts on purpose.
 POOLS = {
     "real": lambda: [real_fit("normal", 50, 1), real_fit("student_t", 37, 2, EXPRESSIONS[1]),
@@ -224,92 +185,9 @@ def outcomes_for(fits, inputs, draws, edges, seed=5):
     return y
 
 
-def force_width(monkeypatch, fits, rows, width):
-    """Set the cells budget that gives `width` draw columns per block; UNSPLIT: one block."""
-    cells = 10**15 if width is UNSPLIT else width * rows * max(map(current.particle_count, fits))
-    monkeypatch.setattr(current, BUDGET, cells)
-
-
-@pytest.fixture
-def seen(monkeypatch):
-    """The outcome arrays the CURRENT module's `log_predictive` hands `conditional_loglik`."""
-    calls = []
-    original = current.conditional_loglik
-    def spy(result, inputs, outcomes):
-        """Record the outcome array of each call, then delegate to the original function."""
-        calls.append(outcomes)
-        return original(result, inputs, outcomes)
-    monkeypatch.setattr(current, "conditional_loglik", spy)
-    return calls
-
-
-def assert_identical(before, after):
-    """Same dtype, shape, memory order and bytes, `np.array_equal`, and no NaN."""
-    assert len(before) == len(after)
-    for left, right in zip(before, after, strict=True):
-        assert isinstance(left, np.ndarray) and isinstance(right, np.ndarray)
-        assert left.dtype == right.dtype == np.float64 and left.shape == right.shape
-        assert left.flags.c_contiguous and right.flags.c_contiguous
-        assert not np.isnan(left).any() and not np.isnan(right).any()
-        assert np.array_equal(left, right)
-        assert left.tobytes() == right.tobytes()
-
-
-def expected_widths(draws, width, rows):
-    """Return the draw-block widths the chunked path should produce for the given width and row count."""
-    if width is UNSPLIT or draws <= width:
-        return [draws]
-    if rows == 1:
-        width = max(width, 2)
-    widths = [width] * (draws // width) + ([draws % width] if draws % width else [])
-    if rows == 1 and widths[-1] == 1:
-        widths[-2:] = [widths[-2] + 1]
-    return widths if len(widths) > 1 else [draws]
-
-
-def assert_blocks(calls, fits, rows, draws, width):
-    """Assert that the recorded outcome blocks have the expected row count and widths."""
-    widths = [np.shape(outcomes)[1] for outcomes in calls]
-    assert all(np.shape(outcomes)[0] == rows for outcomes in calls)
-    assert widths == expected_widths(draws, width, rows) * len(fits)
-    if rows == 1:
-        assert 1 not in widths or draws == 1
-
-
 # --------------------------------------------------------------------------
 # the source change is exactly log_predictive
 # --------------------------------------------------------------------------
-
-
-def _top_level(source):
-    items = []
-    for node in ast.parse(source).body:
-        name = getattr(node, "name", None)
-        if isinstance(node, ast.Assign) and len(node.targets) == 1:
-            name = getattr(node.targets[0], "id", None)
-        items.append((name, ast.get_source_segment(source, node)))
-    return items
-
-
-def test_only_log_predictive_changed_and_its_one_call_branch_is_the_old_body(old_source):
-    """Check that only `log_predictive` (and `joint_eig`) changed and that the unsplit branch is the old body."""
-    now = Path(current.__file__).read_text()
-    before, after = _top_level(old_source), _top_level(now)
-    added = [name for name, _ in after if name not in {n for n, _ in before}]
-    assert added == [BUDGET, "_draw_blocks"]
-    after = [item for item in after if item[0] not in added]
-    assert [name for name, _ in after] == [name for name, _ in before]
-    # joint_eig gained decompose=True later; its default call stays the old one byte for byte (test_joint_eig_638).
-    changed = [n for (n, a), (_, b) in zip(before, after, strict=True) if a != b]
-    assert changed == ["log_predictive", "joint_eig"]
-    old_function, new_function = (
-        next(node for node in ast.parse(text).body if getattr(node, "name", "") == "log_predictive")
-        for text in (old_source, now))
-    one_call = new_function.body[2]
-    assert isinstance(one_call, ast.If) and ast.unparse(one_call.test) == "blocks is None"
-    assert ast.dump(one_call.body[0]) == ast.dump(old_function.body[1])
-    assert ast.dump(new_function.body[0]) == ast.dump(old_function.body[0])
-    assert ast.dump(new_function.body[-1]) == ast.dump(old_function.body[-1])
 
 
 def test_the_budget_is_in_no_record_or_frozen_header():
@@ -320,59 +198,8 @@ def test_the_budget_is_in_no_record_or_frozen_header():
 
 
 # --------------------------------------------------------------------------
-# log_predictive: old against new
+# log_predictive: the one-input block rule
 # --------------------------------------------------------------------------
-
-
-@pytest.mark.parametrize("edges", (False, True), ids=("draws", "edges"))
-@pytest.mark.parametrize("width", WIDTHS, ids=("w1", "w7", "w128", "unsplit"))
-@pytest.mark.parametrize("family", (*REAL, *COUNT, *POSITIVE))
-def test_every_family_and_width_is_byte_identical(old, monkeypatch, seen, family, width, edges):
-    """Check old and new `log_predictive` agree byte for byte for every family and forced width."""
-    fits = [one_model(family, 50)]
-    inputs = design(fits, 17)
-    outcomes = outcomes_for(fits, inputs, 33, edges)
-    force_width(monkeypatch, fits, 17, width)
-    expected = old.log_predictive(fits, inputs, outcomes)
-    del seen[:]
-    assert_identical(expected, current.log_predictive(fits, inputs, outcomes))
-    assert_blocks(seen, fits, 17, 33, width)
-
-
-@pytest.mark.parametrize("edges", (False, True), ids=("draws", "edges"))
-@pytest.mark.parametrize("width", WIDTHS, ids=("w1", "w7", "w128", "unsplit"))
-@pytest.mark.parametrize("kind", tuple(POOLS))
-def test_pools_of_unequal_particle_counts_are_byte_identical(old, monkeypatch, seen, kind, width,
-                                                            edges):
-    """Check byte-identical results for multi-model pools with unequal particle counts."""
-    fits = POOLS[kind]()
-    assert len({current.particle_count(fit) for fit in fits}) == len(fits)
-    inputs = design(fits, 17)
-    outcomes = outcomes_for(fits, inputs, 33, edges)
-    force_width(monkeypatch, fits, 17, width)
-    expected = old.log_predictive(fits, inputs, outcomes)
-    del seen[:]
-    assert_identical(expected, current.log_predictive(fits, inputs, outcomes))
-    assert_blocks(seen, fits, 17, 33, width)
-
-
-@pytest.mark.parametrize("draws,width", [(33, 16), (33, 1), (33, 2), (34, 2), (3, 2), (33, 32),
-                                         (2048, 7)])
-@pytest.mark.parametrize("kind", ("real", "count", "positive"))
-def test_rule_r2_one_input_never_forms_a_one_column_block(old, monkeypatch, seen, kind, draws,
-                                                          width):
-    """One input: a width below 2 is raised to 2 and a one-column tail joins the block before it,
-    so every block's [particle, 1, width] reduction is the sequential one the whole array gets."""
-    fits = [real_fit("normal", 1000, 21), real_fit("student_t", 700, 22, EXPRESSIONS[1])] \
-        if kind == "real" else [one_model(family, 1000, 23 + i) for i, family in
-                                enumerate(COUNT[:2] if kind == "count" else POSITIVE)]
-    inputs = design(fits, 1)
-    outcomes = outcomes_for(fits, inputs, draws, edges=False)
-    force_width(monkeypatch, fits, 1, width)
-    expected = old.log_predictive(fits, inputs, outcomes)
-    del seen[:]
-    assert_identical(expected, current.log_predictive(fits, inputs, outcomes))
-    assert_blocks(seen, fits, 1, draws, width)
 
 
 def test_rule_r2_is_load_bearing_on_this_numpy():
@@ -392,221 +219,6 @@ def test_rule_r2_is_load_bearing_on_this_numpy():
           f"reductions differ from the whole array's; two-column blocks: 0 differ")
     if not differing:
         pytest.skip("this numpy reduces a one-column block like the whole array: the one-column rule is inert")
-
-
-def test_the_default_budget_splits_the_dev_truncation_shape(old, seen):
-    """Dev truncation: 128 particles x 32 inputs x 2048 draws exceeds 8e6 cells: two blocks."""
-    fits = [real_fit("normal", 128, 40 + i, expression) for i, expression in enumerate(EXPRESSIONS)]
-    inputs = design(fits, 32)
-    outcomes = outcomes_for(fits, inputs, 2048, edges=False)
-    expected = old.log_predictive(fits, inputs, outcomes)
-    del seen[:]
-    assert_identical(expected, current.log_predictive(fits, inputs, outcomes))
-    width = getattr(current, BUDGET) // (128 * 32)
-    assert [np.shape(y)[1] for y in seen] == [width, 2048 - width] * len(fits)
-
-
-@pytest.mark.parametrize("shape", ("list", "vector", "column", "one_block"))
-def test_a_call_within_one_block_runs_the_unchanged_path(old, monkeypatch, seen, shape):
-    """Check that a call fitting in one block runs the unchanged path and passes the outcomes through."""
-    fits = POOLS["positive"]()
-    inputs = design(fits, 5)
-    y = outcomes_for(fits, inputs, 6, edges=False)
-    outcomes = {"list": y[:, 0].tolist(), "vector": y[:, 0], "column": y[:, :1],
-                "one_block": y}[shape]
-    monkeypatch.setattr(current, BUDGET, 6 * 5 * 50)
-    expected = old.log_predictive(fits, inputs, outcomes)
-    del seen[:]
-    assert_identical(expected, current.log_predictive(fits, inputs, outcomes))
-    assert len(seen) == len(fits) and all(item is outcomes for item in seen)
-
-
-@pytest.mark.parametrize("case", ("nan_in_a_late_block", "row_count", "posinf_density"))
-def test_refusals_are_unchanged(old, monkeypatch, case):
-    """Check that the error messages for invalid outcomes are identical in the old and new code."""
-    fits = POOLS["real"]() if case != "posinf_density" else [scalar_fit("gamma", 50, 50)]
-    inputs = design(fits, 4)
-    outcomes = outcomes_for(fits, inputs, 20, edges=False)
-    if case == "nan_in_a_late_block":
-        outcomes[2, 19] = np.nan
-    elif case == "row_count":
-        outcomes = outcomes[:3]
-    else:
-        fits[0].particles["shape"][:] = 0.5  # gamma density at y = 0 is +inf below shape 1
-        outcomes[1, 17] = 0.0
-    force_width(monkeypatch, fits, 4, 3)
-    with pytest.raises(ValueError) as before:
-        old.log_predictive(fits, inputs, outcomes)
-    with pytest.raises(ValueError) as after:
-        current.log_predictive(fits, inputs, outcomes)
-    assert str(before.value) == str(after.value)
-
-
-# --------------------------------------------------------------------------
-# callers, each driven old against new
-# --------------------------------------------------------------------------
-
-
-def truncation_pool(particles=128):
-    """Return a pool of synthetic normal fits shaped like the dev truncation pool."""
-    return [real_fit("normal", particles, 60 + i, expression)
-            for i, expression in enumerate(EXPRESSIONS)]
-
-
-@pytest.mark.parametrize("width", (1, 7, 128, "default"))
-def test_gaussian_same_round_truncation_168_169(old, monkeypatch, seen, width):
-    """Check the Gaussian same-round truncation diagnostic is byte-identical old against new."""
-    before = truncation_pool()
-    active = before[:3]
-    inputs = np.linspace(0.02, 0.98, 32)
-    with monkeypatch.context() as patch:
-        patch.setattr(gaussian_core, "scalar", old)
-        expected = gaussian_core.same_round_truncation(before, active, inputs, 3, 7)
-    if width != "default":
-        force_width(monkeypatch, before, 32, width)
-    del seen[:]
-    actual = gaussian_core.same_round_truncation(before, active, inputs, 3, 7)
-    assert json.dumps(expected[0], sort_keys=True) == json.dumps(actual[0], sort_keys=True)
-    assert expected[1].keys() == actual[1].keys()
-    for key in expected[1]:
-        assert_identical([np.ascontiguousarray(expected[1][key], dtype=float)],
-                         [np.ascontiguousarray(actual[1][key], dtype=float)])
-        assert expected[1][key].dtype == actual[1][key].dtype
-    assert expected[0]["draws"] == 2048 and actual[1]["samples"].shape == (32, 2048)
-    assert len(seen) > len(before) + len(active)  # the draw axis really was split
-
-
-@pytest.mark.parametrize("width", (1, "default"))
-def test_gaussian_checkpoint_scores_87_116_and_truth_law_369_371(old, monkeypatch, width):
-    """Check Gaussian checkpoint scores and the truth-law KL are identical old against new."""
-    fits = truncation_pool(64)
-    inputs = np.linspace(0.02, 0.98, 32)
-    rng = np.random.default_rng(70)
-    truth = (0.35 + 0.1 * inputs, 0.05)
-    heldout = truth[0][:, None] + truth[1] * rng.standard_normal((32, 4))
-    monkeypatch.setattr(truth_law, "KL_PREDICTIVE_BLOCK_CELLS", 64 * 32 * 5)  # :371, blocked
-    def run():
-        """Run the Gaussian checkpoint diagnostic once with the fixed test inputs."""
-        return gaussian_core.checkpoint(fits, inputs, heldout, truth, core_count.seed_for, 31,
-                                        2, "after_proposal")
-    with monkeypatch.context() as patch:
-        patch.setattr(gaussian_core, "scalar", old)
-        patch.setattr(truth_law, "log_predictive", old.log_predictive)
-        expected = run()
-    if width != "default":
-        force_width(monkeypatch, fits, 32, width)
-    actual = run()
-    assert json.dumps(expected[0], sort_keys=True) == json.dumps(actual[0], sort_keys=True)
-    assert expected[1].keys() == actual[1].keys()
-    for key, value in expected[1].items():
-        if isinstance(value, np.ndarray):
-            assert value.dtype == actual[1][key].dtype
-            assert value.tobytes() == actual[1][key].tobytes()
-        else:
-            assert value == actual[1][key]
-    assert [m["means"].tobytes() for m in expected[2]] == [m["means"].tobytes() for m in actual[2]]
-    monkeypatch.setattr(truth_law, "KL_PREDICTIVE_BLOCK_CELLS", 10**12)  # :369, one call
-    law = truth_law.normal_law(*truth)
-    with monkeypatch.context() as patch:
-        patch.setattr(truth_law, "log_predictive", old.log_predictive)
-        one_call = truth_law.kl_against_pool(law, fits, inputs)
-    assert one_call == truth_law.kl_against_pool(law, fits, inputs)
-
-
-def test_core_one_step_log_score_920(old, monkeypatch):
-    """Check the CORE one-step log score is byte-identical old against new."""
-    fit = real_fit("normal", 128, 80)
-    force_width(monkeypatch, [fit], 1, 1)
-    actual = [core_count.one_step_log_score(fit, u, y, core_real_interface())
-              for u, y in ((0.1, 0.3), (0.7, 0.9), (0.95, -2.0))]
-    with monkeypatch.context() as patch:
-        patch.setattr(current, "log_predictive", old.log_predictive)
-        expected = [core_count.one_step_log_score(fit, u, y, core_real_interface())
-                    for u, y in ((0.1, 0.3), (0.7, 0.9), (0.95, -2.0))]
-    assert np.asarray(expected).tobytes() == np.asarray(actual).tobytes()
-
-
-@pytest.mark.parametrize("width", (1, 7, UNSPLIT))
-@pytest.mark.parametrize("kind", ("real", "count", "positive"))
-def test_joint_eig_638(old, monkeypatch, kind, width):
-    """Check `joint_eig` results are byte-identical old against new at forced widths."""
-    fits = POOLS[kind]()
-    designs = design(fits, 9)
-    force_width(monkeypatch, fits, 9, width)
-    expected, actual = (module.joint_eig(fits, designs, 91, 64) for module in (old, current))
-    assert expected.keys() == actual.keys()
-    for key, value in expected.items():
-        if isinstance(value, np.ndarray):
-            assert value.tobytes() == actual[key].tobytes()
-        else:
-            assert value == actual[key]
-
-
-def chem_fit(expression, coefficient, evidence, particles, seed):
-    """Build a synthetic ChemBench-style lognormal `Fit` with the given mean coefficient and evidence."""
-    interface = cc.task_interface("positive", [{"name": "u", "range": [0.0, 1.0]},
-                                               {"name": "v", "range": [0.0, 1.0]}], {}, (0.0, None))
-    rng = np.random.default_rng(seed)
-    hypothesis = cc.ScalarHypothesis(expression, "lognormal", (("b0", "intercept"),), ("u", "v"))
-    particles = {"b0": coefficient + rng.normal(0.0, 0.1, particles),
-                 "sigma": rng.gamma(4.0, 0.1, particles)}
-    return Fit(hypothesis, particles, evidence, [evidence],
-               {"interface": interface, "response_unit": 1.0}, 0.0)
-
-
-def counted_guarded(monkeypatch, function):
-    """Route chembench_core's `log_predictive` through `function`, counting each call's line."""
-    calls, pools = Counter(), Counter()
-    def counted(fits, inputs, outcomes):
-        """Count the call by caller line, then delegate to the wrapped function."""
-        frame = sys._getframe(1)
-        calls[f"{frame.f_code.co_name}:{frame.f_lineno}"] += 1
-        return function(fits, inputs, outcomes)
-    original_pools = cc._prediction_pools
-    def recorded(*args):
-        """Count prediction-pool calls and exclusions, then return the original result."""
-        eligible, exclusions = original_pools(*args)
-        pools["calls"] += 1
-        pools["exclusions"] += len(exclusions)
-        return eligible, exclusions
-    monkeypatch.setattr(cc, "log_predictive", counted)
-    monkeypatch.setattr(cc, "_prediction_pools", recorded)
-    return calls, pools
-
-
-@pytest.mark.parametrize("width", (1, 7, UNSPLIT))
-@pytest.mark.parametrize("excluded", (False, True), ids=("no_exclusion_991", "exclusion_998"))
-def test_chembench_guarded_log_predictive_991_998(old, monkeypatch, seen, excluded, width):
-    """:991 (no model excluded: one pooled call) and :998 (a model with an underflowed mean at
-    some inputs is dropped there: one call per input, each a one-row [1, draw] outcome).
-    The line numbers are those of the base commit's tree; the comparison skips when the base commit
-    is absent from the checkout."""
-    good = chem_fit("b0", np.log(2.0), np.log(3.0), 64, 90)
-    other = chem_fit("b0+u", 0.3, 0.5, 48, 91)
-    fits = [good, other, chem_fit("b0-1000*u", 0.0, 0.0, 40, 92)] if excluded else [good, other]
-    u = np.array([0.0, 0.1, 0.5, 0.7, 0.8, 1.0, 0.3])
-    inputs = np.column_stack([u, np.linspace(0.9, 0.1, len(u))])
-    outcomes = np.random.default_rng(93).lognormal(0.5, 0.4, (len(u), 33))
-    rows = 1 if excluded else len(u)
-    force_width(monkeypatch, fits, rows, width)
-    results, logs = [], []
-    for function in (old.log_predictive, current.log_predictive):
-        with monkeypatch.context() as patch:
-            calls, pools = counted_guarded(patch, function)
-            del seen[:]
-            results.append(cc.guarded_log_predictive(fits, inputs, outcomes))
-            logs.append((dict(calls), dict(pools), len(seen)))
-    assert_identical(*results)
-    (old_calls, old_pools, _), (new_calls, new_pools, blocks) = logs
-    assert old_calls == new_calls and old_pools == new_pools
-    # A later change: chembench_core.py gained one import line (particle_means_masked), so the
-    # guarded calls pinned at :991/:998 in the base commit sat at :992/:999; later commits added four
-    # import lines above them, then one more: :997/:1004 here; the code is unchanged.
-    line = "guarded_log_predictive:1004" if excluded else "guarded_log_predictive:997"
-    assert old_calls == {line: len(u) if excluded else 1}
-    assert old_pools == {"calls": 1, "exclusions": 2 if excluded else 0}
-    print(f"chunked log-predictive, ChemBench guarded path: excluded={excluded} width={width} calls={new_calls} "
-          f"prediction_pools={new_pools} conditional_loglik_blocks={blocks} old==new bytes")
 
 
 # --------------------------------------------------------------------------

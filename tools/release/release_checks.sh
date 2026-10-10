@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Release checks for the public tree: Korean text, internal code names, private paths and host names, lint, and a pytest
-# subset. Prints one line per check and a PASS/FAIL summary; exit status 1 when any check fails.
+# Release checks for the public tree: non-English script text, internal code names, private paths and host names, lint,
+# and a pytest subset. Prints one line per check and a PASS/FAIL summary; exit status 1 when any check fails.
 #
 #   tools/release/release_checks.sh [tree] [--python PY] [--no-pytest] [--pytest-args "..."]
 #
-# tree defaults to the repository that holds this script. The code-name patterns live in tools/release/code_names.txt
-# (grep -P syntax). Files whose bytes must stay as recorded are exempt from the text checks: list them in
-# tools/release/text_check_exempt.txt, one path per line, with the reason after a tab.
+# tree defaults to the repository that holds this script. The project-specific patterns are kept outside the tree:
+# RELEASE_CODE_NAMES names a file of internal code names (one grep -P pattern, a tab and its meaning per line) and
+# RELEASE_PRIVATE_HOSTS holds an extended regular expression of private host names; a check whose pattern is not
+# provided runs with the generic patterns only. Files whose bytes must stay as recorded are exempt from the text
+# checks: list them in tools/release/text_check_exempt.txt, one path per line, with the reason after a tab.
 set -u
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 TREE=$(cd "$HERE/../.." && pwd)
@@ -42,22 +44,28 @@ filtered() {  # the tracked files minus the exempt list, NUL separated
   fi
 }
 
-# 1. Korean text (Hangul syllables and jamo)
-n=$(filtered | xargs -0 grep -lIP '[\x{AC00}-\x{D7A3}\x{1100}-\x{11FF}\x{3130}-\x{318F}]' 2>/dev/null | wc -l)
-status "no Korean text (files with Hangul: $n)" "$n" "$(filtered | xargs -0 grep -lIP '[\x{AC00}-\x{D7A3}]' 2>/dev/null | head -n 5 | tr '\n' ' ')"
+# 1. non-English script text (CJK ideographs, kana, hangul)
+script='[\x{3040}-\x{30FF}\x{3400}-\x{4DBF}\x{4E00}-\x{9FFF}\x{AC00}-\x{D7A3}\x{1100}-\x{11FF}\x{3130}-\x{318F}]'
+n=$(filtered | xargs -0 grep -lIP "$script" 2>/dev/null | wc -l)
+status "no non-English script text (files: $n)" "$n" "$(filtered | xargs -0 grep -lIP "$script" 2>/dev/null | head -n 5 | tr '\n' ' ')"
 
-# 2. internal code names
+# 2. internal code names (RELEASE_CODE_NAMES; skipped when no list is provided)
 hits=0
+if [ -n "${RELEASE_CODE_NAMES:-}" ] && [ -f "$RELEASE_CODE_NAMES" ]; then
 while IFS=$'\t' read -r pattern meaning; do
   [ -z "$pattern" ] && continue
   case "$pattern" in \#*) continue;; esac
   c=$(filtered | xargs -0 grep -cIP -- "$pattern" 2>/dev/null | awk -F: '{s+=$NF} END {print s+0}')
   if [ "$c" -gt 0 ]; then echo "      code name $pattern ($meaning): $c lines"; hits=$((hits + c)); fi
-done < tools/release/code_names.txt
+done < "$RELEASE_CODE_NAMES"
 status "no internal code names (lines: $hits)" "$hits" "see the lines above"
+else
+  echo "SKIP  internal code names (RELEASE_CODE_NAMES not set)"
+fi
 
-# 3. private paths, host names, personal mail hosts
-pat='/home/[a-z]+/|/Users/[a-z]+/|/tmp/claude|bai-ada|bai-a6000|elice[1-5]\b|@gmail\.com'
+# 3. private paths, personal mail hosts, and the host names in RELEASE_PRIVATE_HOSTS
+pat='/home/[a-z]+/|/Users/[a-z]+/|/tmp/claude|@gmail\.com'
+[ -n "${RELEASE_PRIVATE_HOSTS:-}" ] && pat="$pat|$RELEASE_PRIVATE_HOSTS"
 n=$(filtered | xargs -0 grep -lIE -- "$pat" 2>/dev/null | wc -l)
 status "no private paths or host names (files: $n)" "$n" "$(filtered | xargs -0 grep -lE -- "$pat" 2>/dev/null | head -n 5 | tr '\n' ' ')"
 

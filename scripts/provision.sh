@@ -35,8 +35,10 @@ while [ $# -gt 0 ]; do
 done
 
 # Pinned external sources. Change them only together with conftest.py (the tests check these commits).
-BOXINGGYM_REPO=https://github.com/JooKyung-Yuh/BoxingGym.git
-BOXINGGYM_TIP=06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba
+# BoxingGym: the public upstream by default; BMD_BOXINGGYM_REPO / BMD_BOXINGGYM_COMMIT override it (for example a
+# mirror). The tests accept only the commit pinned in conftest.py.
+BOXINGGYM_REPO=${BMD_BOXINGGYM_REPO:-https://github.com/kanishkg/boxing-gym.git}
+BOXINGGYM_TIP=${BMD_BOXINGGYM_COMMIT:-b43e38cb03d09c13efa9cf4d9bae740d51157bfd}
 NEURONBENCH_REPO=https://github.com/murphyk/neuronbench
 NEURONBENCH_TIP=c354622458c460b419cab821d482c879f0578377
 DISCOVERPHYSICS_REPO=https://github.com/SampsonML/DiscoverPhysics.git

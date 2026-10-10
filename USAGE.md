@@ -45,8 +45,8 @@ ForceBench needs `FB_DP` and the separate environment of
 [`REQUIREMENTS.md`](REQUIREMENTS.md#two-python-environments) (`FB_PY`).
 
 ```bash
-git clone https://github.com/JooKyung-Yuh/BoxingGym external/boxing-gym
-git -C external/boxing-gym checkout 06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba
+git clone https://github.com/kanishkg/boxing-gym external/boxing-gym
+git -C external/boxing-gym checkout b43e38cb03d09c13efa9cf4d9bae740d51157bfd
 export BMD_BOXINGGYM_SRC="$PWD/external/boxing-gym/src"
 ```
 
