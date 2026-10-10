@@ -1150,6 +1150,10 @@ def test_n1_native_run_keeps_its_records_and_only_gains_the_environment_keys(bac
 
 def test_n1_the_two_backends_score_and_observe_the_same_rows(backend_run_pair):
     """Check that n1 the two backends score and observe the same rows."""
+    if not nc.power_matches_scalar():
+        pytest.skip("the batch backend reproduces the native one bit for bit only with numpy's SIMD power dispatch "
+                    "disabled, the precondition the runner itself checks: set NPY_DISABLE_CPU_FEATURES=\"AVX512F AVX512CD "
+                    "AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL\" to run this test")
     runs, _ = backend_run_pair
 
     def lines(name):

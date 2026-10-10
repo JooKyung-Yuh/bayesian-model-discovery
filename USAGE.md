@@ -154,6 +154,11 @@ PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
 - Tests that need an external checkout skip, naming the variable, unless `BMD_BOXINGGYM_SRC` or
   `NEURONBENCH_SRC` names the pinned checkout and that checkout is on `PYTHONPATH`; they fail if
   the checkout is at another commit or not clean. `-rs` prints the reason for every skip.
+- On a host whose CPU has AVX-512, the NeuronBench test that checks the two forward backends bit for bit
+  (`test_n1_the_two_backends_score_and_observe_the_same_rows`) skips unless numpy's SIMD power dispatch is off, as
+  the runner requires for `--forward-backend batch`: set
+  `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"`
+  before running it.
 - The ForceBench tests are `tools/fb1_snapshot/test_*.py` and need the ForceBench environment.
   Run them from that folder with `JAX_PLATFORMS=cpu`, `FB1_PYTHON=$FB_PY`,
   `DP_SCIENCEAGENT_DIR=$FB_DP/ScienceAgent` and `FB1_OUT_DIR=<scratch folder>` set explicitly:

@@ -4,7 +4,7 @@ Every other difference between the trees is in comments, docstrings or formattin
 
 Abbreviations in the quoted literals: EIG = expected information gain, EPIG = expected predictive information gain, BMA = Bayesian model averaging, SMC = sequential Monte Carlo, KL = Kullback-Leibler divergence, nMSE = normalized mean squared error, D0 = the initial design set.
 
-## Changed string literals (125)
+## Changed string literals (126)
 
 | file | line | the literal now reads |
 | --- | ---: | --- |
@@ -75,6 +75,7 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | 731 | need a structure-expansion cell |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | 733 | require_autoscilab_source |
 | `src/bayes_model_discovery/experimental/test_wave_accounting.py` | 317 | parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed |
+| `src/bayes_model_discovery/experimental/test_neuron_core_cli.py` | 1154 | the batch backend reproduces the native one bit for bit only with numpy's SIMD power dispatch disabled, the precondition the runner itself checks: set NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512 |
 | `tools/fb1_snapshot/fb1_grammar.py` | 50 | bayesian-model-discovery canonical engine chain v2.9 (the version this kit vendored) |
 | `tools/fb1_snapshot/fb1_grammar.py` | 51 | count_models.py of the canonical engine chain v2.9, taken from the private development tree; the vendored copy is identified by VENDOR_SHA256 |
 | `tools/fb1_snapshot/fb1_grammar.py` | 226 | cos/sin are not in the vendored CALL_ARITY (exp·log·sqrt·tanh·square·power) |
@@ -134,7 +135,7 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `tools/fb1_snapshot/test_fb1_reasoning_and_paid_call_guard.py` | 372 | 7025bb0ac102f9c56c5ec4db99dcf32ec722595c072e89842eb780ed2647ef4c |
 | `tools/fb1_snapshot/world_constants.py` | 133 | r >= 1 (the grid-near-particle points at 0.5/0.75 are dropped; differs from the yukawa grid of FB1_FORCE_CURVE_WORLD_RULING.json); single-parameter fit of the amplitude A, no linear background term (B |
 
-## Files with a structural difference (15)
+## Files with a structural difference (16)
 
 | file | first differing statement (base line) | statements base → public | top-level definitions removed | added |
 | --- | --- | --- | --- | --- |
@@ -151,5 +152,6 @@ Abbreviations in the quoted literals: EIG = expected information gain, EPIG = ex
 | `src/bayes_model_discovery/experimental/test_paid_call_guard.py` | Import  at line 11 | 46 → 41 | `#7`, `#8`, `BASE_COMMIT`, `base_transport`, `test_the_omitted_option_writes_the_base_commits_transport_bytes` | - |
 | `src/bayes_model_discovery/experimental/test_truncation_log_predictive_chunked.py` | Import  at line 18 | 94 → 65 | `#10`, `#11`, `#9`, `#10`, `BASE_COMMIT`, `old_source`, `old`, `one_model`, `force_width`, `seen`, `assert_identical`, `expected_widths`, `assert_blocks`, `_top_level`, `test_only_log_predictive_changed_and_its_one_call_branch_is_the_old_body`, `test_every_family_and_width_is_byte_identical`, `test_pools_of_unequal_particle_counts_are_byte_identical`, `test_rule_r2_one_input_never_forms_a_one_column_block`, `test_the_default_budget_splits_the_dev_truncation_shape`, `test_a_call_within_one_block_runs_the_unchanged_path`, `test_refusals_are_unchanged`, `truncation_pool`, `test_gaussian_same_round_truncation_168_169`, `test_gaussian_checkpoint_scores_87_116_and_truth_law_369_371`, `test_core_one_step_log_score_920`, `test_joint_eig_638`, `chem_fit`, `counted_guarded`, `test_chembench_guarded_log_predictive_991_998` | - |
 | `src/bayes_model_discovery/experimental/test_uni_chembench_protocol_u.py` | FunctionDef test_an_eig_part_needs_an_acquisition_bit_and_the_ascent at line 440 | 88 → 88 | - | - |
+| `src/bayes_model_discovery/experimental/test_neuron_core_cli.py` | FunctionDef test_n1_the_two_backends_score_and_observe_the_same_rows at line 1095 | 108 → 108 | - | - |
 | `tools/fb1_snapshot/test_fb1_label_rule.py` | Import  at line 3 | 36 → 29 | `#10`, `#2`, `test_packager_keeps_production_only_from_bound_receipt`, `test_packager_rejects_unbound_or_changed_receipts_before_output`, `test_historical_unbound_production_string_stays_development`, `test_explicit_development_mock_receipt_reaches_packaged_provenance`, `test_packager_reopens_manifest_before_returning_success` | - |
 | `tools/fb1_snapshot/test_fb1_proposer.py` | FunctionDef test_21g2_real_sdk_mocktransport_debug_logs_and_traceback_are_masked at line 1097 | 133 → 131 | `_minimal_run_json_29fb`, `test_29fb_5_emitter_points_csv_kl_column_gets_a_value_other_columns_unchanged` | - |
