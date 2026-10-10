@@ -100,8 +100,7 @@ runs need none. A paid run takes the path of a dotenv file that holds the key; s
 | heavy (re-runs sequential Monte Carlo (SMC) fits against frozen runs) | the full pinned stack of `requirements.lock`; the comparisons depend on the BLAS the wheels use |
 | ForceBench tests (`tools/fb1_snapshot/test_*.py`) | the ForceBench environment and DiscoverPhysics (`FB1_PYTHON`, `DP_SCIENCEAGENT_DIR`) |
 
-Tests that compare against an older commit skip unless `BMD_BASELINE_COMPARE=1` and the baseline
-folder they name are set.
+Every variable a test reads is listed in [`USAGE.md`](USAGE.md#tests); every skip names the input it needs.
 
 ## Disk and time
 

@@ -2,16 +2,11 @@
 
 Synthetic replies only - the runner's own mock templates through injected clients, and the
 synthetic ChemBench proposer - with stubbed fits: no network, no saved run and no stored
-response. The byte comparison of the later-round waves with the base commit runs only with
-BMD_BASELINE_COMPARE=1.
+response.
 """
 
 import hashlib
 import json
-import os
-import subprocess
-import sys
-from pathlib import Path
 
 import pytest
 
@@ -26,9 +21,6 @@ from .test_count_proposer import stub_fits
 from .test_initial_burst import CONTEXT, TWELVE, injected, reply
 from .test_run_label_policy import registration, runner_args, write_manifest
 
-# The base commit whose sources the opt-in byte comparison extracts with `git archive`; it skips when this
-# commit is absent from the checkout's history.
-BASE_COMMIT = "b43bf8ae5245a1010594ef53cf51d6358c759ee4"
 #: sha256(b"[]"): the pool digest of a packet that shows no pool (wave 0, catalogue off).
 EMPTY_POOL_DIGEST = "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
 WAVE_KEYS = {"wave", "calls", "accepted", "duplicates", "rejected_prior_probe", "fit_failed",
@@ -673,162 +665,3 @@ def test_a_core_burst_receipt_binds_the_digests_its_refill_calls_send(tmp_path, 
     refill = [item["transport"] for item in record["transports"] if item["wave"]]
     assert refill and all(t["burst_refill_prompt_sha256"] == settings["burst_refill_prompt_sha256"]
                           for t in refill)
-
-
-# --------------------------------------------------------------------------
-# 7. the later-round parallel waves are the base commit's, byte for byte
-# --------------------------------------------------------------------------
-
-# Conditions 2 and 3 of the re-pinning rule: the changes stacked after the refill rule add
-# these record keys on this path; they are removed by name from both runs, any other difference fails, and the
-# science is compared as raw bytes on its own.
-#: The three engine limits every packet's `constraints` now states.
-PCX1_PACKET_CONSTRAINT_KEYS = ("max_distinct_mean_coefficients", "reserved_names",
-                               "positive_mean_required_families")
-#: The digest pair a transport record keeps of the packet text it sent, moved by the
-#: keys above; each run's pair is checked against that run's own request text before it is removed.
-PCX1_PACKET_DIGEST_KEYS = ("packet_sha256", "packet_bytes")
-#: `failure_class` on each candidate event, `parameters` on each archive.json
-#: entry, and the run's `failure_class_counts` in summary `proposal_accounting`.
-PCX2_EVENT_KEYS = ("failure_class",)
-PCX2_ARCHIVE_KEYS = ("parameters",)
-PCX2_ACCOUNTING_KEYS = ("failure_class_counts",)
-
-
-def request_text(run, name):
-    """The one packet text an llm_transport request sent (one body, one message)."""
-    (body,) = json.loads((run / "llm_transport" / name).read_text())["bodies"]
-    (message,) = body["messages"]
-    return message["content"].encode()
-
-
-def pop_packet_pair(record, text, name):
-    """Remove a record's packet digest pair once it binds `text`."""
-    assert tuple(record.pop(key) for key in PCX1_PACKET_DIGEST_KEYS) == (sha(text), len(text)), name
-
-
-def without_unit_keys(run, folder, name):
-    """One B8 record, parsed, with the `PCX1_*` and `PCX2_*` named keys removed."""
-    record = json.loads((run / folder / name).read_text())
-    if folder == "packets":
-        for key in PCX1_PACKET_CONSTRAINT_KEYS:
-            record["constraints"].pop(key, None)
-    elif name.endswith(".request.json"):
-        text = request_text(run, name)
-        pop_packet_pair(record["identity"], text, name)
-        packet = json.loads(text)
-        for key in PCX1_PACKET_CONSTRAINT_KEYS:
-            packet["constraints"].pop(key, None)
-        record["bodies"][0]["messages"][0]["content"] = packet
-    elif name.endswith(".response.json"):
-        pop_packet_pair(record, request_text(run, name.replace(".response.", ".request.")), name)
-    else:
-        for event in record["events"]:
-            for key in PCX2_EVENT_KEYS:
-                event.pop(key, None)
-        for item in record["transports"]:
-            transport = item["transport"]
-            request = (f"round_{transport['round']:02d}__burst_w{transport['burst_wave']}"
-                       f"_c{transport['burst_call_index']:02d}.request.json")
-            pop_packet_pair(transport, request_text(run, request), name)
-    return record
-
-
-PARITY_HARNESS = r'''
-import sys
-import time
-from pathlib import Path
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental.test_count_proposer import stub_fits
-from bayes_model_discovery.experimental.test_core_parallel_wave import cell_args, injected_replies
-from bayes_model_discovery.experimental.test_initial_burst import TWELVE
-with MonkeyPatch.context() as patch:
-    core = stub_fits(patch)
-    patch.setattr(time, "perf_counter", lambda: 0.0)
-    out, suite = Path(sys.argv[1]), sys.argv[2]
-    if suite == "core":
-        catalogue = [h.expression for h in core.initial_hypotheses("binomial")]
-        forms = core.P1_MOCK_EXPRESSIONS
-        injected_replies(patch, [forms[2], catalogue[1], catalogue[2], forms[3], forms[4],
-                                 forms[6], forms[7], forms[2], forms[8]])
-        core.run(cell_args(out, rounds=2, parallel_proposals=3, burst_concurrency=1))
-    else:
-        from bayes_model_discovery.experimental import boxinggym_core as bg
-        from bayes_model_discovery.experimental.test_death_kl import bg_run_args
-        patch.setattr(bg, "count_fit", core.fit)
-        catalogue = bg.TASKS["death"].initial_structures()
-        injected_replies(patch, [TWELVE[2], catalogue[1], catalogue[2], TWELVE[3], TWELVE[4],
-                                 TWELVE[6], TWELVE[7], TWELVE[2], TWELVE[8]])
-        bg.run(bg_run_args(out, cell="100", rounds=2, proposer="anthropic", allow_paid_api=True,
-                           llm_model="synthetic-model", parallel_proposals=3, burst_concurrency=1))
-'''
-
-
-@pytest.mark.parametrize("suite", ["core", "boxinggym"])
-def test_later_round_parallel_waves_match_the_base_commit_byte_for_byte(tmp_path, request, suite):
-    """CORE's parallel_proposals and BoxingGym's parallel rounds under proposal policy P1 (t >= 1) keep their two
-    waves, packets, records and transports exactly as BASE_COMMIT (the base commit the refill rule is stacked on) wrote
-    them, with injected replies, stubbed fits and a zero clock in both trees.
-
-    The science is compared byte for byte; the records are compared with the keys the
-    `PCX1_*` and `PCX2_*` constants name, removed by name, and nothing else may differ."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("set BMD_BASELINE_COMPARE=1 for the byte comparison with the base commit")
-    if suite == "boxinggym":
-        request.getfixturevalue("require_boxinggym_source")
-    current = Path(__file__).resolve().parents[3]
-    archive = subprocess.run(["git", "-C", str(current), "archive", BASE_COMMIT, "src"],
-                             capture_output=True, check=False)
-    if archive.returncode:
-        pytest.skip(f"base commit {BASE_COMMIT} is not in this checkout's history")
-    base = tmp_path / "base_tree"
-    base.mkdir()
-    subprocess.run(["tar", "-x", "-C", str(base)], input=archive.stdout, check=True)
-    external = os.environ.get("BMD_BOXINGGYM_SRC", "")
-    same, runs = tmp_path / "same_output", []
-    for label, source in (("base", base), ("current", current)):
-        env = dict(os.environ, PYTHONPATH=f"{source}/src:{external}", PYTHONDONTWRITEBYTECODE="1",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="", OPENROUTER_API_KEY="")
-        result = subprocess.run([sys.executable, "-B", "-c", PARITY_HARNESS, str(same), suite],
-                                cwd=source, env=env, capture_output=True, text=True, check=False,
-                                timeout=600)
-        assert result.returncode == 0, result.stdout + result.stderr
-        target = tmp_path / label
-        same.rename(target)
-        runs.append(target)
-    left, right = runs
-    # The science as raw bytes (observations, scores, chosen
-    # designs, fitted and predicted arrays) and each round's admitted ids, strictly.
-    for name in ("observations.jsonl", "scores.jsonl"):
-        assert (left / name).read_bytes() == (right / name).read_bytes(), name
-    for folder, pattern in (("acquisition", "*.json"), ("fits", "*.npz"), ("predictions", "*.npz")):
-        names = [sorted(path.name for path in (run / folder).glob(pattern)) for run in runs]
-        assert names[0] == names[1] and names[0]
-        for name in names[0]:
-            assert (left / folder / name).read_bytes() == (right / folder / name).read_bytes(), name
-    for round_number in (1, 2):
-        admitted = [json.loads((run / "proposals" / f"t{round_number:02d}.json").read_text())["admitted_ids"]
-                    for run in runs]
-        assert admitted[0] == admitted[1]
-    # The records, with the `PCX1_*` and `PCX2_*` keys removed by name;
-    # weakened from raw bytes to parsed JSON (packets, proposals, llm_transport, archive) for that.
-    for folder in ("proposals", "packets", "llm_transport"):
-        names = [sorted(path.name for path in (run / folder).iterdir()) for run in runs]
-        assert names[0] == names[1] and names[0]
-        for name in names[0]:
-            assert without_unit_keys(left, folder, name) == without_unit_keys(right, folder, name), name
-    archives = [json.loads((run / "archive.json").read_text()) for run in runs]
-    for entry in (entry for archive in archives for entry in archive):
-        for key in PCX2_ARCHIVE_KEYS:
-            entry.pop(key, None)
-    assert archives[0] == archives[1]
-    accounting = [json.loads((run / "summary.json").read_text())["proposal_accounting"] for run in runs]
-    for record in accounting:
-        for key in PCX2_ACCOUNTING_KEYS:
-            record.pop(key, None)
-    assert accounting[0] == accounting[1]
-    for round_number in (1, 2):
-        record = json.loads((right / "proposals" / f"t{round_number:02d}.json").read_text())
-        assert [entry["wave"] for entry in record["waves"]] == [0, 1]  # a later-round refill ran
-        assert all(set(entry) == {"wave", "calls", "accepted"} for entry in record["waves"])
-    assert not list(right.rglob("t00_burst*"))

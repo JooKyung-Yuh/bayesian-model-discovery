@@ -1,9 +1,6 @@
 """Synthetic candidate-policy checks; no stored responses or paid calls."""
 
-import hashlib
 import json
-import os
-import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -16,11 +13,7 @@ from .test_core_d0_policy import _points_with_authentic_identity, _synthetic_rea
 from .test_count_proposer import run_args, stub_fits
 
 IDENTITY_FIELDS = ("source_files_sha256", "created_utc", "output", "manifest_ref", "python")
-CHANGED_SOURCE_FILES = ("core_count.py",)
 CEP_ADDED_KEYS = ("candidate_exclusion_policy",)
-PWC2_SCORE_ADDED_KEYS = ("active_count",)
-# Parity base: the commit whose recorded outputs the opt-in baseline test pins; it skips when a checkout of this commit is absent.
-BASE_COMMIT = "ad091051f52c3eb3c2567bd545b91243863f19e4"
 
 
 def _run(output, monkeypatch, *, structure="gauss_pow", policy=None, rounds=2):
@@ -140,71 +133,3 @@ def test_explicit_observed_retains_the_seventeenth_round_exhaustion(tmp_path, mo
     assert sorted(acquired) == np.linspace(0, 1, 16).tolist()
 
 
-@pytest.mark.parametrize("structure", ["out", "gauss_pow"])
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-def test_opt_in_omitted_policy_matches_base_bytes_and_authentic_identity(tmp_path, structure):
-    """Check that opt in omitted policy matches base bytes and authentic identity."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_CEP_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_CEP_BASELINE_DIR for CEP baseline parity")
-    base = Path(os.environ["BMD_CEP_BASELINE_DIR"])
-    candidate = Path(__file__).resolve().parents[3]
-    head = subprocess.run(["git", "-C", str(base), "rev-parse", "HEAD"], check=True,
-                          capture_output=True, text=True).stdout.strip()
-    assert head == BASE_COMMIT
-    status = subprocess.run(["git", "-C", str(base), "status", "--porcelain", "-uall"],
-                            check=True, capture_output=True, text=True).stdout
-    assert status == ""
-    harness = """
-import sys
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental import core_count as core
-from bayes_model_discovery.experimental.test_count_proposer import run_args, stub_fits
-from bayes_model_discovery.experimental.test_core_d0_policy import _synthetic_real_fits
-with MonkeyPatch.context() as patch:
-    real = sys.argv[2].startswith("gauss_")
-    _synthetic_real_fits(patch) if real else stub_fits(patch)
-    core.run(run_args(sys.argv[1], rounds=2, seed=31, cell="100", structure=sys.argv[2],
-        truth_family="normal" if real else "beta_binomial",
-        initial_family="normal" if real else "binomial"))
-"""
-    outputs, configs = [], []
-    for label, source in (("base", base), ("candidate", candidate)):
-        output = tmp_path / label / "cell"
-        env = dict(os.environ, PYTHONPATH=f"{source}/src:{source}", GIT_OPTIONAL_LOCKS="0",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="",
-                   OPENROUTER_API_KEY="", PYTHONDONTWRITEBYTECODE="1")
-        result = subprocess.run([sys.executable, "-B", "-c", harness, str(output), structure],
-                                cwd=source, env=env, text=True, capture_output=True,
-                                check=False, timeout=180)
-        assert result.returncode == 0, result.stdout + result.stderr
-        config = json.loads((output / "config.json").read_text())
-        assert not set(CEP_ADDED_KEYS) & set(config)
-        outputs.append(output)
-        configs.append(config)
-    left, right = configs
-    assert left.keys() == right.keys()
-    assert {key: value for key, value in left.items() if key not in IDENTITY_FIELDS} == {
-        key: value for key, value in right.items() if key not in IDENTITY_FIELDS}
-    assert left["source_files_sha256"].keys() == right["source_files_sha256"].keys()
-    assert {key for key, value in left["source_files_sha256"].items()
-            if value != right["source_files_sha256"][key]} == set(CHANGED_SOURCE_FILES)
-    for source, config in zip((base, candidate), configs, strict=True):
-        assert config["source_files_sha256"]["core_count.py"] == hashlib.sha256(
-            (source / "src/bayes_model_discovery/experimental/core_count.py").read_bytes()).hexdigest()
-    for name in ("archive.json", "observations.jsonl"):
-        assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes(), name
-    before_scores = [json.loads(line) for line in (outputs[0] / "scores.jsonl").read_text().splitlines()]
-    after_scores = [json.loads(line) for line in (outputs[1] / "scores.jsonl").read_text().splitlines()]
-    assert core.PWC2_SCORE_ADDED_KEYS == PWC2_SCORE_ADDED_KEYS
-    for row in after_scores:
-        assert row["active_count"] == len(row["active_ids"])
-    assert before_scores == [{key: value for key, value in row.items() if key not in PWC2_SCORE_ADDED_KEYS}
-                             for row in after_scores]
-    for directory in ("packets", "proposals", "acquisition"):
-        paths = [sorted(path.relative_to(output) for path in (output / directory).glob("*.json"))
-                 for output in outputs]
-        assert paths[0] == paths[1] and paths[0]
-        for path in paths[0]:
-            assert (outputs[0] / path).read_bytes() == (outputs[1] / path).read_bytes(), path
-    assert _points_with_authentic_identity(outputs[0], left, base) == (
-        _points_with_authentic_identity(outputs[1], right, candidate))

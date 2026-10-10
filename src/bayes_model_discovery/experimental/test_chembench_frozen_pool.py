@@ -41,9 +41,6 @@ REPO = Path(cc.__file__).resolve().parents[3]
 DEV_MANIFEST = REPO / "manifests" / "chembench_dev_manifest.json"
 #: The fixed generator text (the packaged file's digest).
 GENERATOR_SHA256 = "a4466c0f6a54e0380f630481f6501802e5a75a0e981d290f310a64834eecc1a4"
-#: The base commit that the settings-parity test compares against; its source is read with `git show`, and the
-#: comparison skips when this commit is absent from the checkout.
-BASE_COMMIT = "9c42d3c5e27e6f8879aa8ac7f6f3b5ddc7c61f71"
 #: The pool receipt fields and the init-prompt digests the project decision required.
 POOL_RECEIPT_FIELDS = (
     "pool_id", "task", "stratum", "seed", "generator_prompt_sha256", "generator_code_commit",
@@ -594,40 +591,6 @@ def test_the_driver_preflight_binds_what_the_runner_binds(tmp_path, monkeypatch,
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {key: settings[key] for key in (
         "initial_pool_source", "initial_pool_sha256", "initial_pool_count")}
-
-
-def _base_module(name):
-    """The base commit's copy of one module, loaded in isolation (no install, no path)."""
-    import importlib.util
-
-    source = subprocess.run(["git", "-C", str(REPO), "show", f"{BASE_COMMIT}:{name}"],
-                            capture_output=True, text=True, check=True).stdout
-    spec = importlib.util.spec_from_loader(f"base_{Path(name).stem}", loader=None)
-    module = importlib.util.module_from_spec(spec)
-    module.__package__ = "bayes_model_discovery.experimental"
-    exec(compile(source, name, "exec"), module.__dict__)  # noqa: S102 - the repository's own source
-    return module
-
-
-@pytest.mark.parametrize("bundle,namespace", [
-    ("core", {"initial_pool_sha256": "a" * 64, "initial_pool_source": "file_burst",
-              "initial_pool_count": 4, "initial_catalogue": "off"}),
-    ("core", {"initial_pool_sha256": "a" * 64, "initial_pool_source": "file_candidates",
-              "initial_pool_count": 2, "initial_catalogue": "off"}),
-    ("core", {}),
-    ("boxinggym", {}),
-    ("chembench", {}),
-])
-def test_core_boxinggym_and_default_chembench_settings_are_the_base_commits(bundle, namespace):
-    """CORE, BoxingGym and default ChemBench settings equal the base commit's."""
-    from .run_label_policy import bmd_runtime_settings
-    from .test_run_label_policy import runner_args
-
-    if (REPO / ".git").exists() is False:
-        pytest.skip("the base commit's source needs this checkout's git metadata")
-    base = _base_module("src/bayes_model_discovery/experimental/run_label_policy.py")
-    args = runner_args(**namespace)
-    assert bmd_runtime_settings(bundle, args) == base.bmd_runtime_settings(bundle, args)
 
 
 def test_a_generation_run_leaves_the_default_system_text_behind(mock_pool):

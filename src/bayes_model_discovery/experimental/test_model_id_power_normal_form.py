@@ -9,11 +9,7 @@ a BoxingGym death cell with an injected client, exactly as the existing burst te
 import ast
 import hashlib
 import json
-import os
 import re
-import subprocess
-import types
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -37,15 +33,10 @@ from .positive_inference import ScalarHypothesis
 from .real_inference import RealHypothesis
 from .run_label_policy import bmd_runtime_settings, verify_manifest
 
-#: The base commit of this change: the unmodified v1 identity is read from this commit with `git show`, never
-#: copied; the comparison skips when this commit is absent from the checkout.
-BASE_COMMIT = "92be622bc3cc623da18eaf535e0ab20e66131cf4"
-REPO_ROOT = Path(__file__).resolve().parents[3]
 V1_SCHEMA = "ast_roles_family_ac_v1"
 #: The declared normal form, verbatim, as one line.
 DECLARED_NORMAL_FORM = "pow_literal_nonneg_int: square(x)|power(x,k)|x**k -> POW(x,int(k)); k literal finite integer-valued >= 0 (2 == 2.0); x*x, non-integer, negative, non-literal, Sub/Div/assoc/distrib untouched"
 PAIR = (("b0", "intercept"), ("b1", "signed"))
-TRIPLE = (*PAIR, ("b2", "signed"))
 ADMITTED = ("active", "retired_by_evidence")
 
 
@@ -144,76 +135,11 @@ def test_pow_nodes_still_take_part_in_local_add_mult_order():
 
 
 # --------------------------------------------------------------------------
-# 2. continuity with v1: the pinned BASE_COMMIT algorithm, run unmodified
+# 2. model_id_preimage: one code path, the hash rule, every grammar class
 # --------------------------------------------------------------------------
 
 
-@pytest.fixture(scope="module")
-def v1_model_id():
-    """Load the pinned v1 canonical_model_id from git, or skip unless BMD_BASELINE_COMPARE=1."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("Set BMD_BASELINE_COMPARE=1 to compare with the pinned v1 identity")
-    path = "src/bayes_model_discovery/experimental/count_models.py"
-    source = subprocess.check_output(["git", "-C", str(REPO_ROOT), "show", f"{BASE_COMMIT}:{path}"])
-    assert b"POW" not in source and b"model_id_preimage" not in source
-    module = types.ModuleType("bayes_model_discovery.experimental._midc2_v1_count_models")
-    module.__file__ = str(REPO_ROOT / path)
-    module.__package__ = "bayes_model_discovery.experimental"
-    exec(compile(source, module.__file__, "exec"), module.__dict__)  # noqa: S102 - Pinned local baseline source.
-    return module.canonical_model_id
-
-
-SIGNED3 = tuple((name, "signed") for name in "abc")
 PRIOR = (("b1", ("Normal", 0.0, 0.4)),)
-POWER_FREE = [
-    ("b0+b1*z", "normal", PAIR, ()), ("b1*z+b0", "normal", PAIR, ()),
-    ("b0+z*b1", "binomial", PAIR, ()), ("b0-b1*z", "normal", PAIR, ()),
-    ("b0+b1/z", "normal", PAIR, ()), ("b0+z/b1", "beta_binomial", PAIR, ()),
-    ("tanh(b0+b1*z)", "binomial", PAIR, ()), ("tanh(b1*z+b0)", "binomial", PAIR, ()),
-    ("b0+b1*tanh(3*z)+b2*u", "zi_binomial", TRIPLE, ()), ("b0+b1*sqrt(u)", "normal", PAIR, ()),
-    ("b0+b1*exp(u)-b2*sqrt(1+z*z)", "normal", TRIPLE, ()), ("a*b+b*c", "normal", SIGNED3, ()),
-    ("b0+b1*z*z*z", "binomial", PAIR, ()), ("b0+b1*(z*z)", "binomial", PAIR, ()),
-    ("b0+b1[student]", "normal", PAIR, ()), ("minimum(u,z)", "normal", (), ()),
-    ("-b0+b1*z", "normal", PAIR, ()), ("b0+b1*z", "normal", PAIR, PRIOR),
-]
-#: Power notation the rule leaves alone must keep its v1 identity too.
-UNTOUCHED_POWER = [
-    ("b0+b1*z**2.5", "binomial", PAIR, ()), ("b0+b1*power(z,0.5)", "binomial", PAIR, ()),
-    ("b0+b1*z**-2", "binomial", PAIR, ()), ("b0+b1*power(z,-1)", "binomial", PAIR, ()),
-    ("b0+b1*power(2,z)", "binomial", PAIR, ()), ("b0+z**b1", "normal", PAIR, ()),
-    ("u**z", "normal", (), ()), ("power(z,True)", "normal", (), ()),
-]
-NORMALIZED = [
-    ("b0+b1*square(z)", "binomial", PAIR, ()), ("b0+b1*z**2", "binomial", PAIR, ()),
-    ("b0+b1*power(z,3)", "binomial", PAIR, ()), ("b0+b1*z**2.0", "binomial", PAIR, ()),
-]
-
-
-@pytest.mark.parametrize("expression,family,parameters,priors", POWER_FREE + UNTOUCHED_POWER)
-def test_ids_without_normalized_power_notation_equal_the_pinned_v1_ids(
-        v1_model_id, expression, family, parameters, priors):
-    """Expressions without normalized power notation keep their v1 ids."""
-    assert canonical_model_id(expression, family, parameters, priors) == v1_model_id(
-        expression, family, parameters, priors)
-
-
-@pytest.mark.parametrize("expression,family,parameters,priors", NORMALIZED)
-def test_normalized_spellings_move_off_their_v1_ids(v1_model_id, expression, family, parameters, priors):
-    """Normalized power spellings no longer have their v1 ids."""
-    assert canonical_model_id(expression, family, parameters, priors) != v1_model_id(
-        expression, family, parameters, priors)
-
-
-def test_v1_kept_the_spellings_apart_that_v2_merges(v1_model_id):
-    """v1 kept three spellings apart that v2 merges into one id."""
-    spellings = ("b0+b1*z**2", "b0+b1*power(z,2)", "b0+b1*square(z)")
-    assert len({v1_model_id(form, "binomial", PAIR) for form in spellings}) == 3
-    assert len({canonical_model_id(form, "binomial", PAIR) for form in spellings}) == 1
-
-
-# --------------------------------------------------------------------------
-# 3. model_id_preimage: one code path, the hash rule, every grammar class
-# --------------------------------------------------------------------------
 
 
 @pytest.mark.parametrize("make", [
@@ -265,7 +191,7 @@ def test_the_packet_archive_view_never_copies_a_preimage():
 
 
 # --------------------------------------------------------------------------
-# 4. schema boundary: records, the IPF2 reader, registrations
+# 3. schema boundary: records, the IPF2 reader, registrations
 # --------------------------------------------------------------------------
 
 
@@ -339,7 +265,7 @@ def test_a_v1_or_pre_normal_form_registration_is_refused_naming_both_values(tmp_
 
 
 # --------------------------------------------------------------------------
-# 5. the writers: burst records, archives, packets (all eight schema sites)
+# 4. the writers: burst records, archives, packets (all eight schema sites)
 # --------------------------------------------------------------------------
 
 

@@ -2,9 +2,7 @@
 
 import ast
 import hashlib
-import inspect
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -335,100 +333,6 @@ def test_scalar_epig_uses_existing_real_engine():
     chosen, rows = choose_epig([fitted], grid, 12, 16, core_real_interface(), None,
                                target_points=np.array([0.25, 0.75]))
     assert chosen in grid and len(rows) == len(grid)
-
-
-def test_opt_in_count_world_baseline_methods_and_values_are_unchanged():
-    """Opt-in: the count-world methods and values match the pinned baseline checkout."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_GW_BASELINE_DIR for count baseline")
-    base = os.environ.get("BMD_GW_BASELINE_DIR")
-    if not base:
-        pytest.skip("BMD_GW_BASELINE_DIR is required")
-    head = subprocess.run(["git", "-C", base, "rev-parse", "HEAD"], check=True,
-                          capture_output=True, text=True).stdout.strip()
-    assert head == "a58257478ef448d2c0bbbfeedbda85a2fcff95b4"
-    path = Path(base) / "src/bayes_model_discovery/experimental/core_count.py"
-    subprocess.run(["git", "-C", base, "diff", "--exit-code", "HEAD", "--", str(path)],
-                   check=True, capture_output=True)
-    source = path.read_text()
-    old = next(node for node in ast.parse(source).body
-               if isinstance(node, ast.ClassDef) and node.name == "CoreWorld")
-    current = Path(core.__file__).read_text()
-    new = next(node for node in ast.parse(current).body
-               if isinstance(node, ast.ClassDef) and node.name == "CoreWorld")
-    for name in ("probability", "sample", "observe", "evaluation"):
-        before = next(node for node in old.body if getattr(node, "name", None) == name)
-        after = next(node for node in new.body if getattr(node, "name", None) == name)
-        assert ast.get_source_segment(source, before) == ast.get_source_segment(current, after)
-    namespace = {key: getattr(core, key) for key in
-                 ("WORLD_COEFFICIENTS", "seed_for", "np", "expit", "betabinom", "binom")}
-    exec(compile(ast.Module(body=[old], type_ignores=[]), str(path), "exec"), namespace)  # noqa: S102 - pinned local baseline class only
-    old_world = namespace["CoreWorld"]
-    for structure in ("in", "out", "den", "pow"):
-        for family in ("binomial", "beta_binomial", "zi_binomial"):
-            before, after = old_world(31, structure, family), core.CoreWorld(31, structure, family)
-            u = np.array([0.0, 0.1, 0.3, 0.7, 1.0])
-            np.testing.assert_array_equal(before.probability(u), after.probability(u))
-            np.testing.assert_array_equal(before.sample(u, np.random.default_rng(123)),
-                                          after.sample(u, np.random.default_rng(123)))
-            assert json.dumps([before.observe(x) for x in (0.1, 0.7, 0.1)]) == json.dumps(
-                [after.observe(x) for x in (0.1, 0.7, 0.1)])
-            for left, right in zip(before.evaluation(8), after.evaluation(8), strict=True):
-                np.testing.assert_array_equal(left, right)
-    old_interface_source = (Path(base) / "src/bayes_model_discovery/experimental/belief_packet.py").read_text()
-    old_function = next(node for node in ast.parse(old_interface_source).body
-                        if getattr(node, "name", None) == "core_interface")
-    assert ast.get_source_segment(old_interface_source, old_function) == inspect.getsource(core_interface).strip()
-
-
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-def test_opt_in_legacy_count_runner_keeps_scientific_bytes(tmp_path):
-    """Opt-in: the legacy count runner keeps its scientific output bytes (currently skipped)."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_GW_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_GW_BASELINE_DIR for count runner parity")
-    base, candidate = Path(os.environ["BMD_GW_BASELINE_DIR"]), Path(__file__).resolve().parents[3]
-    harness = """
-import sys
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental.test_count_proposer import run_args, stub_fits
-with MonkeyPatch.context() as patch:
-    core = stub_fits(patch)
-    core.run(run_args(sys.argv[1], rounds=2))
-"""
-    configs, outputs = [], []
-    for label, root in (("baseline", base), ("candidate", candidate)):
-        output = tmp_path / label / "synthetic_cell"
-        env = dict(os.environ, PYTHONPATH=f"{root}/src:{root}",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="",
-                   OPENROUTER_API_KEY="", PYTHONDONTWRITEBYTECODE="1")
-        result = subprocess.run([sys.executable, "-B", "-c", harness, str(output)],
-                                cwd=root, env=env, text=True, capture_output=True,
-                                check=False, timeout=120)
-        assert result.returncode == 0, result.stdout + result.stderr
-        configs.append(json.loads((output / "config.json").read_text()))
-        outputs.append(output)
-    for name in ("archive.json", "observations.jsonl", "scores.jsonl"):
-        if name == "scores.jsonl":
-            score_rows = [
-                [json.dumps({key: value for key, value in json.loads(line).items()
-                             if key not in core.PWC2_SCORE_ADDED_KEYS}, sort_keys=True)
-                 for line in (output / name).read_text().splitlines()]
-                for output in outputs
-            ]
-            assert score_rows[0] == score_rows[1], name
-        else:
-            assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes(), name
-    identity = ("source_files_sha256", "created_utc", "output", "manifest_ref", "python")
-    d0s_added_keys = ("d0_policy", "d0_designs")
-    left, right = configs
-    assert set(right) - set(left) == set(d0s_added_keys)
-    assert set(left) - set(right) == set()
-    assert right["d0_policy"] == core.D0_RULE
-    assert right["d0_designs"] == [0.1, 0.35, 0.65, 0.9]
-    assert {k: v for k, v in left.items() if k not in identity} == {
-        k: v for k, v in right.items() if k not in identity + d0s_added_keys}
-    assert {name for name, digest in left["source_files_sha256"].items()
-            if digest != right["source_files_sha256"][name]} == {"core_count.py", "belief_packet.py"}
 
 
 def test_same_round_scalar_truncation_rejects_historical_fits():

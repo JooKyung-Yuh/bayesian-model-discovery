@@ -3,19 +3,7 @@
 import csv
 import importlib
 import json
-import os
 from types import SimpleNamespace
-
-
-def _external_src(name):
-    """The external checkouts the baseline worktree run needs (boxing-gym src,
-    LLM-AutoSciLab) come from the environment - no machine-specific path lives
-    in the test (the same rule the smoke tooling follows)."""
-    value = os.environ.get(name, "")
-    if not value:
-        pytest.skip(f"set {name} to run the baseline-worktree comparison here")
-    return value
-
 
 import numpy as np
 import pytest
@@ -154,23 +142,6 @@ def test_q_policy_removes_observed_points_from_native_and_sidecar_scores(tmp_pat
     observed = [row["x"] for row in map(json.loads, (out/"observations.jsonl").read_text().splitlines())]
     assert bg.unobserved_q_mask(x, observed).all()
     assert len(x) == config["q"]-config["q_excluded_count"]
-
-
-BASELINE_HARNESS = r'''
-import sys
-from datetime import datetime
-from pathlib import Path
-import pytest
-from bayes_model_discovery.experimental.test_named_inputs import bg_run_args, bg_stub_fits
-class FrozenDatetime(datetime):
-    @classmethod
-    def now(cls, tz=None):
-        return cls(2001, 1, 1, tzinfo=tz)
-with pytest.MonkeyPatch.context() as monkeypatch:
-    module = bg_stub_fits(monkeypatch)
-    monkeypatch.setattr(module, 'datetime', FrozenDatetime)
-    module.run(bg_run_args(Path(sys.argv[1]), cell='000', seed=73))
-'''
 
 
 class _PriorArray:

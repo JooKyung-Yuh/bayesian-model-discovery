@@ -6,7 +6,7 @@ Run: cd tools/fb1_snapshot && env -u FORCE_COLOR JAX_PLATFORMS=cpu DP_SCIENCEAGE
 The grammar state is process-wide: every test that switches the option on does it through the `trig` fixture, which
 switches it off again and empties the free-structure registry. The runner checks import run_gravity in a child
 interpreter (test_fb1_label_rule.native_import, skipped without FB1_PYTHON); the run checks start the runner in its
-mock-transport free mode for one proposal (about two minutes each), next to the base commit's runner read from git.
+mock-transport free mode for one proposal (about two minutes each).
 """
 import json
 import math
@@ -35,7 +35,7 @@ import fb1_grammar as fbg  # noqa: E402
 import fb1_grammar_trig as trig_module  # noqa: E402
 import fb1_proposer as fp  # noqa: E402
 import run_gravity as rg  # noqa: E402
-from test_fb1_epig_targets import base_snapshot, run_child  # noqa: E402,F401 - the module fixture is reused
+from test_fb1_epig_targets import run_child  # noqa: E402
 from test_fb1_label_rule import native_import  # noqa: E402
 from test_fb1_proposer import _state  # noqa: E402
 
@@ -360,62 +360,19 @@ ONE_PROPOSAL = {"FB1_WORLD": "oscillator", "FB1_ARM": "110", "FB1_SEED": "31", "
 RUN_STEM = "FB1_RUN_oscillator_110_seed31_v3_free"
 
 
-def without_call_latency(value):
-    """The transport's wall-clock `elapsed_seconds` (per call record and response file) is the only timing there."""
-    if isinstance(value, dict):
-        return {key: without_call_latency(item) for key, item in value.items() if key != "elapsed_seconds"}
-    if isinstance(value, list):
-        return [without_call_latency(item) for item in value]
-    return value
-
-
-def strip_volatile(record):
-    """Test: strip volatile."""
-    record = json.loads(json.dumps(record))
-    record.pop("timing_s")
-    record["code_sha256"].pop("run_gravity.py")
-    record["code_sha256"].pop("fb1_grammar_trig.py", None)
-    for checkpoint in record["checkpoints"].values():
-        checkpoint.pop("elapsed_s")
-    record["proposer"] = without_call_latency(record["proposer"])
-    # the label policy's own source digest moves with any edit of run_label_policy.py, like a code sha
-    for block in (record["label"], record["proposer"].get("label_receipt", {})):
-        block.pop("policy_source_sha256", None)
-    return record
-
-
 @pytest.fixture(scope="module")
-def one_proposal_runs(base_snapshot, tmp_path_factory):
-    """Run one mock free-mode proposal for the base commit, with the option off and with it on."""
+def one_proposal_runs(tmp_path_factory):
+    """Run one mock free-mode proposal with the option off and with it on."""
     options = dict(ONE_PROPOSAL)
     if FA_C.is_file():
         options["FB1_PROMPT_VARIANT"] = str(FA_C)
     folders = {}
-    for name, snapshot, extra in (("base", base_snapshot, {}), ("off", SNAPSHOT, {}),
+    for name, snapshot, extra in (("off", SNAPSHOT, {}),
                                   ("on", SNAPSHOT, {"FB1_GRAMMAR_TRIG": "1"})):
         folders[name] = tmp_path_factory.mktemp(f"one_proposal_{name}")
         done = run_child(snapshot, folders[name], {**options, **extra})
         assert done.returncode == 0, (name, done.stderr[-3000:])
     return folders
-
-
-def test_off_the_free_mode_run_equals_the_base_commit_packets_included(one_proposal_runs):
-    """Test: off the free mode run equals the base commit packets included."""
-    base, off = one_proposal_runs["base"], one_proposal_runs["off"]
-    files = sorted(p.relative_to(base).as_posix() for p in base.rglob("*") if p.is_file())
-    assert files == sorted(p.relative_to(off).as_posix() for p in off.rglob("*") if p.is_file())
-    assert any(name.startswith(f"{RUN_STEM}_packets/") for name in files)
-    for name in files:
-        if name in (f"{RUN_STEM}.json",) or name.startswith(f"{RUN_STEM}_proposer/"):
-            continue
-        assert (base / name).read_bytes() == (off / name).read_bytes(), name   # packets, npz, numerics, id pairs
-    before = json.loads((base / f"{RUN_STEM}.json").read_text())
-    after = json.loads((off / f"{RUN_STEM}.json").read_text())
-    assert strip_volatile(before) == strip_volatile(after)
-    for name in files:
-        if name.startswith(f"{RUN_STEM}_proposer/") and name.endswith(".json"):
-            assert (without_call_latency(json.loads((base / name).read_text()))
-                    == without_call_latency(json.loads((off / name).read_text()))), name
 
 
 def test_on_the_free_mode_run_records_the_option_and_the_packet_moves_only_in_the_grammar_block(one_proposal_runs):

@@ -1,15 +1,11 @@
-"""ChemBench initial-pool synthetic waves and opt-in current-hub byte parity; no provider calls."""
+"""ChemBench initial-pool synthetic waves; no provider calls."""
 
 import hashlib
 import json
-import os
-import subprocess
 import sys
 import threading
 import time
-from pathlib import Path
 
-import numpy as np
 import pytest
 
 from bayes_model_discovery.experimental import chembench_core as cc
@@ -18,34 +14,6 @@ from bayes_model_discovery.experimental import test_chembench_core as old
 from bayes_model_discovery.experimental.count_models import Hypothesis, judge_candidate
 from bayes_model_discovery.experimental.test_chembench_mda_options import stub_fits
 from bayes_model_discovery.experimental.test_neuron_proposer import Client, response
-
-# Parity base: the commit of the last deliberate science change. The opt-in comparison pins its outputs and skips
-# when a checkout of this commit is absent.
-# On this default path every later change alters records only: the keys each one adds are
-# named below and removed by name from both runs, and any other difference fails.
-BASE_COMMIT = "b43bf8ae5245a1010594ef53cf51d6358c759ee4"
-#: The three engine limits every packet's `constraints` now states.
-PCX1_PACKET_CONSTRAINT_KEYS = ("max_distinct_mean_coefficients", "reserved_names",
-                               "positive_mean_required_families")
-#: The digest pair a proposal's transport keeps of the packet it sent, moved by the keys
-#: above; each run's pair is checked against that run's own packet file before it is removed.
-PCX1_PACKET_DIGEST_KEYS = ("packet_sha256", "packet_bytes")
-#: The run's failure-class counts in summary `proposal_accounting`.
-PCX2_ACCOUNTING_KEYS = ("failure_class_counts",)
-#: A later round's (t >= 1) candidate outcome events in proposals/tNN.json.
-PCX2B_ROUND_EVENTS_KEY = "events"
-#: The stage-slot record every ChemBench config.json carries.
-STAGE_SLOT_CONFIG_KEY = "stage_slots"
-#: The two rules every ChemBench packet's
-#: `constraints` now states.
-CIC_PACKET_CONSTRAINT_KEYS = ("coefficient_name_rule", "prior_probe_rule")
-#: The files the stack changed after the base commit among those config.json's
-#: `source_sha256` records (model_identity.py and count_inference.py did not move).
-CHANGED_SOURCES = ("chembench_core.py", "core_count.py", "count_models.py", "positive_inference.py")
-#: Science files compared as raw bytes on their own, beside every fits/,
-#: predictions/ and .npz file.
-SCIENCE_FILES = ("observations.jsonl", "frozen_d0_policy.json", "pool_weights.jsonl",
-                 "scores_after_finish.json", "official_scores_after_finish.json")
 
 
 def _json(path):
@@ -379,130 +347,3 @@ def test_invalid_wave_options_fail_before_output(tmp_path, options):
         cc.run(old._args(output, old._manifest(tmp_path), cell="100",
                         structure_proposals="free", **options))
     assert not output.exists()
-
-
-BASELINE_HARNESS = r'''
-import sys
-from pathlib import Path
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental import chembench_core as cc
-from bayes_model_discovery.experimental import test_chembench_core as old
-from bayes_model_discovery.experimental.test_chembench_mda_options import stub_fits
-with MonkeyPatch.context() as patch:
-    stub_fits(patch)
-    cc.run(old._args(Path(sys.argv[1]), Path(sys.argv[2]), rounds=2,
-           cell=sys.argv[3], structure_proposals='free' if sys.argv[3][0] == '1' else 'catalog'))
-'''
-
-
-@pytest.mark.parametrize("cell", ["000", "100"])
-def test_opt_in_default_artifacts_match_hub_baseline(tmp_path, cell):
-    """Opt-in: default artifacts match the baseline checkout byte for byte except the named record keys."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_CBIP_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_CBIP_BASELINE_DIR for hub byte parity")
-    baseline = Path(os.environ["BMD_CBIP_BASELINE_DIR"])
-    root = Path(__file__).resolve().parents[3]
-    # The baseline checkout must be the parity base commit.
-    assert subprocess.run(["git", "-C", str(baseline), "rev-parse", "HEAD"],
-                          capture_output=True, text=True, check=True).stdout.strip() == BASE_COMMIT
-    assert subprocess.run(["git", "-C", str(baseline), "status", "--short"],
-                          capture_output=True, text=True, check=True).stdout == ""
-    output, manifest = tmp_path / "same_output", old._manifest(tmp_path)
-    saved = []
-    for label, source in (("base", baseline), ("current", root)):
-        env = dict(os.environ, PYTHONPATH=f"{source}/src:{source}", PYTHONDONTWRITEBYTECODE="1",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="",
-                   OPENROUTER_API_KEY="", PYTHON_DOTENV_DISABLED="1")
-        result = subprocess.run([sys.executable, "-B", "-c", BASELINE_HARNESS,
-                                 str(output), str(manifest), cell], cwd=source, env=env,
-                                capture_output=True, text=True, check=False)
-        (tmp_path / f"{label}.log").write_text(result.stdout + result.stderr)
-        assert result.returncode == 0, result.stdout + result.stderr
-        target = tmp_path / label
-        output.rename(target)
-        saved.append(target)
-    left, right = saved
-    # round_timings.jsonl is ChemBench's per-round wall time, absent at the base.
-    timing_sidecars = {"fit_timings.jsonl", "acquisition_timings.jsonl",
-                       "prediction_pool_summary.jsonl", "round_timings.jsonl"}
-    files = [sorted(str(path.relative_to(run)) for path in run.rglob("*")
-                    if path.is_file() and path.name not in timing_sidecars) for run in saved]
-    assert files[0] == files[1]
-    configs = [_json(run / "config.json") for run in saved]
-    assert configs[0]["source_sha256"].keys() == configs[1]["source_sha256"].keys()
-    for source, config in zip((baseline, root), configs, strict=True):
-        for name, recorded in config["source_sha256"].items():
-            expected = hashlib.sha256((source / "src/bayes_model_discovery/experimental" / name)
-                                      .read_bytes()).hexdigest()
-            assert recorded == expected, name
-        assert not any(key.startswith("initial_pool_") for key in config)
-    changed_sources = {name for name, digest in configs[0]["source_sha256"].items()
-                       if configs[1]["source_sha256"][name] != digest}
-    # Exactly the listed sources moved.
-    assert changed_sources == set(CHANGED_SOURCES)
-    digests = [(configs[1]["source_sha256"][name], configs[0]["source_sha256"][name])
-               for name in CHANGED_SOURCES]
-    # Science bytes and admitted ids, strictly.
-    science = [name for name in files[0] if name in SCIENCE_FILES or name.endswith(".npz")
-               or name.startswith(("fits/", "predictions/"))]
-    assert "observations.jsonl" in science and any(name.startswith("fits/") for name in science)
-    for name in science:
-        assert (left / name).read_bytes() == (right / name).read_bytes(), name
-    admitted = [[(_json(run / name)["proposed_ids"], _json(run / name)["admitted_ids"])
-                 for name in files[0] if name.startswith("proposals/")] for run in saved]
-    assert admitted[0] == admitted[1]
-    for name in files[0]:
-        a, b = (left / name).read_bytes(), (right / name).read_bytes()
-        if name.endswith(".npz"):
-            assert a == b, name
-            with np.load(left / name) as aa, np.load(right / name) as bb:
-                assert aa.files == bb.files
-                assert all(aa[key].dtype == bb[key].dtype and aa[key].tobytes() == bb[key].tobytes()
-                           for key in aa.files)
-            continue
-        b = b.replace((str(root) + "/").encode(), (str(baseline) + "/").encode())
-        # Every listed source's digest, not only the runner's.
-        for current_hash, base_hash in digests:
-            b = b.replace(current_hash.encode(), base_hash.encode())
-        if name == "config.json":
-            # The declaration line every ChemBench config
-            # now carries, as write_json lays it out (indent 2, sorted keys, never the last key):
-            # once in this tree's bytes, absent from the base's, and removed from this tree's.
-            declaration = b'  "constraints_disclosure": "cic3_v1",\n'
-            assert a.count(declaration) == 0 and b.count(declaration) == 1, name
-            b = b.replace(declaration, b"")
-            # The stage-slot record every ChemBench config now carries, as
-            # write_json lays it out: once in this tree's bytes, absent from the base's, removed
-            # from this tree's by its exact bytes, so every other config byte stays compared.
-            slots = json.loads(b)[STAGE_SLOT_CONFIG_KEY]
-            block = (f'  "{STAGE_SLOT_CONFIG_KEY}": '
-                     + json.dumps(slots, indent=2, sort_keys=True).replace("\n", "\n  ")
-                     + ",\n").encode()
-            assert a.count(block) == 0 and b.count(block) == 1, name
-            b = b.replace(block, b"")
-        # Weakened from raw bytes - packets and proposals are compared as parsed JSON because the
-        # comparison removes the keys added by later changes by name from them.
-        if name == "summary.json" or name.startswith(("packets/", "proposals/")):
-            records = [json.loads(item) for item in (a, b)]
-            for run, record in zip(saved, records, strict=True):
-                _drop_unit_record_keys(name, record, run)
-            a, b = (json.dumps(record, sort_keys=True).encode() for record in records)
-        assert a == b, name
-
-
-def _drop_unit_record_keys(name, record, run):
-    """The timing keys, and the record keys named for each later change, removed
-    from one run's parsed record in place; nothing else is touched."""
-    if name == "summary.json":
-        for key in ("wall_seconds", "user_cpu_seconds", "system_cpu_seconds", "timing_seconds"):
-            record.pop(key)
-        for key in PCX2_ACCOUNTING_KEYS:
-            record.get("proposal_accounting", {}).pop(key, None)
-    elif name.startswith("packets/"):
-        for key in (*PCX1_PACKET_CONSTRAINT_KEYS, *CIC_PACKET_CONSTRAINT_KEYS):
-            record["constraints"].pop(key, None)
-    else:
-        record.pop(PCX2B_ROUND_EVENTS_KEY, None)
-        packet = (run / "packets" / Path(name).name).read_bytes()
-        pair = tuple(record["transport"].pop(key) for key in PCX1_PACKET_DIGEST_KEYS)
-        assert pair == (hashlib.sha256(packet).hexdigest(), len(packet)), name

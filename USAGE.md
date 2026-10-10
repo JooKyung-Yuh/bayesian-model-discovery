@@ -151,9 +151,19 @@ PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
 - The standard tier takes about two hours, so after changing one runner run its own test files
   plus `test_run_label_policy.py` and `test_count_proposer.py`. Give every test run its own
   `--basetemp` and `PYTENSOR_FLAGS=base_compiledir=<folder>`.
-- Tests that need an external checkout skip, naming the variable, unless `BMD_BOXINGGYM_SRC` or
-  `NEURONBENCH_SRC` names the pinned checkout and that checkout is on `PYTHONPATH`; they fail if
-  the checkout is at another commit or not clean. `-rs` prints the reason for every skip.
+- Every skip prints its reason with `-rs`, naming the input it needs. The variables the tests read are:
+
+  | Variable | What it enables | Without it |
+  | --- | --- | --- |
+  | `BMD_BOXINGGYM_SRC` | the BoxingGym tests: the `src/` folder of a clean checkout of the pinned BoxingGym commit, also on `PYTHONPATH` | those tests skip |
+  | `NEURONBENCH_SRC` | the NeuronBench tests that check the source pin: a clean checkout of the pinned neuronbench commit | those tests skip; the tests that only import `neuronbench` run whenever it is importable (`provision.sh --with neuronbench` installs it into `.venv`) |
+  | `BMD_AUTOSCILAB` | the ChemBench oracle tests (ChemBench is not enabled in this release) | those tests skip |
+  | `BMD_FAC_PROMPT` | one protocol test re-checks the digests of the paper's system prompt file it names (`.bmd_env.sh` sets it) | that test skips |
+  | `NPY_DISABLE_CPU_FEATURES` | on an AVX-512 host, the NeuronBench batch-backend tests (see below) | those tests skip on AVX-512 hosts |
+  | `FB1_PYTHON`, `DP_SCIENCEAGENT_DIR`, `FB1_OUT_DIR` | the ForceBench kit tests that run the runner (see below) | those tests skip |
+
+  A test whose external checkout is set but at another commit, not clean, or not the copy on `PYTHONPATH` fails
+  instead of skipping.
 - On a host whose CPU has AVX-512, the NeuronBench test that checks the two forward backends bit for bit
   (`test_n1_the_two_backends_score_and_observe_the_same_rows`) skips unless numpy's SIMD power dispatch is off, as
   the runner requires for `--forward-backend batch`: set

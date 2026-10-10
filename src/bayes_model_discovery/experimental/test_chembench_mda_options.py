@@ -1,6 +1,5 @@
 """Synthetic initial design set (D0) execution and byte-preservation checks; no provider calls."""
 import json
-import os
 
 import numpy as np
 import pytest
@@ -8,16 +7,6 @@ import pytest
 from bayes_model_discovery.experimental import chembench_core as cc
 from bayes_model_discovery.experimental import test_chembench_core as old
 from bayes_model_discovery.experimental.count_inference import Fit
-
-
-def _external_src(name):
-    """External checkouts (LLM-AutoSciLab) come from the environment; no
-    machine-specific path lives in the test (the smoke-tooling rule)."""
-    value = os.environ.get(name, "")
-    if not value:
-        pytest.skip(f"set {name} to run the baseline-worktree comparison here")
-    return value
-
 
 CONDITIONS = {"C_I": 0, "C_B": 1, "C_P": 0, "Enz": 1, "T": 300, "pH": 7}
 # Synthetic test values only; none are claimed to be native default conditions.
