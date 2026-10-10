@@ -1,6 +1,6 @@
 #!/bin/bash
 # ForceBench under the unified protocol (the registered protocol and its two addenda), one cell, host-independent.
-# The option C/D cell settings of ../fb1_launch_c/run_cell.sh (Claude Opus 5.5, effort medium, adaptive thinking,
+# The option C/D cell settings of the development tree's earlier launch script (Claude Opus 5.5, effort medium, adaptive thinking,
 # summarized; FA-C system prompt ../fb1_launch_c/proposer_system_v2_9_FA-C.txt, sha256
 # 196f82b7a0f94e12a7cb8be2d07e776b1536aed11bf8ebd4bea1872c7002953c; masked input names; free structures; 2 random start
 # designs; development label) plus the unified protocol's options of the runner (the four engines' common names):
@@ -50,7 +50,7 @@ case "$BUDGET" in
   30) CALL_CAP=64; CHECKPOINTS=2,4,8,16,18; REVIEW=5,10,15,20,25,30;;
   *) echo "FB_BUDGET must be 16 (default) or 30"; exit 2;;
 esac
-[ -n "${FB_CHECKPOINTS:-}" ] && CHECKPOINTS=$FB_CHECKPOINTS   # 2026-10-06 (main): env passthrough like FB_MAX_PAID_CALLS; "all" = every n from D0 to D0+T_EXTRA (runner parser), used by TRIG75B so Ours has per-round scores
+[ -n "${FB_CHECKPOINTS:-}" ] && CHECKPOINTS=$FB_CHECKPOINTS   # 2026-10-06: env passthrough like FB_MAX_PAID_CALLS; "all" = every n from D0 to D0+T_EXTRA (runner parser), used by the paper runs so every round is scored
 CATALOGUE=${FB_CATALOGUE:-off}
 case "$CATALOGUE" in on|off) ;; *) echo "FB_CATALOGUE must be on or off"; exit 2;; esac
 case "$MODE" in paid|mock) ;; *) echo "mode must be paid or mock"; exit 2;; esac

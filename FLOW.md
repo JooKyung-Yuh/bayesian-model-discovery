@@ -108,8 +108,9 @@ benchmark is not part of the paper; it serves development and tests.
   batch, keeps at most six models (profile `paper_neuron`), and has no archive review; of the
   protocol it adopts only the three-candidate call.
 
-[`USAGE.md`](USAGE.md#reproducing-the-benchmark-runs) lists the tags and how to check out the exact
-code of the runs.
+[`USAGE.md`](USAGE.md#reproducing-the-benchmark-runs) names the tags of the private development
+repository that hold the exact code of the runs (they are not public) and how to check a run's
+recorded digests against a checkout.
 
 ## The run folder
 

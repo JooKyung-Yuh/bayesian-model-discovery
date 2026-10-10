@@ -54,6 +54,9 @@ git -C external/boxing-gym checkout b43e38cb03d09c13efa9cf4d9bae740d51157bfd
 export BMD_BOXINGGYM_SRC="$PWD/external/boxing-gym/src"
 ```
 
+Every BoxingGym run, its `--dry-run` included, needs `BMD_BOXINGGYM_SRC` set to that `src/` folder (and the BoxingGym
+tests need it on `PYTHONPATH` as well); without it `scripts/bmd_run.py` refuses with exit status 2.
+
 ## Run one cell with `scripts/bmd_run.py`
 
 `scripts/bmd_run.py` runs one cell (one benchmark, task or world, seed and design criterion)
