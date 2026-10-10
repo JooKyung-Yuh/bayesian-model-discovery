@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff"]
+dev = ["pytest", "ruff==0.16.1"]   # ruff pinned to the version CI lints with
 # Benchmarks. None of the four benchmarks is a PyPI package at its pinned commit: each extra lists
 # only the Python packages its import path needs beyond the engine, and scripts/provision.sh fetches the pinned
 # checkout and exports the variable that conftest.py and the runners read.

@@ -28,12 +28,12 @@ numpy 1.26.4 for PyMC 5.13.1, while jax 0.11.1 needs numpy 2.x. Keep them separa
 
 - `requirements.lock` is a resolution lock: it pins the version of every transitive dependency,
   but not artifact hashes. Install against it with
-  `pip install -c requirements.lock -e ".[dev]"`. The `dev` extra adds pytest and ruff, which the
-  lock does not pin (CI lints with ruff 0.16.1).
+  `pip install -c requirements.lock -e ".[dev]"` (the documented install). The `dev` extra adds
+  pytest and ruff 0.16.1, the version CI lints with; the lock does not pin them.
 - `scripts/provision.sh` installs the engine environment with `pip install -r requirements.lock`
   and the package with `pip install --no-deps -e .`, then checks that pymc, pytensor, numpy,
   scipy, anthropic and arviz have the pinned versions and counts a mismatch as a failed step. It
-  does not install pytest.
+  installs pytest and ruff 0.16.1 only with `--with tests`.
 - The ForceBench lock records the environment that produced the ForceBench results (Python
   3.12.13). Create it with:
 

@@ -11,12 +11,13 @@
 #                                  (jax stack, requirements-forcebench.lock)                    [--with forcebench]
 #   (ChemBench is not enabled in this release: its dependency LLM-AutoSciLab states no licence, so this
 #    script does not fetch it.)
+#   ROOT/.venv test tools          pytest and ruff 0.16.1, the pins of the dev extra and CI     [--with tests]
 #   ROOT/.bmd_env.sh               environment variables the run scripts read (source it before running)
 #
 # It never reads, prints or copies a .env file. Paid runs need ANTHROPIC_API_KEY in a .env file whose
 # PATH you pass to the run scripts; mock runs (the default) need no key at all.
 #
-# Usage:  bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench] [--smoke]
+# Usage:  bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench,tests] [--smoke]
 set -uo pipefail
 
 PYV=3.12.13
@@ -93,6 +94,11 @@ if mismatch:
     print("   MISMATCH", mismatch); sys.exit(1)
 PY
 "$VENV/bin/python" -c "import bayes_model_discovery, sys; print('   engine', bayes_model_discovery.__file__)" 2>&1 || bad "engine import"
+if want tests; then
+  # the dev extra's test tools (pyproject.toml), constrained by the lock like the rest of the environment
+  "$VENV/bin/python" -m pip install --quiet -c "$ROOT/requirements.lock" pytest "ruff==0.16.1" 2>&1 | tail -1
+  "$VENV/bin/python" -m pytest --version >/dev/null 2>&1 && ok "pytest and ruff installed" || bad "pytest install"
+fi
 
 step "3 pinned prompt file"
 got="$(sha256sum "$ROOT/$FAC_PROMPT" 2>/dev/null | cut -d' ' -f1)"

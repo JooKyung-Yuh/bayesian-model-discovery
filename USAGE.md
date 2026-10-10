@@ -7,7 +7,8 @@ from the repository root.
 
 ## Install and provision
 
-By hand, in an environment with Python 3.12 and a C/C++ compiler:
+The documented install is by hand, in an environment with Python 3.12 and a C/C++ compiler. It installs the engine,
+its pinned dependencies and the test tools (pytest, ruff 0.16.1):
 
 ```bash
 python3.12 -m venv .venv
@@ -18,12 +19,14 @@ python -c "import bayes_model_discovery, pymc; print(bayes_model_discovery.__ver
 
 The last line should print `0.1.0.dev0 5.13.1`.
 
-On a clean Linux host the provisioning script builds the same environment from the lock file
-(without pytest and ruff) and does more. It costs nothing (no LLM calls), never reads a `.env`
-file, and can be re-run: each step checks whether its result already exists.
+Two alternatives install the same pinned engine stack. On a clean Linux host the provisioning
+script builds it from the lock file and does more (below; the test tools only with `--with tests`).
+CI (`.github/workflows/ci.yml`) installs an explicit package list under the same lock and the package
+without dependencies. The script costs nothing (no LLM calls), never reads a `.env` file, and can be
+re-run: each step checks whether its result already exists.
 
 ```bash
-bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench] [--smoke]
+bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench,tests] [--smoke]
 source .bmd_env.sh
 ```
 
@@ -33,7 +36,8 @@ source .bmd_env.sh
 - `--with` fetches the external benchmark code at its pinned commit into `external/`:
   `boxinggym` (a sparse checkout of `src` and `conf`), `neuronbench` (also installed into
   `.venv`), `forcebench` (DiscoverPhysics, plus the separate `.venv-forcebench` built from
-  `requirements-forcebench.lock`). ChemBench is not offered: it is not enabled in this release.
+  `requirements-forcebench.lock`), `tests` (pytest and ruff 0.16.1 into `.venv`, the `dev` extra's
+  test tools). ChemBench is not offered: it is not enabled in this release.
 - It writes `.bmd_env.sh` with the variables listed in
   [`REQUIREMENTS.md`](REQUIREMENTS.md#environment-variables). `--smoke` ends with a one-round mock
   run of the synthetic count benchmark. The last line starts with `SUMMARY fail=N`, the number
