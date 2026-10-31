@@ -76,10 +76,9 @@ safeguards and the tests.
 
 ## One round, animated
 
-![One round of the loop: the posterior predictive band narrows, the twelve model weights move, and the next experiment is placed at the expected information gain (EIG) maximum](docs/media/one_round.gif)
+![One run of the loop on a real record: the LLM proposes models, Bayesian evidence weights them, EIG picks the next experiment; the truth-form model enters in round 6 and stays on top while the predictive band tightens around the hidden truth](docs/media/one_round.gif)
 
-*A September 2026 pilot of the engine on a synthetic binomial world (twelve fixed models, twenty rounds);
-it shows the mechanism only, and no number in it is an experimental result.*
+*One recorded run (BoxingGym death, seed 31, Model EIG design, 30 rounds). Left: the hidden true curve (dashed), the 90% posterior predictive band and mean, the observations, and below them EIG over the design range with the chosen design. Right: the model pool (bar = evidence weight; orange = just proposed; gold = the true functional form) and the prediction error (nMSE, log scale) per round. The true form log(exp(k·t) − 1) is admitted in round 6 and is the top-weight model at round 30. Every number is read from the run record.*
 
 ## Benchmarks
 
