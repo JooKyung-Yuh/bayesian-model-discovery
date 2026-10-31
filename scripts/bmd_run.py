@@ -10,7 +10,7 @@ sha256 in config.json). It translates the arm into the runner's own cell code an
 external checkout on PYTHONPATH from the variables scripts/provision.sh exports, and runs:
 
     synthcount   python -m bayes_model_discovery.experimental.core_count       (SynthCount, seed = world)
-    chembench    not enabled in this release (its oracle, LLM-AutoSciLab, states no licence)
+    chembench    python -m bayes_model_discovery.experimental.chembench_core    (BMD_AUTOSCILAB)
     boxinggym    python -m bayes_model_discovery.experimental.boxinggym_core   (BMD_BOXINGGYM_SRC)
     neuronbench  python -m bayes_model_discovery.experimental.neuron_core      (NEURONBENCH_SRC)
     forcebench   bash tools/fb1_launch_u/run_cell.sh   (FB_PY, FB_DP; the ForceBench kit, which owns its FB1_* settings)
@@ -52,15 +52,11 @@ MODULES = {"synthcount": "core_count", "chembench": "chembench_core", "boxinggym
            "neuronbench": "neuron_core"}
 # The external checkout each benchmark needs, put on PYTHONPATH: (variable, what it must hold).
 EXTERNAL = {
-    "chembench": ("BMD_AUTOSCILAB", "the LLM-AutoSciLab checkout @ 9a37255"),
+    "chembench": ("BMD_AUTOSCILAB", "the LLM-AutoSciLab checkout @ 467fa18"),
     "boxinggym": ("BMD_BOXINGGYM_SRC", "the src/ folder of the BoxingGym checkout @ b43e38cb"),
     "neuronbench": ("NEURONBENCH_SRC", "the neuronbench checkout @ c354622"),
 }
 FORCEBENCH_WORLDS = ("gravity", "yukawa", "coulomb_easy", "oscillator", "extra_dimensions")
-#: ChemBench runs on LLM-AutoSciLab's oracle, whose repository states no licence; the runner code stays in the package,
-#: but this script does not start it until the licence is confirmed.
-CHEMBENCH_REFUSAL = ("chembench is not enabled in this release: its dependency LLM-AutoSciLab states no licence, "
-                     "so the run script does not start it until the licence is confirmed")
 
 
 def refuse(message):
@@ -92,8 +88,6 @@ def external_path(benchmark):
 
 def build(args, passthrough):
     """(argv, environment additions, working directory) for the benchmark's runner."""
-    if args.benchmark == "chembench":
-        refuse(CHEMBENCH_REFUSAL)
     if args.benchmark == "forcebench":
         world = args.task or "gravity"
         if world not in FORCEBENCH_WORLDS:

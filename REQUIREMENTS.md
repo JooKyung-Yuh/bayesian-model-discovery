@@ -47,12 +47,13 @@ numpy 1.26.4 for PyMC 5.13.1, while jax 0.11.1 needs numpy 2.x. Keep them separa
 
 ## External benchmark code
 
-The synthetic count benchmark needs nothing else. Three benchmarks read an external repository
+The synthetic count benchmark needs nothing else. Four benchmarks read an external repository
 at a pinned commit. These repositories are not redistributed here, pip does not install them,
 and the run script and tests find them through environment variables.
 
 | Benchmark | Repository | Pinned commit | License | Variable |
 | --- | --- | --- | --- | --- |
+| ChemBench | LLM-AutoSciLab, https://github.com/scientific-discovery/LLM-AutoSciLab | `467fa184ba537d26b2228ee3f3a8c052d9bfca58` | MIT | `BMD_AUTOSCILAB`: the checkout (on `PYTHONPATH`, not installed) |
 | BoxingGym | https://github.com/kanishkg/boxing-gym | `b43e38cb03d09c13efa9cf4d9bae740d51157bfd` | MIT | `BMD_BOXINGGYM_SRC`: the checkout's `src/` folder |
 | NeuronBench | https://github.com/murphyk/neuronbench | `c354622458c460b419cab821d482c879f0578377` | MIT | `NEURONBENCH_SRC`: the checkout |
 | ForceBench | DiscoverPhysics, https://github.com/SampsonML/DiscoverPhysics | `33b7fa9df96de9c35744efd181ca7e5a8dd60ad5` | MIT | `FB_DP`: the checkout; `FB_PY`: the ForceBench environment's python |
@@ -64,21 +65,21 @@ and the run script and tests find them through environment variables.
   `construct_dataframe`, which the fork leaves unchanged, so this release pins the public upstream
   commit. The tests accept only that commit. `scripts/provision.sh` reads `BMD_BOXINGGYM_REPO` and
   `BMD_BOXINGGYM_COMMIT` to fetch from another location.
-- **ChemBench is not enabled in this release.** Its true laws and input ranges come from
-  LLM-AutoSciLab (https://github.com/scientific-discovery/LLM-AutoSciLab, commit
-  `9a37255ff5432a7155b6cde8985e9654f2f8f272`), which states no license. The ChemBench code
-  stays in the tree, but the run script refuses it, the provisioning script does not fetch the
-  dependency, and its tests skip.
+- ChemBench: the paper runs used LLM-AutoSciLab at commit `9a37255ff5432a7155b6cde8985e9654f2f8f272`. This release
+  pins `467fa184ba537d26b2228ee3f3a8c052d9bfca58`, the commit that added the MIT license; the two commits differ only in
+  `LICENSE`, `THIRD_PARTY_LICENSES.md` and `README.md`, so the ChemBench oracle code
+  (`autoscilab/`) is the same. The tests accept only the pinned commit.
 
 ## Environment variables
 
-`bash scripts/provision.sh --with boxinggym,neuronbench,forcebench` writes `.bmd_env.sh` at the
+`bash scripts/provision.sh --with chembench,boxinggym,neuronbench,forcebench` writes `.bmd_env.sh` at the
 repository root; source it before running anything. Paths for benchmarks you did not request
 are placeholders.
 
 | Variable | Meaning | Read by |
 | --- | --- | --- |
 | `BMD_PY` | the engine environment's python (`.venv/bin/python`) | you, to run the scripts with the right interpreter |
+| `BMD_AUTOSCILAB` | the LLM-AutoSciLab checkout (the ChemBench oracle) | `scripts/bmd_run.py` (adds it to `PYTHONPATH`), the ChemBench tests |
 | `BMD_BOXINGGYM_SRC` | the `src/` folder of the BoxingGym checkout | `scripts/bmd_run.py` (adds it to `PYTHONPATH`), the BoxingGym tests |
 | `NEURONBENCH_SRC` | the neuronbench checkout | `scripts/bmd_run.py`, the NeuronBench tests |
 | `FB_PY` | the ForceBench environment's python | `scripts/bmd_run.py` and the ForceBench launch script |

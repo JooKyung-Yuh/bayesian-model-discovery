@@ -33,8 +33,8 @@ dev = ["pytest", "ruff==0.16.1"]   # ruff pinned to the version CI lints with
 # BoxingGym: checkout github.com/kanishkg/boxing-gym @ b43e38cb on BMD_BOXINGGYM_SRC (its src/ folder, put on
 # PYTHONPATH; not pip-installed, because its package metadata pins numpy 2.0.1 against the engine's 1.26.4).
 boxinggym = ["tqdm"]
-# ChemBench: not enabled in this release - LLM-AutoSciLab (@ 9a37255, BMD_AUTOSCILAB) states no licence, so the run
-# script refuses it until the licence is confirmed; the runner code stays in the package. Its oracle needs numpy only.
+# ChemBench: checkout github.com/scientific-discovery/LLM-AutoSciLab @ 467fa18 (MIT) on BMD_AUTOSCILAB (put on
+# PYTHONPATH, not installed). Its oracle needs numpy only.
 chembench = []
 # NeuronBench: checkout github.com/murphyk/neuronbench @ c354622 on NEURONBENCH_SRC (provision.sh installs it with
 # `pip install --no-deps -e`); its own dependencies are numpy and scipy.

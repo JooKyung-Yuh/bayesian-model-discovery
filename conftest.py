@@ -13,7 +13,7 @@ BENCHMARK_SOURCES = {
     "boxing_gym": (("BMD_BOXINGGYM_SRC",), "b43e38cb03d09c13efa9cf4d9bae740d51157bfd"),
     "autoscilab": (
         ("BMD_AUTOSCILAB",),
-        "9a37255ff5432a7155b6cde8985e9654f2f8f272",
+        "467fa184ba537d26b2228ee3f3a8c052d9bfca58",
     ),
     "neuronbench": (("NEURONBENCH_SRC",), "c354622458c460b419cab821d482c879f0578377"),
 }
