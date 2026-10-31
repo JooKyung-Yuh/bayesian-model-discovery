@@ -26,7 +26,7 @@ without dependencies. The script costs nothing (no LLM calls), never reads a `.e
 re-run: each step checks whether its result already exists.
 
 ```bash
-bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench,tests] [--smoke]
+bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with chembench,boxinggym,neuronbench,forcebench,tests] [--smoke]
 source .bmd_env.sh
 ```
 
@@ -37,7 +37,7 @@ source .bmd_env.sh
   `boxinggym` (a sparse checkout of `src` and `conf`), `neuronbench` (also installed into
   `.venv`), `forcebench` (DiscoverPhysics, plus the separate `.venv-forcebench` built from
   `requirements-forcebench.lock`), `tests` (pytest and ruff 0.16.1 into `.venv`, the `dev` extra's
-  test tools). ChemBench is not offered: it is not enabled in this release.
+  test tools), `chembench` (LLM-AutoSciLab, put on `PYTHONPATH` through `BMD_AUTOSCILAB`, not installed).
 - It writes `.bmd_env.sh` with the variables listed in
   [`REQUIREMENTS.md`](REQUIREMENTS.md#environment-variables). `--smoke` ends with a one-round mock
   run of the synthetic count benchmark. The last line starts with `SUMMARY fail=N`, the number
@@ -75,7 +75,7 @@ python scripts/bmd_run.py <synthcount|chembench|boxinggym|neuronbench|forcebench
 | `boxinggym` | `boxinggym_core` | all five (Model and Parameter expected information gain (EIG) are cell 111 with `--design-policy structure_eig` or `parameter_eig`) | the task, default `death` | `BMD_BOXINGGYM_SRC` |
 | `neuronbench` | `neuron_core` | all five (Model and Parameter EIG are cell 111 with `--design-policy structure_eig` or `parameter_eig`) | the world, default `h_sag` | `NEURONBENCH_SRC` |
 | `forcebench` | `tools/fb1_launch_u/run_cell.sh` | all five | the world, default `gravity` | `FB_PY`, `FB_DP` |
-| `chembench` | `chembench_core` | not enabled in this release | | |
+| `chembench` | `chembench_core` | `joint_eig`, `model_eig`, `parameter_eig` (cell 101 with `--design-search ascent`; Model and Parameter EIG add `--design-policy structure_eig` or `parameter_eig`), `random` (100); no `epig` | a task id of the manifest; required with `--profile paper` (`manifests/chembench_paper_manifest.json`), optional with `dev` (`manifests/chembench_dev_manifest.json`) | `BMD_AUTOSCILAB` |
 
 - Defaults: `--arm joint_eig`, `--seed 31`, `--rounds 2`, `--profile dev`, `--proposer mock`.
   These cost nothing.
@@ -164,7 +164,7 @@ PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
   | --- | --- | --- |
   | `BMD_BOXINGGYM_SRC` | the BoxingGym tests: the `src/` folder of a clean checkout of the pinned BoxingGym commit, also on `PYTHONPATH` | those tests skip |
   | `NEURONBENCH_SRC` | the NeuronBench tests that check the source pin: a clean checkout of the pinned neuronbench commit | those tests skip; the tests that only import `neuronbench` run whenever it is importable (`provision.sh --with neuronbench` installs it into `.venv`) |
-  | `BMD_AUTOSCILAB` | the ChemBench oracle tests (ChemBench is not enabled in this release) | those tests skip |
+  | `BMD_AUTOSCILAB` | the ChemBench oracle tests: a clean checkout of the pinned LLM-AutoSciLab commit, also on `PYTHONPATH` | those tests skip |
   | `BMD_FAC_PROMPT` | one protocol test re-checks the digests of the paper's system prompt file it names (`.bmd_env.sh` sets it) | that test skips |
   | `NPY_DISABLE_CPU_FEATURES` | on an AVX-512 host, the NeuronBench batch-backend tests (see below) | those tests skip on AVX-512 hosts |
   | `FB1_PYTHON`, `DP_SCIENCEAGENT_DIR`, `FB1_OUT_DIR` | the ForceBench kit tests that run the runner (see below) | those tests skip |

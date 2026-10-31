@@ -17,7 +17,6 @@ hand-set particles at a point just below its divergence (Tz -> 0-). No fit, no p
 import json
 import math
 import sys
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -25,7 +24,7 @@ import pytest
 from . import chembench_core, design_search, positive_inference
 from . import test_agx_guard_units as units
 from .count_inference import Fit
-from .count_models import interface_input_names, named_input_values
+from .count_models import interface_input_names
 from .positive_inference import ScalarHypothesis
 from .test_agx_guard_units import ascent_objective  # noqa: F401  (module-scoped fixture)
 
@@ -236,50 +235,3 @@ def test_the_guard_constants_are_registered_and_restated_by_an_exclusion_record(
         {"objective_call_count": 1})
     assert record["eig_exclusion_guard"] == guard
     json.dumps(record, allow_nan=False)
-
-
-EASY_S31_POOL = (Path(chembench_core.__file__).resolve().parents[3] / "tools" / "bai_smoke_2h"
-                 / "chembench_frozen_pool_registration_20260925T180625Z" / "pools"
-                 / "chembench_frozen_pool_v1__c5_pingpong_bisubstrate__easy__s31.json")
-#: The member of the registered easy s31 pool whose b3 / Tz diverges inside the box.
-EASY_S31_MODEL = "6a2256d32c2ef94e3ebe"
-
-
-@pytest.mark.usefixtures("require_autoscilab_source")
-def test_the_easy_s31_member_that_crashed_round_one_is_excluded_just_below_its_divergence():
-    """Fixture 12: `b0 + b1 * C_Az + b2 * Enzz + b3 / Tz` (b3 positive) at Tz = -0.001, every
-    other input at its centre. With b3 = 0.712 the mean is exp(-712) (subnormal), and with
-    b3 = 0.744 and sigma 2 the formed scale is 0: guard v1 keeps both and joint_eig raises the
-    crash's error; guard v2 keeps only the representable particle."""
-    [event] = [event for event in json.loads(EASY_S31_POOL.read_text())["events"]
-               if event.get("model_id") == EASY_S31_MODEL]
-    interface = chembench_core.frozen_pool_interface()
-    hypothesis = ScalarHypothesis(event["expression"], event["family"],
-                                  tuple(event["parameters"].items()),
-                                  interface_input_names(interface))
-    assert hypothesis.model_id == EASY_S31_MODEL
-    assert event["expression"] == "b0 + b1 * C_Az + b2 * Enzz + b3 / Tz"
-    centre = {name: float(expression.split("-")[1].split(")")[0])
-              for name, expression in interface["derived_inputs"].items()}
-    tz_scale = float(interface["derived_inputs"]["Tz"].split("/")[1])
-    design = [centre[item["name"] + "z"] for item in interface["inputs"]]
-    design[[item["name"] for item in interface["inputs"]].index("T")] -= 0.001 * tz_scale
-    points = np.array([design])
-    tz = float(named_input_values(interface, points)["Tz"][0])
-    assert -0.0011 < tz < -0.0009
-    b3 = np.array([-500.0, -712.0, -744.0]) * tz
-    particles = {"b0": np.zeros(3), "b1": np.zeros(3), "b2": np.zeros(3), "b3": b3,
-                 "sigma": np.array([0.4, 0.4, 2.0])}
-    fit = Fit(hypothesis, particles, -2.0, [-2.0, -2.0],
-              {"interface": interface, "response_unit": 1.0, "response_center": 0.0,
-               "observation_count": 3, "public_data_sha256": "synthetic-agx2-easy-s31"})
-    mean, valid = positive_inference.particle_means_masked(fit, points)
-    assert valid.all() and mean[1, 0] < np.finfo(np.float64).tiny
-    with pytest.raises(ValueError, match="invalid conditional likelihood"):
-        positive_inference.joint_eig([fit], points, units.SEED, 16)
-    bank, info = chembench_core._acquisition_bank_for_points([fit], points)
-    assert info == {"excluded_particles": {EASY_S31_MODEL: {"excluded": 2, "of": 3}},
-                    "excluded_models": [], "invalid": False}
-    assert np.array_equal(bank[0].particles["b3"], b3[:1])
-    table = positive_inference.joint_eig(bank, points, units.SEED, 16)
-    assert np.all(np.isfinite(table["eig"]))

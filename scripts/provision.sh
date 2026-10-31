@@ -9,15 +9,15 @@
 #   ROOT/external/neuronbench      NeuronBench (MIT) at the pinned commit, installed into .venv [--with neuronbench]
 #   ROOT/external/DiscoverPhysics  DiscoverPhysics (MIT) at the pinned commit + ROOT/.venv-forcebench
 #                                  (jax stack, requirements-forcebench.lock)                    [--with forcebench]
-#   (ChemBench is not enabled in this release: its dependency LLM-AutoSciLab states no licence, so this
-#    script does not fetch it.)
+#   ROOT/external/LLM-AutoSciLab   LLM-AutoSciLab (MIT) at the pinned commit, the ChemBench oracle;
+#                                  on PYTHONPATH only, not installed                            [--with chembench]
 #   ROOT/.venv test tools          pytest and ruff 0.16.1, the pins of the dev extra and CI     [--with tests]
 #   ROOT/.bmd_env.sh               environment variables the run scripts read (source it before running)
 #
 # It never reads, prints or copies a .env file. Paid runs need ANTHROPIC_API_KEY in a .env file whose
 # PATH you pass to the run scripts; mock runs (the default) need no key at all.
 #
-# Usage:  bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench,tests] [--smoke]
+# Usage:  bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with chembench,boxinggym,neuronbench,forcebench,tests] [--smoke]
 set -uo pipefail
 
 PYV=3.12.13
@@ -43,6 +43,8 @@ BOXINGGYM_TIP=${BMD_BOXINGGYM_COMMIT:-b43e38cb03d09c13efa9cf4d9bae740d51157bfd}
 NEURONBENCH_REPO=https://github.com/murphyk/neuronbench
 NEURONBENCH_TIP=c354622458c460b419cab821d482c879f0578377
 DISCOVERPHYSICS_REPO=https://github.com/SampsonML/DiscoverPhysics.git
+AUTOSCILAB_REPO=https://github.com/scientific-discovery/LLM-AutoSciLab.git
+AUTOSCILAB_TIP=467fa184ba537d26b2228ee3f3a8c052d9bfca58
 DISCOVERPHYSICS_TIP=33b7fa9
 FAC_PROMPT=tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt
 FAC_SHA=196f82b7a0f94e12a7cb8be2d07e776b1536aed11bf8ebd4bea1872c7002953c
@@ -114,6 +116,14 @@ if want boxinggym; then
   test -d "$d/src/boxing_gym" && ok "boxing_gym at $(git -C "$d" rev-parse --short HEAD)" || bad "src/boxing_gym missing"
 fi
 
+if want chembench; then
+  step "4b ChemBench: LLM-AutoSciLab at $AUTOSCILAB_TIP (MIT; on PYTHONPATH, not installed)"
+  d="$EXT/LLM-AutoSciLab"
+  if [ ! -d "$d/.git" ]; then git clone "$AUTOSCILAB_REPO" "$d" >/dev/null 2>&1 || bad "LLM-AutoSciLab clone"; fi
+  git -C "$d" checkout --detach "$AUTOSCILAB_TIP" >/dev/null 2>&1 || bad "LLM-AutoSciLab checkout"
+  PYTHONPATH="$d" "$VENV/bin/python" -c "import autoscilab.oracle.chembench" 2>&1 && ok "autoscilab.oracle.chembench importable" || bad "autoscilab import"
+fi
+
 if want neuronbench; then
   step "5 NeuronBench at $NEURONBENCH_TIP (MIT)"
   d="$EXT/neuronbench"
@@ -141,6 +151,7 @@ cat > "$ROOT/.bmd_env.sh" <<EOF2
 export BMD_ROOT="$ROOT"
 export BMD_PY="$VENV/bin/python"
 export BMD_FAC_PROMPT="$ROOT/$FAC_PROMPT"
+export BMD_AUTOSCILAB="$EXT/LLM-AutoSciLab"
 export BMD_BOXINGGYM_SRC="$EXT/boxing-gym/src"
 export NEURONBENCH_SRC="$EXT/neuronbench"
 export FB_PY="$ROOT/.venv-forcebench/bin/python"

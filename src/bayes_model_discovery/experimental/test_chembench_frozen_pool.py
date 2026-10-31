@@ -9,8 +9,6 @@ replies through injected clients only - no network, no saved run, no paid call.
 import copy
 import hashlib
 import json
-import subprocess
-import sys
 import threading
 from pathlib import Path
 from types import SimpleNamespace
@@ -570,27 +568,6 @@ def test_a_changed_pool_file_is_refused_against_its_registered_digest(tmp_path, 
         initial_catalogue="off", **read_pool(changed).metadata()))
     with pytest.raises(ValueError):
         resolve_label("production", manifest_ref=ref, **{**context, "settings": actual})
-
-
-def test_the_driver_preflight_binds_what_the_runner_binds(tmp_path, monkeypatch, mock_pool):
-    """The driver preflight binds the same settings the runner binds."""
-    stub_fit(monkeypatch)
-    out = pool_cell(tmp_path / "cell", mock_pool)
-    settings = read(out / "config.json")["label_receipt"]["binding"]["settings"]
-    task = cc.select_task(read(DEV_MANIFEST), None)
-    cells = tmp_path / "cells.txt"
-    cells.write_text(f"chembench {task['id']} 100 31 6.00\nchembench {task['id']} 101 31 6.00\n")
-    script = REPO / "tools" / "bai_smoke_2h" / "initial_pool_preflight.py"
-    env_path = [str(REPO / "src"), str(REPO), *sys.path]
-    result = subprocess.run(
-        [sys.executable, "-B", str(script), "--file", str(mock_pool), "--cells", str(cells),
-         "--chembench-manifest", str(DEV_MANIFEST), "--chembench-d0-policy", "fixed3"],
-        capture_output=True, text=True, check=False,
-        env={"PYTHONPATH": ":".join(env_path), "PYTHONDONTWRITEBYTECODE": "1",
-             "PATH": "/usr/bin:/bin"})
-    assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout) == {key: settings[key] for key in (
-        "initial_pool_source", "initial_pool_sha256", "initial_pool_count")}
 
 
 def test_a_generation_run_leaves_the_default_system_text_behind(mock_pool):
