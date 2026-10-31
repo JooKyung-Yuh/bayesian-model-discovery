@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 BENCHMARK_SOURCES = {
-    "boxing_gym": (("BMD_BOXINGGYM_SRC",), "06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba"),
+    "boxing_gym": (("BMD_BOXINGGYM_SRC",), "b43e38cb03d09c13efa9cf4d9bae740d51157bfd"),
     "autoscilab": (
         ("BMD_AUTOSCILAB",),
         "9a37255ff5432a7155b6cde8985e9654f2f8f272",

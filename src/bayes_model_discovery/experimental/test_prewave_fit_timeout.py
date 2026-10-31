@@ -9,7 +9,6 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ..provenance.canonical import is_hex64
 from . import core_count as cc
 from . import count_inference as ci
 from . import neuron_core as nc
@@ -22,7 +21,7 @@ ADDED_NEURON_CONFIG_KEYS = (
 
 
 def _normalize_added_neuron_config(before, after):
-    # Later commits added backend/CPU provenance after these parity bases.
+    # Later commits added backend/CPU provenance to the config.
     # Validate actual dispatch provenance before excluding only these added keys.
     original, current = json.loads(before), json.loads(after)
     for key in ADDED_NEURON_CONFIG_KEYS:
@@ -333,128 +332,6 @@ def test_native_fit_timeout_then_real_smc_recovers(kind, monkeypatch, tmp_path):
         result = fit(*arguments, **extra, fit_timeout_seconds=60)
     assert np.isfinite(result.log_evidence)
     assert len(result.per_chain_log_evidence) == 2
-
-
-DEFAULT_BASELINE_HARNESS = r'''
-import importlib.util
-import sys
-from datetime import datetime
-from pathlib import Path
-from types import SimpleNamespace
-import pytest
-
-spec = importlib.util.spec_from_file_location(
-    "bayes_model_discovery.experimental._timeout_parity_fixture", sys.argv[1])
-fixture = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(fixture)
-class FrozenDatetime(datetime):
-    @classmethod
-    def now(cls, tz=None):
-        return cls(2001, 1, 1, tzinfo=tz)
-with pytest.MonkeyPatch.context() as patch:
-    patch.setattr(fixture.cc.time, "perf_counter", lambda: 0.0)
-    patch.setattr(fixture.cc.resource, "getrusage", lambda *args: SimpleNamespace(ru_utime=0.0, ru_stime=0.0))
-    patch.setattr(fixture.cc, "datetime", FrozenDatetime)
-    patch.setattr(fixture.nc, "datetime", FrozenDatetime)
-    out = Path(sys.argv[2])
-    if sys.argv[3] == "core":
-        patch.setattr(fixture.cc, "fit", lambda h, *args, **kwargs: fixture._count_result(h))
-        fixture._run_core(patch, out)
-    else:
-        fixture.transport_world.__wrapped__(patch)
-        args = fixture.nc.build_parser().parse_args([
-            "--output", str(out), "--rounds", "2", "--cell", "110"])
-        fixture.nc.run(args)
-'''
-
-
-@pytest.mark.parametrize("runner", ["core", "neuron"])
-def test_opt_in_default_bytes_match_verified_base(tmp_path, runner):
-    """Check that opt in default bytes match verified base."""
-    if runner == "core":
-        pytest.skip("parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_BASELINE_DIR for the read-only base comparison")
-    configured = os.environ.get("BMD_BASELINE_DIR")
-    if not configured:
-        pytest.skip("BMD_BASELINE_DIR must name the read-only declared-base checkout")
-    import hashlib
-    import subprocess
-
-    baseline = Path(configured).resolve()
-    root = Path(__file__).resolve().parents[3]
-    revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=baseline,
-                              check=True, capture_output=True, text=True).stdout.strip()
-    assert revision == "c6fe27c76515065a943df33f122529eb181aac04"
-    output = tmp_path / "same_output"
-    saved = []
-    configs = []
-    for label, source in (("base", baseline), ("current", root)):
-        environment = os.environ.copy()
-        environment.update(PYTHONPATH=f"{source}/src:{source}:" + os.environ.get("PYTHONPATH", ""),
-                           PYTHONDONTWRITEBYTECODE="1", OPENAI_API_KEY="", ANTHROPIC_API_KEY="",
-                           OPENAI_COMPAT_API_KEY="", OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1",
-                           MKL_NUM_THREADS="1")
-        completed = subprocess.run(
-            [sys.executable, "-B", "-c", DEFAULT_BASELINE_HARNESS, str(Path(__file__).resolve()),
-             str(output), runner], cwd=source, env=environment, capture_output=True, text=True, timeout=90, check=False)
-        (tmp_path / f"{label}.log").write_text(completed.stdout + completed.stderr)
-        assert completed.returncode == 0, completed.stdout + completed.stderr
-        config = json.loads((output / "config.json").read_text())
-        assert "fit_timeout_seconds" not in config
-        assert not (output / "fit_timings.jsonl").exists()
-        key = "source_files_sha256" if runner == "core" else "experimental_source_sha256"
-        for name, digest in config[key].items():
-            assert digest == hashlib.sha256((source / "src/bayes_model_discovery/experimental" / name).read_bytes()).hexdigest()
-        configs.append(config)
-        destination = tmp_path / label
-        output.rename(destination)
-        saved.append(destination)
-    left, right = saved
-    observational_sidecars = {"fit_timings.jsonl", "acquisition_timings.jsonl",
-                              "prediction_pool_summary.jsonl"}
-    names = sorted(str(path.relative_to(left)) for path in left.rglob("*")
-                   if path.is_file() and path.name not in observational_sidecars)
-    assert names == sorted(str(path.relative_to(right)) for path in right.rglob("*")
-                           if path.is_file() and path.name not in observational_sidecars)
-    key = "source_files_sha256" if runner == "core" else "experimental_source_sha256"
-    source_pairs = [(configs[1][key][name], configs[0][key][name]) for name in configs[0][key]]
-    receipt = []
-    for name in names:
-        before, after = (left / name).read_bytes(), (right / name).read_bytes()
-        added_fields = []
-        if name.endswith(".npz"):
-            with np.load(left / name) as first, np.load(right / name) as second:
-                assert first.files == second.files, name
-                for field in first.files:
-                    assert first[field].dtype == second[field].dtype, (name, field)
-                    assert first[field].tobytes() == second[field].tobytes(), (name, field)
-        else:
-            if runner == "neuron" and name == "config.json":
-                raw_after = after
-                after = _normalize_added_neuron_config(before, after)
-                added_fields.extend(ADDED_NEURON_CONFIG_KEYS)
-                assert (right / name).read_bytes() == raw_after
-                assert set(ADDED_NEURON_CONFIG_KEYS) <= json.loads((right / name).read_bytes()).keys()
-            if runner != "neuron" and name.startswith("acquisition/") and name.endswith(".json"):
-                # A later change added two candidate-pool provenance keys after the base commit;
-                # they must be present and well-formed here, absent there, and are
-                # removed only after that check. Every other key still compares byte for byte.
-                original, current_record = json.loads(before), json.loads(after)
-                for key in ("candidate_set_sha256", "candidate_generator"):
-                    assert key not in original, (name, key)
-                    assert key in current_record, (name, key)
-                assert is_hex64(current_record.pop("candidate_set_sha256")), name
-                generator = current_record.pop("candidate_generator")
-                assert generator["hash_scope"] == "generated_pool_before_history_filters", name
-                after = (json.dumps(current_record, indent=2, sort_keys=True) + "\n").encode()
-            for current, previous in source_pairs:
-                after = after.replace(current.encode(), previous.encode())
-            after = after.replace(str(root).encode(), str(baseline).encode())
-            assert after == before, name
-        receipt.append({"artifact": name, "identical_after_verified_source_provenance_normalization": True,
-                        "explicitly_verified_added_fields": added_fields})
-    (tmp_path / "parity_report.json").write_text(json.dumps(receipt, indent=2) + "\n")
 
 
 @pytest.mark.parametrize("runner", ["core", "neuron"])

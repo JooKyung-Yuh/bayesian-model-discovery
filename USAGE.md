@@ -7,7 +7,8 @@ from the repository root.
 
 ## Install and provision
 
-By hand, in an environment with Python 3.12 and a C/C++ compiler:
+The documented install is by hand, in an environment with Python 3.12 and a C/C++ compiler. It installs the engine,
+its pinned dependencies and the test tools (pytest, ruff 0.16.1):
 
 ```bash
 python3.12 -m venv .venv
@@ -18,12 +19,14 @@ python -c "import bayes_model_discovery, pymc; print(bayes_model_discovery.__ver
 
 The last line should print `0.1.0.dev0 5.13.1`.
 
-On a clean Linux host the provisioning script builds the same environment from the lock file
-(without pytest and ruff) and does more. It costs nothing (no LLM calls), never reads a `.env`
-file, and can be re-run: each step checks whether its result already exists.
+Two alternatives install the same pinned engine stack. On a clean Linux host the provisioning
+script builds it from the lock file and does more (below; the test tools only with `--with tests`).
+CI (`.github/workflows/ci.yml`) installs an explicit package list under the same lock and the package
+without dependencies. The script costs nothing (no LLM calls), never reads a `.env` file, and can be
+re-run: each step checks whether its result already exists.
 
 ```bash
-bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench] [--smoke]
+bash scripts/provision.sh [--root DIR] [--python 3.12.13] [--with boxinggym,neuronbench,forcebench,tests] [--smoke]
 source .bmd_env.sh
 ```
 
@@ -33,7 +36,8 @@ source .bmd_env.sh
 - `--with` fetches the external benchmark code at its pinned commit into `external/`:
   `boxinggym` (a sparse checkout of `src` and `conf`), `neuronbench` (also installed into
   `.venv`), `forcebench` (DiscoverPhysics, plus the separate `.venv-forcebench` built from
-  `requirements-forcebench.lock`). ChemBench is not offered: it is not enabled in this release.
+  `requirements-forcebench.lock`), `tests` (pytest and ruff 0.16.1 into `.venv`, the `dev` extra's
+  test tools). ChemBench is not offered: it is not enabled in this release.
 - It writes `.bmd_env.sh` with the variables listed in
   [`REQUIREMENTS.md`](REQUIREMENTS.md#environment-variables). `--smoke` ends with a one-round mock
   run of the synthetic count benchmark. The last line starts with `SUMMARY fail=N`, the number
@@ -45,10 +49,13 @@ ForceBench needs `FB_DP` and the separate environment of
 [`REQUIREMENTS.md`](REQUIREMENTS.md#two-python-environments) (`FB_PY`).
 
 ```bash
-git clone https://github.com/JooKyung-Yuh/BoxingGym external/boxing-gym
-git -C external/boxing-gym checkout 06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba
+git clone https://github.com/kanishkg/boxing-gym external/boxing-gym
+git -C external/boxing-gym checkout b43e38cb03d09c13efa9cf4d9bae740d51157bfd
 export BMD_BOXINGGYM_SRC="$PWD/external/boxing-gym/src"
 ```
+
+Every BoxingGym run, its `--dry-run` included, needs `BMD_BOXINGGYM_SRC` set to that `src/` folder (and the BoxingGym
+tests need it on `PYTHONPATH` as well); without it `scripts/bmd_run.py` refuses with exit status 2.
 
 ## Run one cell with `scripts/bmd_run.py`
 
@@ -142,18 +149,34 @@ Run them from the repository root with `PYTHONPATH=src`, so that the source tree
 rather than an installed copy. pytest comes with the `dev` extra.
 
 ```bash
-# fast: the unit tests under tests/ (a few minutes)
+# fast: the tests under tests/ (259 tests, about one minute)
 PYTHONPATH=src pytest -q -m "not heavy and not replay" tests
-# standard: everything CI runs, including the runners with mock proposers (about 4,000 tests)
+# standard: everything CI runs, including the runners with mock proposers (3,739 tests)
 PYTHONPATH=src pytest -q -rs -m "not heavy and not replay"
 ```
 
-- The standard tier takes about two hours, so after changing one runner run its own test files
+- The standard tier takes about 50 minutes on one machine, so after changing one runner run its own test files
   plus `test_run_label_policy.py` and `test_count_proposer.py`. Give every test run its own
   `--basetemp` and `PYTENSOR_FLAGS=base_compiledir=<folder>`.
-- Tests that need an external checkout skip, naming the variable, unless `BMD_BOXINGGYM_SRC` or
-  `NEURONBENCH_SRC` names the pinned checkout and that checkout is on `PYTHONPATH`; they fail if
-  the checkout is at another commit or not clean. `-rs` prints the reason for every skip.
+- Every skip prints its reason with `-rs`, naming the input it needs. The variables the tests read are:
+
+  | Variable | What it enables | Without it |
+  | --- | --- | --- |
+  | `BMD_BOXINGGYM_SRC` | the BoxingGym tests: the `src/` folder of a clean checkout of the pinned BoxingGym commit, also on `PYTHONPATH` | those tests skip |
+  | `NEURONBENCH_SRC` | the NeuronBench tests that check the source pin: a clean checkout of the pinned neuronbench commit | those tests skip; the tests that only import `neuronbench` run whenever it is importable (`provision.sh --with neuronbench` installs it into `.venv`) |
+  | `BMD_AUTOSCILAB` | the ChemBench oracle tests (ChemBench is not enabled in this release) | those tests skip |
+  | `BMD_FAC_PROMPT` | one protocol test re-checks the digests of the paper's system prompt file it names (`.bmd_env.sh` sets it) | that test skips |
+  | `NPY_DISABLE_CPU_FEATURES` | on an AVX-512 host, the NeuronBench batch-backend tests (see below) | those tests skip on AVX-512 hosts |
+  | `FB1_PYTHON`, `DP_SCIENCEAGENT_DIR`, `FB1_OUT_DIR` | the ForceBench kit tests that run the runner (see below) | those tests skip |
+
+  A test whose external checkout is set but at another commit, not clean, or not the copy on `PYTHONPATH` fails
+  instead of skipping.
+- On a host whose CPU has AVX-512, the NeuronBench test that checks the two forward backends bit for bit
+  (`test_n1_the_two_backends_score_and_observe_the_same_rows`) skips unless numpy's SIMD power dispatch is off, as
+  the runner requires for `--forward-backend batch`, and so do the 24 bit-identity tests of
+  `test_neuron_forward_batch.py` (25 tests in all, measured on an AVX-512 host). Set
+  `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"`
+  before running them.
 - The ForceBench tests are `tools/fb1_snapshot/test_*.py` and need the ForceBench environment.
   Run them from that folder with `JAX_PLATFORMS=cpu`, `FB1_PYTHON=$FB_PY`,
   `DP_SCIENCEAGENT_DIR=$FB_DP/ScienceAgent` and `FB1_OUT_DIR=<scratch folder>` set explicitly:

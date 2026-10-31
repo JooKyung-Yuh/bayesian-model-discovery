@@ -1,8 +1,6 @@
-"""Parallel-wave CORE: synthetic replies, native fits, two-runner invariants, and opt-in parity."""
+"""Parallel-wave CORE: synthetic replies, native fits and two-runner invariants."""
 
-import hashlib
 import json
-import os
 import re
 import subprocess
 import sys
@@ -13,21 +11,13 @@ from types import SimpleNamespace
 
 import pytest
 
-from ..provenance.canonical import canonical_json, is_hex64
 from . import core_count as core
 from . import count_proposer as cp
 from .count_models import initial_hypotheses
 from .run_label_policy import CORE_ACTIVE_MAXIMUM, bmd_runtime_settings, resolve_label
-from .test_core_d0_policy import _points_with_authentic_identity
 from .test_count_proposer import run_args, stub_fits
 from .test_initial_burst import REFILL_KEYS, burst_records, burst_wave, refill_settings
 from .test_run_label_policy import registration, runner_args, write_manifest
-
-IDENTITY_FIELDS = ("source_files_sha256", "created_utc", "output", "manifest_ref", "python")
-CHANGED_SOURCE_FILES = ("core_count.py",)
-RECEIPT_IDENTITY_FIELDS = ("policy_source_sha256",)
-WAVE_KEYS = ("initial_proposals", "parallel_proposals", "initial_catalogue",
-             "burst_concurrency", "burst_prompt_sha256")
 
 # Synthetic schedules only; no stored run responses are read by these tests.
 FORMS = core.P1_MOCK_EXPRESSIONS
@@ -320,75 +310,3 @@ def test_boxinggym_catalogue_on_retains_forms_in_both_packets(tmp_path):
     expected = list(bg.TASKS["death"].initial_structures())
     assert packet(out, "t00_burst")["constraints"]["initial_structures"] == expected
     assert packet(out, "t01")["constraints"]["initial_structures"] == expected
-
-
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-def test_opt_in_no_wave_options_preserve_baseline_science_config_and_real_identities(tmp_path):
-    """Opt-in parity check: without wave options the run matches the baseline except for identity fields."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_PWC_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_PWC_BASELINE_DIR for the baseline parity check")
-    base = Path(os.environ["BMD_PWC_BASELINE_DIR"])
-    candidate = Path(__file__).resolve().parents[3]
-    revision = subprocess.run(["git", "-C", str(base), "rev-parse", "HEAD"], check=True,
-                              capture_output=True, text=True).stdout.strip()
-    assert revision == "8ef214f67daae0daed4f78f8b259e600cad05a29"
-    status = subprocess.run(["git", "-C", str(base), "status", "--porcelain", "-uall"],
-                            check=True, capture_output=True, text=True).stdout
-    assert status == ""
-    harness = """
-import json, sys
-from pathlib import Path
-from types import SimpleNamespace
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental.test_count_proposer import run_args, stub_fits
-from bayes_model_discovery.experimental.run_label_policy import bmd_label_receipt
-with MonkeyPatch.context() as patch:
-    core = stub_fits(patch)
-    args = run_args(sys.argv[1], rounds=2)
-    core.run(args)
-    _, prompt = core.select_run_prompt(args, llm_priors=False)
-    label_args = SimpleNamespace(**{**vars(args), **prompt})
-    receipt = bmd_label_receipt("core", label_args, task="structure_out__truth_F2", metadata={})
-    (Path(sys.argv[1]) / "synthetic_label_receipt.json").write_text(json.dumps(receipt, sort_keys=True))
-"""
-    configs, outputs, receipts = [], [], []
-    for label, source in (("baseline", base), ("candidate", candidate)):
-        out = tmp_path / label / "cell"
-        env = dict(os.environ, PYTHONPATH=f"{source}/src:{source}", GIT_OPTIONAL_LOCKS="0",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="", OPENROUTER_API_KEY="")
-        result = subprocess.run([sys.executable, "-B", "-c", harness, str(out)], env=env, cwd=source,
-                                capture_output=True, text=True, check=False, timeout=120)
-        assert result.returncode == 0, result.stdout + result.stderr
-        config = json.loads((out / "config.json").read_text())
-        assert not set(WAVE_KEYS) & set(config) and config["active_maximum"] == 12
-        assert not list(out.rglob("t00_burst*"))
-        accounting = json.loads((out / "summary.json").read_text())["proposal_accounting"]
-        assert not any(key.startswith("burst_") for key in accounting)
-        receipt = json.loads((out / "synthetic_label_receipt.json").read_bytes())
-        assert is_hex64(receipt["policy_source_sha256"])
-        assert receipt["policy_source_sha256"] == hashlib.sha256(
-            (source / "src/bayes_model_discovery/experimental/run_label_policy.py").read_bytes()).hexdigest()
-        receipts.append(canonical_json({k: v for k, v in receipt.items() if k not in RECEIPT_IDENTITY_FIELDS}))
-        configs.append(config)
-        outputs.append(out)
-    left, right = configs
-    assert set(left) == set(right)
-    assert {k: v for k, v in left.items() if k not in IDENTITY_FIELDS} == {
-        k: v for k, v in right.items() if k not in IDENTITY_FIELDS}
-    assert left["source_files_sha256"].keys() == right["source_files_sha256"].keys()
-    assert {key for key, value in left["source_files_sha256"].items()
-            if value != right["source_files_sha256"][key]} == set(CHANGED_SOURCE_FILES)
-    for name in ("archive.json", "observations.jsonl", "scores.jsonl"):
-        if name == "scores.jsonl":
-            score_rows = [
-                [json.dumps({key: value for key, value in json.loads(line).items()
-                             if key not in core.PWC2_SCORE_ADDED_KEYS}, sort_keys=True)
-                 for line in (output / name).read_text().splitlines()]
-                for output in outputs
-            ]
-            assert score_rows[0] == score_rows[1], name
-        else:
-            assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes(), name
-    assert receipts[0] == receipts[1]
-    assert _points_with_authentic_identity(outputs[0], left, base) == (
-        _points_with_authentic_identity(outputs[1], right, candidate))

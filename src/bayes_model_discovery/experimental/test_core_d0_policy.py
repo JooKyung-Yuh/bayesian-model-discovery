@@ -3,9 +3,7 @@
 import csv
 import hashlib
 import json
-import os
 import re
-import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -27,11 +25,8 @@ from .run_label_policy import (
 from .test_count_proposer import run_args
 from .test_run_label_policy import registration, runner_args, write_manifest
 
-D0S_ADDED_KEYS = ("d0_policy", "d0_designs")
-IDENTITY_FIELDS = ("source_files_sha256", "created_utc", "output", "manifest_ref", "python")
+#: The points.csv columns that name the run and its code (read from the record, not compared).
 CSV_IDENTITY_FIELDS = ("source_path", "code_sha")
-RECEIPT_IDENTITY_FIELDS = ("policy_source_sha256",)
-CHANGED_SOURCE_FILES = ("core_count.py",)
 
 
 @pytest.mark.parametrize("seed", [31, 37, 41])
@@ -192,123 +187,6 @@ def test_unknown_registered_core_policy_refused(tmp_path, policy):
         resolve_label("production", manifest_ref=ref, **context)
 
 
-def _points_with_authentic_identity(output, config, source):
-    with (output / "points.csv").open(newline="", encoding="utf-8") as stream:
-        reader = csv.DictReader(stream)
-        headers, rows = reader.fieldnames, list(reader)
-    assert headers and len(set(headers)) == len(headers)
-    assert set(CSV_IDENTITY_FIELDS) <= set(headers)
-    assert rows and all(set(row) == set(headers) and None not in row.values() for row in rows)
-    code = config["source_files_sha256"]["core_count.py"]
-    assert is_hex64(code)
-    assert {row["code_sha"] for row in rows} == {code}
-    assert code == hashlib.sha256((source / "src/bayes_model_discovery/experimental/core_count.py").read_bytes()).hexdigest()
-    scores = output / "scores.jsonl"
-    assert scores == Path(config["output"]) / "scores.jsonl"
-    lines = scores.read_text().splitlines()
-    pattern = re.compile(re.escape(str(scores)) + r"#L([1-9][0-9]*)\(round=([0-9]+),phase=([A-Za-z_]+)\)")
-    references = set()
-    for row in rows:
-        match = pattern.fullmatch(row["source_path"])
-        assert match, row["source_path"]
-        line, round_number, phase = match.groups()
-        assert 1 <= int(line) <= len(lines)
-        score = json.loads(lines[int(line) - 1])
-        assert score["round"] == int(round_number) and score["phase"] == phase
-        assert row["source_path"] not in references
-        references.add(row["source_path"])
-    return headers, [{key: value for key, value in row.items() if key not in CSV_IDENTITY_FIELDS}
-                     for row in rows]
-
-
-@pytest.mark.parametrize("stated", [False, True], ids=["omitted", "explicit-fixed4"])
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-def test_opt_in_fixed4_matches_the_gw_baseline_science_and_declared_metadata(tmp_path, stated):
-    """Opt-in parity check: fixed4 reproduces the baseline run's results and declared metadata apart from identity fields."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_D0S_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_D0S_BASELINE_DIR for the baseline parity check")
-    base = Path(os.environ["BMD_D0S_BASELINE_DIR"])
-    candidate = Path(__file__).resolve().parents[3]
-    head = subprocess.run(["git", "-C", str(base), "rev-parse", "HEAD"], check=True,
-                          capture_output=True, text=True).stdout.strip()
-    assert head == "6a08b7ee5e196c206ba9ca6304a4adcbd2025d35"
-    status = subprocess.run(["git", "-C", str(base), "status", "--porcelain", "-uall"],
-                            check=True, capture_output=True, text=True).stdout
-    assert status == ""
-    harness = """
-import json, sys
-from pathlib import Path
-from types import SimpleNamespace
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental.test_count_proposer import run_args, stub_fits
-from bayes_model_discovery.experimental.run_label_policy import bmd_label_receipt
-with MonkeyPatch.context() as patch:
-    core = stub_fits(patch)
-    options = {"d0_policy": "fixed4"} if sys.argv[2] == "fixed4" else {}
-    args = run_args(sys.argv[1], rounds=2, **options)
-    core.run(args)
-    _, prompt = core.select_run_prompt(args, llm_priors=False)
-    label_args = SimpleNamespace(**{**vars(args), **prompt})
-    receipt = bmd_label_receipt("core", label_args, task="structure_out__truth_F2", metadata={})
-    (Path(sys.argv[1]) / "synthetic_label_receipt.json").write_text(json.dumps(receipt, sort_keys=True))
-"""
-    configs, outputs = [], []
-    for label, root in (("baseline", base), ("candidate", candidate)):
-        output = tmp_path / label / "synthetic_cell"
-        env = dict(os.environ, PYTHONPATH=f"{root}/src:{root}", GIT_OPTIONAL_LOCKS="0",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="",
-                   OPENROUTER_API_KEY="", PYTHONDONTWRITEBYTECODE="1")
-        option = "fixed4" if label == "candidate" and stated else "omitted"
-        result = subprocess.run([sys.executable, "-B", "-c", harness, str(output), option],
-                                cwd=root, env=env, text=True, capture_output=True,
-                                check=False, timeout=120)
-        assert result.returncode == 0, result.stdout + result.stderr
-        outputs.append(output)
-        configs.append(json.loads((output / "config.json").read_text()))
-    left, right = configs
-    assert set(right) - set(left) == set(D0S_ADDED_KEYS)
-    assert set(left) - set(right) == set()
-    assert right["d0_policy"] == core.D0_RULE
-    assert right["d0_designs"] == [0.1, 0.35, 0.65, 0.9]
-    assert {k: v for k, v in left.items() if k not in IDENTITY_FIELDS} == {
-        k: v for k, v in right.items() if k not in IDENTITY_FIELDS + D0S_ADDED_KEYS}
-    assert left["source_files_sha256"].keys() == right["source_files_sha256"].keys()
-    assert {name for name, digest in left["source_files_sha256"].items()
-            if digest != right["source_files_sha256"][name]} == set(CHANGED_SOURCE_FILES)
-    for name in ("archive.json", "observations.jsonl", "scores.jsonl"):
-        if name == "scores.jsonl":
-            score_rows = [
-                [json.dumps({key: value for key, value in json.loads(line).items()
-                             if key not in core.PWC2_SCORE_ADDED_KEYS}, sort_keys=True)
-                 for line in (output / name).read_text().splitlines()]
-                for output in outputs
-            ]
-            assert score_rows[0] == score_rows[1], name
-        else:
-            assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes(), name
-    receipts = []
-    for output, root in zip(outputs, (base, candidate), strict=True):
-        receipt = json.loads((output / "synthetic_label_receipt.json").read_bytes())
-        policy_source = root / "src/bayes_model_discovery/experimental/run_label_policy.py"
-        assert is_hex64(receipt["policy_source_sha256"])
-        assert receipt["policy_source_sha256"] == hashlib.sha256(policy_source.read_bytes()).hexdigest()
-        receipts.append(receipt)
-    assert receipts[0].keys() == receipts[1].keys()
-    assert receipts[0]["binding"] == receipts[1]["binding"]
-    # Retain the real identities; compare the remaining canonical bytes.
-    receipt_payloads = [canonical_json({key: value for key, value in receipt.items()
-                                       if key not in RECEIPT_IDENTITY_FIELDS}).encode("utf-8")
-                        for receipt in receipts]
-    assert receipt_payloads[0] == receipt_payloads[1]
-    packets = [sorted(path.relative_to(output) for path in (output / "packets").rglob("*.json"))
-               for output in outputs]
-    assert packets[0] == packets[1] and packets[0]
-    for path in packets[0]:
-        assert (outputs[0] / path).read_bytes() == (outputs[1] / path).read_bytes(), path
-    assert _points_with_authentic_identity(outputs[0], left, base) == (
-        _points_with_authentic_identity(outputs[1], right, candidate))
-
-
 def _synthetic_real_fits(monkeypatch):
     calls = []
 
@@ -379,3 +257,32 @@ def test_old_variable_sigma_grid_rule_is_refused_by_frozen_rescore():
     config["noise"]["rule"] = "0.05 * sd_x(m) on linspace(0, 1, grid_size)"
     with pytest.raises(Rejection, match="sigma/grid"):
         gaussian_world_from_config(config)
+
+
+def _points_with_authentic_identity(output, config, source):
+    with (output / "points.csv").open(newline="", encoding="utf-8") as stream:
+        reader = csv.DictReader(stream)
+        headers, rows = reader.fieldnames, list(reader)
+    assert headers and len(set(headers)) == len(headers)
+    assert set(CSV_IDENTITY_FIELDS) <= set(headers)
+    assert rows and all(set(row) == set(headers) and None not in row.values() for row in rows)
+    code = config["source_files_sha256"]["core_count.py"]
+    assert is_hex64(code)
+    assert {row["code_sha"] for row in rows} == {code}
+    assert code == hashlib.sha256((source / "src/bayes_model_discovery/experimental/core_count.py").read_bytes()).hexdigest()
+    scores = output / "scores.jsonl"
+    assert scores == Path(config["output"]) / "scores.jsonl"
+    lines = scores.read_text().splitlines()
+    pattern = re.compile(re.escape(str(scores)) + r"#L([1-9][0-9]*)\(round=([0-9]+),phase=([A-Za-z_]+)\)")
+    references = set()
+    for row in rows:
+        match = pattern.fullmatch(row["source_path"])
+        assert match, row["source_path"]
+        line, round_number, phase = match.groups()
+        assert 1 <= int(line) <= len(lines)
+        score = json.loads(lines[int(line) - 1])
+        assert score["round"] == int(round_number) and score["phase"] == phase
+        assert row["source_path"] not in references
+        references.add(row["source_path"])
+    return headers, [{key: value for key, value in row.items() if key not in CSV_IDENTITY_FIELDS}
+                     for row in rows]

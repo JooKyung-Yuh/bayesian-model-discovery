@@ -1,7 +1,7 @@
 # How the loop works
 
 This file describes one run of the loop: what happens in each round and which module does it,
-the five design criteria, the protocol the paper runs followed, the layout of a run folder, and
+the five design criteria, the protocol the runs of the paper ([arXiv:2610.25747](https://arxiv.org/abs/2610.25747)) followed, the layout of a run folder, and
 the terms you will meet in the code and in the outputs. The notebook
 [`examples/00_how_it_works.ipynb`](examples/00_how_it_works.ipynb) gives the same material at
 full length, with the formulas, the benchmark details and a longer glossary. Module names refer
@@ -108,8 +108,9 @@ benchmark is not part of the paper; it serves development and tests.
   batch, keeps at most six models (profile `paper_neuron`), and has no archive review; of the
   protocol it adopts only the three-candidate call.
 
-[`USAGE.md`](USAGE.md#reproducing-the-benchmark-runs) lists the tags and how to check out the exact
-code of the runs.
+[`USAGE.md`](USAGE.md#reproducing-the-benchmark-runs) names the tags of the private development
+repository that hold the exact code of the runs (they are not public) and how to check a run's
+recorded digests against a checkout.
 
 ## The run folder
 

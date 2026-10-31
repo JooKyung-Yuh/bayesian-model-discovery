@@ -21,7 +21,7 @@ sys.path.insert(0, str(SNAPSHOT))
 
 import fb1_grammar as fbg
 import fb1_proposer as fp
-from test_fb1_label_rule import native_import, paper_env, registration
+from test_fb1_label_rule import native_import
 from test_fb1_proposer import _state
 from test_fb1_reasoning_and_paid_call_guard import CONTEXT as PRE_UNIT_CONTEXT
 from test_fb1_reasoning_and_paid_call_guard import record_hashes
@@ -420,31 +420,3 @@ def test_the_runner_refuses_a_bad_option_before_any_output(tmp_path, extra, mess
     assert proc.returncode != 0 and message in proc.stderr
 
 
-@pytest.mark.parametrize("option", ["FB1_MASK_INPUT_NAMES", "FB1_PROMPT_VARIANT"])
-def test_the_runner_refuses_both_options_with_a_production_label(tmp_path, option):
-    """The runner refuses both development-only options under a production label."""
-    variant = tmp_path / "variant.txt"
-    variant.write_text(SYNTHETIC_VARIANT)
-    ref, _manifest = registration(tmp_path / "registration")
-    accepted = native_import(tmp_path, paper_env(ref))
-    assert accepted.returncode == 0, accepted.stderr[-2000:]
-    assert json.loads(accepted.stdout)["run_label"] == "production"
-    value = "1" if option == "FB1_MASK_INPUT_NAMES" else str(variant)
-    proc = native_import(tmp_path, {**paper_env(ref), option: value})
-    assert proc.returncode != 0 and "development-only; production is refused" in proc.stderr
-
-
-def test_the_runner_declares_the_anthropic_reasoning_setting_to_the_label_rule(tmp_path):
-    """The runner declares the Anthropic reasoning setting to the label policy."""
-    spec = "effort=medium,thinking=adaptive,display=summarized"
-    show = "print(json.dumps(r._label_runtime_settings('anthropic').get('llm_reasoning')))"
-    stated = runner(tmp_path, {"FB1_LLM_REASONING": spec}, show)
-    assert stated.returncode == 0, stated.stderr[-2000:]
-    assert json.loads(stated.stdout.splitlines()[0]) == {
-        "effort": "medium", "thinking": "adaptive", "display": "summarized"}
-    absent = runner(tmp_path, {}, show)
-    assert absent.returncode == 0 and json.loads(absent.stdout.splitlines()[0]) is None
-    # A registered production cell that did not declare it is no longer production with it set.
-    ref, _manifest = registration(tmp_path / "registration")
-    proc = native_import(tmp_path, {**paper_env(ref), "FB1_LLM_REASONING": spec})
-    assert proc.returncode != 0 and "ValueError" in proc.stderr

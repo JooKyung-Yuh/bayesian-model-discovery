@@ -1,12 +1,8 @@
 """Synthetic record-derived wave accounting, with no provider requests."""
 
 import json
-import os
 import re
-import subprocess
-import sys
 import threading
-from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -18,8 +14,6 @@ from .test_count_proposer import run_args, stub_fits
 CURVE_KEYS = ("active_count_by_round", "proposed_by_round", "admitted_by_round", "retired_by_round")
 COST_KEYS = ("initial_pool_llm", "initial_pool_fit", "rounds_llm", "rounds_fit")
 ADDED_KEYS = (*CURVE_KEYS, *COST_KEYS)
-# Parity base: the commit whose recorded outputs the opt-in baseline test pins; it skips when a checkout of this commit is absent.
-BASE_COMMIT = "885f1498c3211767a6be3add82067006a3f9208d"
 
 
 @pytest.fixture(params=["core", "boxinggym"])
@@ -313,74 +307,3 @@ def test_initial_fit_sources_preserve_component_identity(tmp_path):
         "count": 2, "seconds": 0.5, "catalogue_count": 1, "wave_count": 1}
 
 
-@pytest.mark.parametrize("suite", ["core", "boxinggym", "core_p4"])
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-def test_opt_in_no_wave_options_add_only_record_derived_indexes(tmp_path, request, suite):
-    """Without wave options, a run differs from the baseline only by record-derived index keys."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1" or not os.environ.get("BMD_PWC2_BASELINE_DIR"):
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_PWC2_BASELINE_DIR for PWC2 baseline parity")
-    if suite == "boxinggym":
-        request.getfixturevalue("require_boxinggym_source")
-    base = Path(os.environ["BMD_PWC2_BASELINE_DIR"])
-    candidate = Path(__file__).resolve().parents[3]
-    head = subprocess.run(["git", "-C", str(base), "rev-parse", "HEAD"], check=True,
-                          capture_output=True, text=True).stdout.strip()
-    assert head == BASE_COMMIT
-    status = subprocess.run(["git", "-C", str(base), "status", "--porcelain", "-uall"], check=True,
-                            capture_output=True, text=True).stdout
-    assert status == ""
-    harness = """
-import sys
-from types import SimpleNamespace
-from pytest import MonkeyPatch
-from bayes_model_discovery.experimental.test_count_proposer import run_args, stub_fits
-with MonkeyPatch.context() as patch:
-    core = stub_fits(patch)
-    module, factory = core, run_args
-    if sys.argv[2] == "boxinggym":
-        from bayes_model_discovery.experimental import boxinggym_core as module
-        from bayes_model_discovery.experimental.test_death_kl import bg_run_args as factory
-        patch.setattr(module, "count_fit", core.fit)
-    patch.setattr(module.time, "perf_counter", lambda: 0.0)
-    patch.setattr(module.resource, "getrusage", lambda *args: SimpleNamespace(ru_utime=0.0, ru_stime=0.0))
-    options = ({"proposal_policy": "P4", "proposal_limit": 3, "rounds": 6}
-               if sys.argv[2] == "core_p4" else {"rounds": 3})
-    module.run(factory(sys.argv[1], seed=31, cell="100", proposer="mock", **options))
-"""
-    outputs = []
-    for label, source in (("base", base), ("candidate", candidate)):
-        output = tmp_path / label / "cell"
-        external = os.environ.get("BMD_BOXINGGYM_SRC", "")
-        env = dict(os.environ, PYTHONPATH=f"{source}/src:{source}:{external}", GIT_OPTIONAL_LOCKS="0",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="", OPENROUTER_API_KEY="")
-        result = subprocess.run([sys.executable, "-B", "-c", harness, str(output), suite], cwd=source,
-                                env=env, capture_output=True, text=True, check=False, timeout=180)
-        assert result.returncode == 0, result.stdout + result.stderr
-        outputs.append(output)
-    for name in ("archive.json", "observations.jsonl"):
-        if name == "archive.json" and suite == "core_p4":
-            assert not any((output / name).exists() for output in outputs)
-            continue
-        assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes(), name
-    for directory in ("packets", "proposals"):
-        paths = [sorted(path.relative_to(output) for path in (output / directory).glob("*.json"))
-                 for output in outputs]
-        assert paths[0] == paths[1]
-        assert bool(paths[0]) == (directory != "packets" or suite != "core_p4")
-        for path in paths[0]:
-            assert (outputs[0] / path).read_bytes() == (outputs[1] / path).read_bytes(), path
-    before, after = [_records(output) for output in outputs]
-    assert before[1] == [{key: value for key, value in row.items() if key != "active_count"}
-                         for row in after[1]]
-    if suite == "core_p4":
-        assert "proposal_accounting" not in after[0] and "proposal_accounting" not in before[0]
-        assert set(after[0]) - set(before[0]) == set(ADDED_KEYS)
-    else:
-        assert set(after[0]["proposal_accounting"]) - set(before[0]["proposal_accounting"]) == set(CURVE_KEYS)
-        assert set(after[0]) - set(before[0]) == set(COST_KEYS)
-        after[0]["proposal_accounting"] = {key: value for key, value in after[0]["proposal_accounting"].items()
-                                            if key not in ADDED_KEYS}
-    after_summary = {key: value for key, value in after[0].items() if key not in ADDED_KEYS}
-    assert before[0] == after_summary
-    _assert_curves(core, outputs[1])
-    _assert_costs(outputs[1])

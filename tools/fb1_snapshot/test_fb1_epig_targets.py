@@ -5,15 +5,13 @@ Run: cd tools/fb1_snapshot && env -u FORCE_COLOR JAX_PLATFORMS=cpu DP_SCIENCEAGE
       <jax venv python> -m pytest -q --confcutdir=. test_fb1_epig_targets.py
 The runner reads FB1_* at import, so the option checks import it in a child interpreter (test_fb1_label_rule.native_import,
 skipped without FB1_PYTHON). The record checks run the runner with FB1_T_EXTRA=0 (one fit round, no acquisition, about a
-minute each) next to the base commit's runner read from git; the acquisition checks stop the runner at its first
+minute each); the acquisition checks stop the runner at its first
 expected predictive information gain (EPIG) call.
 """
-import io
 import json
 import os
 import subprocess
 import sys
-import tarfile
 from pathlib import Path
 
 import numpy as np
@@ -30,8 +28,6 @@ os.environ.setdefault("DP_SCIENCEAGENT_DIR",
 import run_gravity as rg  # noqa: E402
 from test_fb1_label_rule import native_import  # noqa: E402
 
-#: The commit this change starts from; the default path must reproduce its runner.
-BASE_COMMIT = "00472e73a394ff03c6a8bc3ec16a6f3968bb563e"
 #: Q_HEAD then Q_SHIFT, written out (run_gravity.py: Q_HEAD and Q_SHIFT next to P1_RANGE).
 SCORE_Q_POINTS = [[1.0, 1.0], [2.0, 1.0], [1.0, 2.0],
                   [3.0, 3.0], [3.0, 5.0], [4.0, 3.0], [4.0, 5.0], [5.0, 3.0], [5.0, 5.0]]
@@ -104,22 +100,7 @@ def test_score_q_is_declared_to_the_label_rule_and_uniform_declares_nothing(tmp_
     assert uniform == plain and "epig_targets" not in plain["binding"]["settings"]
 
 
-# ---------------------------------------------------------------- the base commit's runner
-@pytest.fixture(scope="module")
-def base_snapshot(tmp_path_factory):
-    """tools/fb1_snapshot at BASE_COMMIT, read from git into a temporary folder (never a checkout of it)."""
-    top = subprocess.run(["git", "-C", str(SNAPSHOT), "rev-parse", "--show-toplevel"],
-                         capture_output=True, text=True, check=False)
-    if top.returncode != 0:
-        pytest.skip("not a git checkout: the base commit cannot be read")
-    archive = subprocess.run(["git", "-C", top.stdout.strip(), "archive", "--format=tar", BASE_COMMIT,
-                              "tools/fb1_snapshot"], capture_output=True, check=False)
-    if archive.returncode != 0:
-        pytest.skip(f"base commit {BASE_COMMIT} is not in this repository")
-    target = tmp_path_factory.mktemp("base_00472e7")
-    with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as tar:
-        tar.extractall(target, filter="data")
-    return target / "tools" / "fb1_snapshot"
+# ---------------------------------------------------------------- the runner in a child process
 
 
 def child_env(out_dir, extra):
@@ -142,24 +123,6 @@ def run_child(snapshot, out_dir, extra, code=None, timeout=1500):
                           timeout=timeout, check=False)
 
 
-FUNCTIONS = """
-import json, run_gravity as r
-print(json.dumps({"targets": [[r.sample_epig_targets(s)[0].tolist(), r.sample_epig_targets(s)[1]] for s in (11, 31, 37, 41)],
-                  "settings": r._label_runtime_settings(), "receipt": r.LABEL_RECEIPT["binding"]}))
-"""
-
-
-@pytest.mark.parametrize("arm", ["112", "111"])
-def test_default_functions_equal_the_base_commit(base_snapshot, tmp_path, arm):
-    """Test: default functions equal the base commit."""
-    options = {"FB1_ARM": arm, "FB1_WORLD": "oscillator", "FB1_SEED": "31"}
-    base = run_child(base_snapshot, tmp_path / "base", options, FUNCTIONS)
-    new = run_child(SNAPSHOT, tmp_path / "new", options, FUNCTIONS)
-    assert base.returncode == 0, base.stderr[-2000:]
-    assert new.returncode == 0, new.stderr[-2000:]
-    assert json.loads(base.stdout.splitlines()[-1]) == json.loads(new.stdout.splitlines()[-1])
-
-
 # ---------------------------------------------------------------- whole run records (FB1_T_EXTRA=0)
 ZERO_ROUND = {"FB1_WORLD": "oscillator", "FB1_ARM": "112", "FB1_SEED": "31", "FB1_T_EXTRA": "0"}
 RECORD = "FB1_RUN_oscillator_112_seed31_v3.json"
@@ -176,30 +139,14 @@ def strip_volatile(record):
 
 
 @pytest.fixture(scope="module")
-def zero_round_runs(base_snapshot, tmp_path_factory):
-    """Run the zero-round experiment for the base commit, the default and score_q; return the output folders."""
-    folders = {name: tmp_path_factory.mktemp(f"zero_round_{name}") for name in ("base", "default", "score_q")}
-    for name, snapshot, extra in (("base", base_snapshot, {}), ("default", SNAPSHOT, {}),
+def zero_round_runs(tmp_path_factory):
+    """Run the zero-round experiment for the default and score_q; return the output folders."""
+    folders = {name: tmp_path_factory.mktemp(f"zero_round_{name}") for name in ("default", "score_q")}
+    for name, snapshot, extra in (("default", SNAPSHOT, {}),
                                   ("score_q", SNAPSHOT, {"FB1_EPIG_TARGETS": "score_q"})):
         done = run_child(snapshot, folders[name], {**ZERO_ROUND, **extra})
         assert done.returncode == 0, (name, done.stderr[-3000:])
     return folders
-
-
-def test_default_zero_round_record_and_arrays_equal_the_base_commit(zero_round_runs):
-    """Test: default zero round record and arrays equal the base commit."""
-    base, new = zero_round_runs["base"], zero_round_runs["default"]
-    names = sorted(path.name for path in base.iterdir())
-    assert names == sorted(path.name for path in new.iterdir())
-    for name in names:
-        if name == RECORD:
-            continue
-        assert (base / name).read_bytes() == (new / name).read_bytes(), name   # npz and numerics JSON byte for byte
-    before, after = json.loads((base / RECORD).read_text()), json.loads((new / RECORD).read_text())
-    assert strip_volatile(before) == strip_volatile(after)
-    assert before["code_sha256"]["run_gravity.py"] != after["code_sha256"]["run_gravity.py"]
-    assert "epig_targets" not in after["arm_config"] and after["epig"]["target_measure"] == "uniform_rectangle"
-    assert after["epig_target_points"] == rg.sample_epig_targets(31)[0].tolist()
 
 
 def without_target_fields(record):

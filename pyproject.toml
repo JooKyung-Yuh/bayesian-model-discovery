@@ -21,12 +21,16 @@ dependencies = [
     "python-dotenv",     # unpinned: local API-key loading only
 ]
 
+[project.urls]
+Repository = "https://github.com/JooKyung-Yuh/bayesian-model-discovery"
+Paper = "https://arxiv.org/abs/2610.25747"
+
 [project.optional-dependencies]
-dev = ["pytest", "ruff"]
+dev = ["pytest", "ruff==0.16.1"]   # ruff pinned to the version CI lints with
 # Benchmarks. None of the four benchmarks is a PyPI package at its pinned commit: each extra lists
 # only the Python packages its import path needs beyond the engine, and scripts/provision.sh fetches the pinned
 # checkout and exports the variable that conftest.py and the runners read.
-# BoxingGym: checkout github.com/JooKyung-Yuh/BoxingGym @ 06c790aa on BMD_BOXINGGYM_SRC (its src/ folder, put on
+# BoxingGym: checkout github.com/kanishkg/boxing-gym @ b43e38cb on BMD_BOXINGGYM_SRC (its src/ folder, put on
 # PYTHONPATH; not pip-installed, because its package metadata pins numpy 2.0.1 against the engine's 1.26.4).
 boxinggym = ["tqdm"]
 # ChemBench: not enabled in this release - LLM-AutoSciLab (@ 9a37255, BMD_AUTOSCILAB) states no licence, so the run
@@ -58,13 +62,13 @@ where = ["src"]
 # Test markers. `heavy` is the re-execution tier: tests that actually run
 # pm.sample_smc and compare the result against the frozen run. They need the
 # full pinned numerical stack (pymc/pytensor) and cost minutes, so the standard
-# suite and the required lint workflow do not run them; the advisory
-# inference-ci workflow does. Registered here so an unmarked typo fails
-# collection instead of silently selecting nothing.
+# suite and the CI workflow do not run them; run them by hand with `-m heavy`.
+# Registered here so an unmarked typo fails collection instead of silently
+# selecting nothing.
 #
 # `replay` is the 100-cell lockstep equivalence replay of the frozen acquisition
-# run. It is registered here and selected by NO workflow: both ci.yml and
-# inference-ci.yml exclude it by name. Three reasons, and each one alone is
+# run. It is registered here and selected by NO workflow: ci.yml excludes it by
+# name. Three reasons, and each one alone is
 # sufficient. It needs the frozen archive on local disk, which no CI checkout
 # has. It costs about 40 minutes of sampling for the full five worlds. And it is
 # a replay of registered evidence rather than a check on a diff - re-running it

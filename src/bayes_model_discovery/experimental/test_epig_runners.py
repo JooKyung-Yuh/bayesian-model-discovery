@@ -1,11 +1,7 @@
 """Synthetic expected predictive information gain (EPIG) dispatch, once-only targets and legacy artifact preservation."""
 import csv
-import hashlib
 import json
-import os
-import subprocess
 import sys
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -30,9 +26,7 @@ def _run(runner, output, patch, cell="002", rounds=2, two_inputs=False):
     elif runner == "chembench":
         stub_fits(patch)
         if two_inputs:
-            # The pool EIG/EPIG path runs on the two-input fake. Imported
-            # here, not at module level: the parity harness below loads this file against a
-            # base checkout whose test_chembench_core has no two-input fake.
+            # The pool EIG/EPIG path runs on the two-input fake.
             from .test_chembench_core import use_two_input_fake
             use_two_input_fake(patch)
         chem.run(_args(output, _manifest(output.parent), cell=cell,
@@ -162,118 +156,6 @@ def test_boxing_target_sampler_determinism_and_rng_isolation():
     after = np.random.get_state()
     np.testing.assert_array_equal(before[1], after[1])
     assert before[2:] == after[2:]
-
-
-PARITY_HARNESS = r'''
-from datetime import datetime
-import importlib.util
-from pathlib import Path
-import sys
-from types import SimpleNamespace
-import pytest
-spec = importlib.util.spec_from_file_location("bayes_model_discovery.experimental._epig_fixture", sys.argv[1])
-fixture = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(fixture)
-class FrozenDatetime(datetime):
-    @classmethod
-    def now(cls, tz=None):
-        return cls(2001, 1, 1, tzinfo=tz)
-with pytest.MonkeyPatch.context() as patch:
-    patch.setattr(fixture.core.time, "perf_counter", lambda: 0.0)
-    patch.setattr(fixture.core.resource, "getrusage", lambda *_: SimpleNamespace(ru_utime=0.0, ru_stime=0.0))
-    for module in (fixture.core, fixture.bg, fixture.chem, fixture.neuron):
-        if hasattr(module, "datetime"):
-            patch.setattr(module, "datetime", FrozenDatetime)
-    fixture._run(sys.argv[3], Path(sys.argv[2]), patch, cell=sys.argv[4], rounds=1)
-'''
-
-
-@pytest.mark.parametrize("runner", ["core", "boxinggym", "chembench", "neuron"])
-@pytest.mark.parametrize("cell", ["000", "001", "100", "101"])
-def test_opt_in_all_legacy_cells_preserve_artifact_bytes(tmp_path, runner, cell):
-    """Check that opt in all legacy cells preserve artifact bytes."""
-    if runner != "neuron":
-        pytest.skip("parity with the baseline recorded before the model-identity change crosses the ID/RNG boundary; a successor parity test is still owed")
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("set BMD_BASELINE_COMPARE=1 and BMD_EPIG_BASELINE_DIR for verified-base parity")
-    value = os.environ.get("BMD_EPIG_BASELINE_DIR")
-    if not value:
-        pytest.skip("BMD_EPIG_BASELINE_DIR must name a read-only checkout of the baseline commit")
-    root = Path(__file__).resolve().parents[3]
-    baseline = Path(value).resolve()
-    # The base commit this opt-in comparison pins; it skips when no checkout of it is supplied.
-    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=baseline, text=True).strip() == \
-        "cf169c5b17f45931814c82c22e4bcfdf2ad142b8"
-    output, saved, configurations = tmp_path / "same_output", [], []
-    for label, source in (("baseline", baseline), ("current", root)):
-        env = os.environ.copy()
-        env.update(PYTHONPATH=f"{source}/src:{source}:" + env.get("PYTHONPATH", ""),
-                   PYTHONDONTWRITEBYTECODE="1", OPENAI_API_KEY="", ANTHROPIC_API_KEY="",
-                   OPENAI_COMPAT_API_KEY="", OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
-        process = subprocess.run([sys.executable, "-B", "-c", PARITY_HARNESS, str(Path(__file__).resolve()),
-                                  str(output), runner, cell], cwd=source, env=env,
-                                 capture_output=True, text=True, timeout=120, check=False)
-        assert process.returncode == 0, process.stdout + process.stderr
-        configurations.append(json.loads((output / "config.json").read_text()))
-        saved.append(tmp_path / label)
-        output.rename(saved[-1])
-    before, after = saved
-    # round_timings.jsonl is ChemBench's per-round wall time, absent at the base.
-    observational_sidecars = {"fit_timings.jsonl", "acquisition_timings.jsonl",
-                              "prediction_pool_summary.jsonl", "round_timings.jsonl"}
-    paths = lambda directory: sorted(str(p.relative_to(directory)) for p in directory.rglob("*")
-                                     if p.is_file() and p.name not in observational_sidecars)
-    assert paths(before) == paths(after)
-    provenance = {"core": "source_files_sha256", "boxinggym": "source_files_sha256",
-                  "chembench": "source_sha256", "neuron": "experimental_source_sha256"}[runner]
-    replacements = []
-    for index, source in enumerate((baseline, root)):
-        for name, digest in configurations[index][provenance].items():
-            assert digest == hashlib.sha256((source / "src/bayes_model_discovery/experimental" / name).read_bytes()).hexdigest()
-    for name in configurations[0][provenance]:
-        replacements.append((configurations[1][provenance][name].encode(), configurations[0][provenance][name].encode()))
-    from .count_inference import candidate_set_record
-    if runner == "core":
-        candidate_metadata = candidate_set_record(np.linspace(0, 1, configurations[1]["design_count"]), runner)
-    elif runner == "boxinggym":
-        with np.load(after / "evaluation_scoring_only.npz") as values:
-            candidate_metadata = candidate_set_record(values["designs"], runner)
-    elif runner == "chembench":
-        from .test_chembench_core import FAKE_NAMES, _fake_sample_designs
-        pool_config = configurations[1]["design_pool"]
-        rows = _fake_sample_designs(pool_config["count"], pool_config["sampler_seed"])
-        candidate_metadata = candidate_set_record([[row[n] for n in FAKE_NAMES] for row in rows], runner)
-    report = []
-    for name in paths(before):
-        left, right = (before / name).read_bytes(), (after / name).read_bytes()
-        added_fields = []
-        if runner == "neuron" and name == "config.json":
-            from .test_prewave_fit_timeout import (
-                ADDED_NEURON_CONFIG_KEYS,
-                _normalize_added_neuron_config,
-            )
-
-            raw_right = right
-            right = _normalize_added_neuron_config(left, right)
-            added_fields.extend(ADDED_NEURON_CONFIG_KEYS)
-            assert (after / name).read_bytes() == raw_right
-            assert set(ADDED_NEURON_CONFIG_KEYS) <= json.loads((after / name).read_bytes()).keys()
-        if ((runner != "neuron" and name.startswith("acquisition/") and name.endswith(".json"))
-                or (runner == "chembench" and cell[2] == "0" and name == "config.json")):
-            original, current_record = json.loads(left), json.loads(right)
-            for key in ("candidate_set_sha256", "candidate_generator"):
-                assert key not in original
-                assert current_record.pop(key) == candidate_metadata[key]
-                added_fields.append(key)
-            right = (json.dumps(current_record, indent=2, sort_keys=True) + "\n").encode()
-        for current, previous in replacements:
-            right = right.replace(current, previous)
-        right = right.replace((str(root) + "/").encode(), (str(baseline) + "/").encode())
-        assert left == right, name
-        report.append({"artifact": name, "raw_bytes_identical": (before / name).read_bytes() == (after / name).read_bytes(),
-                       "verified_source_provenance_only_normalization": not added_fields,
-                       "explicitly_verified_added_fields": added_fields})
-    (tmp_path / "parity_report.json").write_text(json.dumps(report, indent=2) + "\n")
 
 
 @pytest.mark.usefixtures("require_boxinggym_source")

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ForceBench under the unified protocol (the registered protocol and its two addenda), one cell, host-independent.
-# The option C/D cell settings of ../fb1_launch_c/run_cell.sh (Claude Opus 5.5, effort medium, adaptive thinking,
+# The option C/D cell settings of the development tree's earlier launch script (Claude Opus 5.5, effort medium, adaptive thinking,
 # summarized; FA-C system prompt ../fb1_launch_c/proposer_system_v2_9_FA-C.txt, sha256
 # 196f82b7a0f94e12a7cb8be2d07e776b1536aed11bf8ebd4bea1872c7002953c; masked input names; free structures; 2 random start
 # designs; development label) plus the unified protocol's options of the runner (the four engines' common names):
@@ -50,7 +50,7 @@ case "$BUDGET" in
   30) CALL_CAP=64; CHECKPOINTS=2,4,8,16,18; REVIEW=5,10,15,20,25,30;;
   *) echo "FB_BUDGET must be 16 (default) or 30"; exit 2;;
 esac
-[ -n "${FB_CHECKPOINTS:-}" ] && CHECKPOINTS=$FB_CHECKPOINTS   # 2026-10-06 (main): env passthrough like FB_MAX_PAID_CALLS; "all" = every n from D0 to D0+T_EXTRA (runner parser), used by TRIG75B so Ours has per-round scores
+[ -n "${FB_CHECKPOINTS:-}" ] && CHECKPOINTS=$FB_CHECKPOINTS   # 2026-10-06: env passthrough like FB_MAX_PAID_CALLS; "all" = every n from D0 to D0+T_EXTRA (runner parser), used by the paper runs so every round is scored
 CATALOGUE=${FB_CATALOGUE:-off}
 case "$CATALOGUE" in on|off) ;; *) echo "FB_CATALOGUE must be on or off"; exit 2;; esac
 case "$MODE" in paid|mock) ;; *) echo "mode must be paid or mock"; exit 2;; esac
@@ -64,7 +64,7 @@ mkdir -p "$OUT"
 unset FORCE_COLOR NPY_DISABLE_CPU_FEATURES FB1_DESIGN_SEARCH FB1_INTEGRATOR FB1_SOFTENING ANTHROPIC_API_KEY FB1_ALLOW_PAID_API \
       FB1_EPIG_TARGETS FB1_GRAMMAR_TRIG FB1_PROPOSAL_POLICY FB1_INITIAL_PROPOSALS FB1_ACTIVE_MAXIMUM FB1_PROPOSAL_LIMIT \
       FB1_ARCHIVE_REVIEW_ROUNDS FB1_DESIGN_POLICY FB1_PACKET_ARCHIVE FB1_CATALOGUE FB1_CHECKPOINTS FB1_MAX_PAID_CALLS
-export PYTHONDONTWRITEBYTECODE=1 JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 TZ=Asia/Seoul
+export PYTHONDONTWRITEBYTECODE=1 JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 TZ=UTC
 mkdir -p "$OUT/ptc" && export PYTENSOR_FLAGS=base_compiledir=$OUT/ptc
 export FB1_WORLD=$WORLD FB1_ARM=$ARM FB1_SEED=$SEED FB1_LIST=v3 FB1_PROPOSER=llm FB1_STRUCTURE_PROPOSALS=free
 [ "$SEARCH" = ascent ] && export FB1_DESIGN_SEARCH=ascent
@@ -95,9 +95,9 @@ else
   : "${FB_DOTENV:?FB_DOTENV must point at the dotenv file holding ANTHROPIC_API_KEY}"
   export FB1_ALLOW_PAID_API=1 FB1_T_EXTRA=$BUDGET FB1_MAX_PAID_CALLS=${FB_MAX_PAID_CALLS:-$CALL_CAP}
 fi
-echo "START $(date '+%F %T KST') world $WORLD seed $SEED policy $POLICY arm $ARM search $SEARCH engine $ENGINE budget $BUDGET mode $MODE host $(hostname) tree $TREE out $OUT"
+echo "START $(date '+%F %T UTC') world $WORLD seed $SEED policy $POLICY arm $ARM search $SEARCH engine $ENGINE budget $BUDGET mode $MODE host $(hostname) tree $TREE out $OUT"
 echo "ENV FB1_INITIAL_PROPOSALS=$FB1_INITIAL_PROPOSALS FB1_PROPOSAL_LIMIT=$FB1_PROPOSAL_LIMIT FB1_ARCHIVE_REVIEW_ROUNDS=$FB1_ARCHIVE_REVIEW_ROUNDS FB1_CATALOGUE=$FB1_CATALOGUE FB1_PACKET_ARCHIVE=$FB1_PACKET_ARCHIVE FB1_DESIGN_POLICY=$FB1_DESIGN_POLICY FB1_T_EXTRA=$FB1_T_EXTRA FB1_MAX_PAID_CALLS=${FB1_MAX_PAID_CALLS:-<unset>} FB1_CHECKPOINTS=${FB1_CHECKPOINTS:-<unset>} FB1_DESIGN_SEARCH=${FB1_DESIGN_SEARCH:-<unset>} FB1_INTEGRATOR=${FB1_INTEGRATOR:-<unset>} FB1_SOFTENING=${FB1_SOFTENING:-<unset>} FB1_EPIG_TARGETS=${FB1_EPIG_TARGETS:-<unset>} FB1_GRAMMAR_TRIG=${FB1_GRAMMAR_TRIG:-<unset>} prompt_file=$(basename "$FB1_PROMPT_VARIANT") prompt_sha256=$(sha256sum "$FB1_PROMPT_VARIANT" | cut -d' ' -f1)"
 FB_TREE=$TREE "$FB_PY" -B "$CKIT/relay.py"
 rc=$?
-echo "EXIT=$rc END $(date '+%F %T KST')"
+echo "EXIT=$rc END $(date '+%F %T UTC')"
 exit $rc

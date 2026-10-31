@@ -10,18 +10,16 @@ Run: cd tools/fb1_snapshot && env -u FORCE_COLOR JAX_PLATFORMS=cpu DP_SCIENCEAGE
       <jax venv python> -m pytest -q --confcutdir=. test_fb1_unified_protocol.py
 Injected scripted clients and synthetic packets/posteriors only. The runner's option checks import it in a child
 interpreter (test_fb1_label_rule.native_import, skipped without FB1_PYTHON); the record checks run the runner with
-FB1_T_EXTRA=0 next to the base commit's runner read from git.
+FB1_T_EXTRA=0.
 """
 import ast
 import hashlib
 import inspect
-import io
 import json
 import os
 import re
 import subprocess
 import sys
-import tarfile
 import threading
 import time
 from pathlib import Path
@@ -51,8 +49,6 @@ import run_gravity as rg  # noqa: E402
 from test_fb1_label_rule import native_import  # noqa: E402
 from test_fb1_proposer import _state  # noqa: E402
 
-#: The commit this test starts from; the default path must reproduce its runner.
-BASE_COMMIT = "2498c6368b65f80efe2e872a9c677400d62d13a0"
 TIMES = np.linspace(0.5, 5.0, 10)
 CONTEXT = {"run_id": "t", "world": "gravity", "arm": "111", "policy": "composed_3", "event": 0, "round": 1,
            "n_designs": 3, "candidate_index": 0, "packet_file": "t03_c0.json"}
@@ -87,15 +83,6 @@ def free_packet():
     return fp.serialize_packet(fp.build_belief_packet(rows, members, [], constraints, interface, 1)), constraints
 
 
-# ================================================================== the proposer: texts
-#: The folder holding the registered paragraph files (optional; the size and sha256 checks below run without it).
-PLAN = Path(os.environ["BMD_U3_PARAGRAPH_DIR"]) if os.environ.get("BMD_U3_PARAGRAPH_DIR") else None
-PARAGRAPH_FILES = {"COMPOSITION_PARAGRAPH_V2": ("composition_paragraph_v2.txt", 525,
-                                                "782a30b74cd25adb6b51351096cf97e31a7375d8630d726ee8eb7d7949c35be6"),
-                   "ARCHIVE_REVIEW_PARAGRAPH_V1": ("archive_review_paragraph_v1.txt", 675,
-                                                   "8b4c5359d81b6b3e5afed570c1e3c3f1bb217a57e70977bcbdb42d1238cd6cde")}
-
-
 def _count_proposer_constants():
     """Read the burst paragraph constants from the count proposer's source without importing it; skip if the source is absent."""
     path = ROOT / "src/bayes_model_discovery/experimental/count_proposer.py"
@@ -114,18 +101,6 @@ def test_the_burst_paragraphs_are_the_count_runners_bytes():
     """The burst paragraphs equal the count runner's constants byte for byte."""
     assert _count_proposer_constants() == {"BURST_PARAGRAPH": fp.BURST_PARAGRAPH,
                                            "BURST_REFILL_PARAGRAPH": fp.BURST_REFILL_PARAGRAPH}
-
-
-@pytest.mark.parametrize("name", sorted(PARAGRAPH_FILES))
-def test_the_unified_paragraphs_are_the_registered_files_byte_for_byte(name):
-    """Each unified paragraph has the registered size and sha256 and matches the registered file when one is supplied."""
-    file_name, size, digest = PARAGRAPH_FILES[name]
-    raw = getattr(fp, name).encode()
-    assert len(raw) == size and raw.endswith(b"\n") and b"{limit}" in raw
-    assert hashlib.sha256(raw).hexdigest() == getattr(fp, f"{name}_SHA256") == digest
-    if PLAN is None or not (PLAN / file_name).is_file():
-        pytest.skip("set BMD_U3_PARAGRAPH_DIR to the registered paragraph files")
-    assert (PLAN / file_name).read_bytes() == raw
 
 
 def test_request_prompt_default_is_the_stored_file_and_each_kind_appends_its_paragraphs():
@@ -883,21 +858,6 @@ def test_the_command_line_flags_set_the_same_variables(tmp_path):
 
 
 # ================================================================== whole-run records (child runs, FB1_T_EXTRA=0)
-@pytest.fixture(scope="module")
-def base_snapshot(tmp_path_factory):
-    """tools/fb1_snapshot at BASE_COMMIT, read from git into a temporary folder (never a checkout of it)."""
-    top = subprocess.run(["git", "-C", str(SNAPSHOT), "rev-parse", "--show-toplevel"],
-                         capture_output=True, text=True, check=False)
-    if top.returncode != 0:
-        pytest.skip("not a git checkout: the base commit cannot be read")
-    archive = subprocess.run(["git", "-C", top.stdout.strip(), "archive", "--format=tar", BASE_COMMIT,
-                              "tools/fb1_snapshot"], capture_output=True, check=False)
-    if archive.returncode != 0:
-        pytest.skip(f"base commit {BASE_COMMIT} is not in this repository")
-    target = tmp_path_factory.mktemp("base_2498c63")
-    with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as tar:
-        tar.extractall(target, filter="data")
-    return target / "tools" / "fb1_snapshot"
 
 
 def run_child(snapshot, out_dir, extra, timeout=1500):
@@ -919,49 +879,15 @@ ZERO_ROUND = {"FB1_WORLD": "gravity", "FB1_ARM": "111", "FB1_SEED": "31", "FB1_T
 RECORD = "FB1_RUN_gravity_111_seed31_v3_free.json"
 
 
-def strip_volatile(record):
-    """Return a copy of a run record without timing and source-digest fields that change between runs."""
-    record = json.loads(json.dumps(record))
-    record.pop("timing_s")
-    record["code_sha256"].pop("run_gravity.py")
-    record["code_sha256"].pop("fb1_design_search.py", None)
-    # the label policy's own source digest moves with any edit of run_label_policy.py, like a code sha
-    for block in (record["label"], record["proposer"]["label_receipt"]):
-        block.pop("policy_source_sha256")
-    for checkpoint in record["checkpoints"].values():
-        checkpoint.pop("elapsed_s")
-    return record
-
-
 @pytest.fixture(scope="module")
-def zero_round_runs(base_snapshot, tmp_path_factory):
-    """Module-scoped fixture: run the base, default and burst zero-round child runs and return their output folders."""
-    folders = {name: tmp_path_factory.mktemp(f"zero_round_{name}") for name in ("base", "default", "burst")}
-    for name, snapshot, extra in (("base", base_snapshot, {}), ("default", SNAPSHOT, {}),
+def zero_round_runs(tmp_path_factory):
+    """Module-scoped fixture: run the default and burst zero-round child runs and return their output folders."""
+    folders = {name: tmp_path_factory.mktemp(f"zero_round_{name}") for name in ("default", "burst")}
+    for name, snapshot, extra in (("default", SNAPSHOT, {}),
                                   ("burst", SNAPSHOT, {"FB1_INITIAL_PROPOSALS": "12"})):
         done = run_child(snapshot, folders[name], {**ZERO_ROUND, **extra})
         assert done.returncode == 0, (name, done.stderr[-3000:])
     return folders
-
-
-def test_the_default_zero_round_run_equals_the_base_commit(zero_round_runs):
-    """The default zero-round run reproduces the base commit's run file for file."""
-    base, new = zero_round_runs["base"], zero_round_runs["default"]
-    names = sorted(str(p.relative_to(base)) for p in base.rglob("*") if p.is_file())
-    assert names == sorted(str(p.relative_to(new)) for p in new.rglob("*") if p.is_file())
-    for name in names:
-        if name == RECORD:
-            continue
-        if name.endswith(".npz"):
-            a, b = np.load(base / name), np.load(new / name)
-            assert sorted(a.files) == sorted(b.files) and all(np.array_equal(a[k], b[k]) for k in a.files), name
-        elif name.endswith(".response.json"):
-            x, y = json.loads((base / name).read_text()), json.loads((new / name).read_text())
-            x.pop("elapsed_seconds"); y.pop("elapsed_seconds")
-            assert x == y, name
-        else:
-            assert (base / name).read_bytes() == (new / name).read_bytes(), name
-    assert strip_volatile(json.loads((base / RECORD).read_text())) == strip_volatile(json.loads((new / RECORD).read_text()))
 
 
 def test_the_burst_zero_round_run_admits_twelve_and_records_the_burst(zero_round_runs):

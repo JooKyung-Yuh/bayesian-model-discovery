@@ -14,7 +14,6 @@ from bayes_model_discovery.experimental import chembench_core as cc
 from bayes_model_discovery.experimental import test_chembench_core as old
 from bayes_model_discovery.experimental.count_inference import Fit
 from bayes_model_discovery.experimental.test_chembench_mda_options import stub_fits
-from bayes_model_discovery.provenance.canonical import is_hex64
 
 
 def _fit(expression="b0", evidence=0.0, coefficient=0.0):
@@ -166,7 +165,6 @@ def test_kl_uses_same_point_local_bma_and_recomputable_artifact(tmp_path):
     assert artifact["format"] == "mixture_log_density_at_quadrature_nodes"
     np.testing.assert_array_equal(np.load(tmp_path / "kl.npz")["log_density"],
                                   result["quadrature"]["log_q"])
-
 
 
 def test_prediction_exclusions_are_logged_without_retiring_model(tmp_path, monkeypatch):
@@ -345,7 +343,6 @@ def test_bad_timeout_fails_before_outputs(tmp_path, value):
     assert not output.exists()
 
 
-
 @pytest.mark.parametrize("tokens,expected", [([], None), (["--fit-timeout", "600"], 600.0)])
 def test_fit_timeout_cli_is_explicit_and_omitted_by_default(monkeypatch, tokens, expected):
     """Check that fit timeout cli is explicit and omitted by default."""
@@ -361,91 +358,3 @@ def test_fit_timeout_cli_is_explicit_and_omitted_by_default(monkeypatch, tokens,
         assert captured[0].fit_timeout_seconds == expected
 
 
-BASELINE_HARNESS = r'''
-import sys
-from pathlib import Path
-import pytest
-from bayes_model_discovery.experimental import chembench_core as cc
-from bayes_model_discovery.experimental import test_chembench_core as old
-from bayes_model_discovery.experimental.test_chembench_mda_options import stub_fits
-with pytest.MonkeyPatch.context() as patch:
-    stub_fits(patch)
-    cc.run(old._args(Path(sys.argv[2]), Path(sys.argv[3]), rounds=2,
-           cell=sys.argv[4], structure_proposals='free' if sys.argv[4][0] == '1' else 'catalog'))
-'''
-
-
-@pytest.mark.parametrize("cell", ["000", "100"])
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the identity boundary; a successor parity test is still owed")
-def test_opt_in_default_artifacts_match_declared_base(tmp_path, cell):
-    """Check that opt in default artifacts match declared base."""
-    if os.environ.get("BMD_BASELINE_COMPARE") != "1":
-        pytest.skip("set BMD_BASELINE_COMPARE=1 for the detached baseline artifact comparison")
-    root = Path(__file__).resolve().parents[3]
-    scratch = Path(os.environ.get("BMD_SAFEGUARDS_SCRATCH", root.parent / (root.name + "_scratch")))
-    baseline = Path(os.environ.get("BMD_SAFEGUARDS_BASELINE", scratch / "chem/base"))
-    if not baseline.exists():
-        subprocess.run(["git", "worktree", "add", "--detach", str(baseline),
-                        "c6fe27c76515065a943df33f122529eb181aac04"], cwd=root, check=True, capture_output=True)
-    output, manifest = tmp_path / "same_output", old._manifest(tmp_path)
-    saved = []
-    for label, source in (("base", baseline), ("current", root)):
-        env = os.environ.copy()
-        env.update(PYTHONPATH=f"{source}/src:{source}", PYTHONDONTWRITEBYTECODE="1",
-                   TMPDIR="/tmp", OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", MKL_NUM_THREADS="1",
-                   OPENAI_API_KEY="", ANTHROPIC_API_KEY="", OPENAI_COMPAT_API_KEY="")
-        result = subprocess.run([sys.executable, "-B", "-c", BASELINE_HARNESS, str(Path(__file__)),
-                                 str(output), str(manifest), cell], cwd=source, env=env,
-                                capture_output=True, text=True, check=False)
-        (tmp_path / f"{label}.log").write_text(result.stdout + result.stderr)
-        assert result.returncode == 0, result.stdout + result.stderr
-        target = tmp_path / label
-        output.rename(target)
-        saved.append(target)
-    a, b = saved
-    # round_timings.jsonl is ChemBench's per-round wall time.
-    observational_sidecars = {"fit_timings.jsonl", "acquisition_timings.jsonl",
-                              "prediction_pool_summary.jsonl", "round_timings.jsonl"}
-    files_a = sorted(str(path.relative_to(a)) for path in a.rglob("*")
-                     if path.is_file() and path.name not in observational_sidecars)
-    files_b = sorted(str(path.relative_to(b)) for path in b.rglob("*")
-                     if path.is_file() and path.name not in observational_sidecars)
-    assert files_a == files_b
-    config_a, config_b = _json(a / "config.json"), _json(b / "config.json")
-    # Absolute source provenance and measured timing are truthful and necessarily
-    # checkout-dependent. Normalize only these declared metadata fields.
-    hashes = list(zip(config_b["source_sha256"].values(), config_a["source_sha256"].values(), strict=True))
-    report = []
-    for name in files_a:
-        aa, bb = (a / name).read_bytes(), (b / name).read_bytes()
-        if name.endswith(".npz"):
-            assert aa == bb, name
-            with np.load(a / name) as left, np.load(b / name) as right:
-                assert left.files == right.files, name
-                for key in left.files:
-                    assert left[key].dtype == right[key].dtype and left[key].tobytes() == right[key].tobytes(), (name, key)
-        else:
-            if name == "summary.json":
-                left, right = json.loads(aa), json.loads(bb)
-                for item in (left, right):
-                    for key in ("wall_seconds", "user_cpu_seconds", "system_cpu_seconds", "timing_seconds"):
-                        item.pop(key, None)
-                aa, bb = (json.dumps(item, sort_keys=True).encode() for item in (left, right))
-            elif name == "config.json" or (name.startswith("acquisition/") and name.endswith(".json")):
-                # Candidate-pool provenance keys: present and well-formed now,
-                # absent at the base commit; removed only after that check
-                # (stale-key normalization). Every other key compares byte for byte.
-                original, current_record = json.loads(aa), json.loads(bb)
-                if "candidate_set_sha256" in current_record or "candidate_generator" in current_record:
-                    for key in ("candidate_set_sha256", "candidate_generator"):
-                        assert key not in original, (name, key)
-                        assert key in current_record, (name, key)
-                    assert is_hex64(current_record.pop("candidate_set_sha256")), name
-                    assert current_record.pop("candidate_generator")["hash_scope"] == "generated_pool_before_history_filters", name
-                    bb = (json.dumps(current_record, indent=2, sort_keys=True) + "\n").encode()
-            bb = bb.replace((str(root) + "/").encode(), (str(baseline) + "/").encode())
-            for current_hash, base_hash in hashes:
-                bb = bb.replace(current_hash.encode(), base_hash.encode())
-            assert aa == bb, name
-        report.append({"artifact": name, "identical_after_declared_metadata_normalization": True})
-    (tmp_path / "parity_report.json").write_text(json.dumps(report, indent=2) + "\n")

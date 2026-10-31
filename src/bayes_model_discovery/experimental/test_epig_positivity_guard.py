@@ -1,10 +1,6 @@
 """Synthetic acquisition-only validity checks; no fitting or provider calls."""
 import json
-import os
-import subprocess
-import sys
 from dataclasses import replace
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -267,52 +263,6 @@ def test_structural_errors_are_not_reclassified_as_mean_exclusion():
     malformed = replace(fit, particles={key: values for key, values in fit.particles.items() if key != "b1"})
     with pytest.raises(KeyError, match="b1"):
         record_for([malformed])
-
-
-def all_valid_parity_payload():
-    """Executable under either pristine source or this checkout, using only public legacy APIs."""
-    cases = {family: [grammar_fit(family)] for family in (*POSITIVE_FAMILIES, "normal", "student_t")}
-    cases["bounded"] = [bounded_fit()]
-    cases["mixed_positive"] = [grammar_fit("gamma", evidence=np.log(.2)),
-                               grammar_fit("lognormal", evidence=np.log(.8))]
-    cases["mixed_count"] = [grammar_fit("poisson", evidence=np.log(.3)),
-                            grammar_fit("negative_binomial", evidence=np.log(.7))]
-    cases["coarsened_poisson"] = [grammar_fit("poisson", intercepts=tuple(np.log([8000., 10000.])),
-                                               slopes=(0., .02))]
-    payload = {}
-    for name, fits in cases.items():
-        record = record_for(fits, [0., .3], [.6, .9], n_trials=2)
-        payload[name] = {"record_json": json.dumps(record, sort_keys=True, separators=(",", ":"), allow_nan=False),
-                         "score_bytes": np.asarray([[row["epig"], row["joint_eig"]]
-                                                     for row in record["rows"]], dtype="<f8").tobytes().hex()}
-    return payload
-
-
-@pytest.mark.skipif(os.environ.get("BMD_BASELINE_COMPARE") != "1", reason="opt-in pristine source comparison")
-@pytest.mark.skip(reason="parity with the baseline recorded before the model-identity change crosses the model-ID boundary; a successor parity test is still owed")
-def test_all_valid_acquisition_json_and_score_bytes_match_pristine_base(tmp_path):
-    """Check that all valid acquisition json and score bytes match pristine base."""
-    configured = os.environ.get("BMD_EPIG_GUARD_BASELINE_DIR")
-    if not configured:
-        pytest.skip("BMD_EPIG_GUARD_BASELINE_DIR must identify the pristine baseline source")
-    baseline = Path(configured).resolve()
-    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=baseline, text=True).strip()
-    # The pristine base commit this opt-in comparison pins; it skips when no checkout of it is supplied.
-    assert head == "189fc88962e2a083e756469eeddb5165fcdcc117"
-    env = os.environ.copy()
-    env.update(PYTHONPATH=os.pathsep.join([str(baseline / "src"), str(baseline)]),
-               PYTHONDONTWRITEBYTECODE="1", OPENAI_API_KEY="", ANTHROPIC_API_KEY="")
-    script = ("import json,runpy; from pathlib import Path; "
-              "from bayes_model_discovery.experimental import count_inference as m; "
-              f"assert Path(m.__file__).resolve().is_relative_to(Path({str(baseline)!r})); "
-              f"ns=runpy.run_path({str(Path(__file__).resolve())!r}); "
-              "print(json.dumps(ns['all_valid_parity_payload'](),sort_keys=True))")
-    result = subprocess.run([sys.executable, "-B", "-c", script], cwd=tmp_path, env=env,
-                            text=True, capture_output=True, timeout=120, check=False)
-    (tmp_path / "baseline.stdout").write_text(result.stdout)
-    (tmp_path / "baseline.stderr").write_text(result.stderr)
-    assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout) == all_valid_parity_payload()
 
 
 def test_chunked_guard_still_uses_one_global_mask_for_late_targets(monkeypatch):

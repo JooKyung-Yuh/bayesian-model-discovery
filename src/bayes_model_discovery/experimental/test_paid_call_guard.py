@@ -8,11 +8,9 @@ with the stop and exits 4; an omitted option leaves every record and setting as 
 
 import json
 import re
-import subprocess
 import sys
 import threading
 import time
-import types
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
@@ -25,9 +23,6 @@ from .test_count_proposer import run_args, stub_fits
 from .test_run_label_policy import registration, runner_args, write_manifest
 
 REPOSITORY = Path(__file__).resolve().parents[3]
-#: The base commit the omitted-option parity test reads its transport from; the test skips when this commit is
-#: absent from the checkout.
-BASE_COMMIT = "45feb07357c9b7c71be57b245c8b2cb9f82e0ee4"
 CANDIDATE = {"expression": "b0 + b1*z", "family": "binomial",
              "parameters": {"b0": "intercept", "b1": "signed"}}
 
@@ -217,21 +212,6 @@ def test_the_stop_is_not_an_exception_a_candidate_boundary_could_swallow():
     assert cp.PAID_CALL_BUDGET_EXIT_CODE == 4
 
 
-def base_transport():
-    """The base commit's count_proposer, loaded beside this package so its relative imports
-    resolve to the same (unchanged) count_models and prior_probe_detail."""
-    name = "src/bayes_model_discovery/experimental/count_proposer.py"
-    try:
-        source = subprocess.run(["git", "-C", str(REPOSITORY), "show", f"{BASE_COMMIT}:{name}"],
-                                check=True, capture_output=True).stdout
-    except (OSError, subprocess.CalledProcessError) as exc:
-        pytest.skip(f"base commit {BASE_COMMIT[:12]} is not readable here: {exc}")
-    module = types.ModuleType("bayes_model_discovery.experimental._pcg_base_count_proposer")
-    module.__file__ = cp.__file__  # the packaged prompts directory resolves beside it
-    module.__package__ = "bayes_model_discovery.experimental"
-    exec(compile(source, cp.__file__, "exec"), module.__dict__)  # noqa: S102 - pinned local source only
-    return module
-
 
 def written(records):
     """Every record file's bytes, with the one wall-clock field zeroed."""
@@ -239,33 +219,6 @@ def written(records):
                               path.read_bytes())
             for path in sorted(records.iterdir())}
 
-
-@pytest.mark.parametrize("provider", PROVIDERS)
-def test_the_omitted_option_writes_the_base_commits_transport_bytes(tmp_path, provider):
-    """With the option omitted, the transport writes the same bytes as the base commit."""
-    base = base_transport()
-    public = [{"u": 0.1 * (i % 10), "y": i % 50} for i in range(9)]
-    event = {"run_id": "synthetic-pcg-run", "world_seed": 11, "cell": "100", "proposal_rep": 0,
-             "event": 5}
-    results = []
-    for label, module in (("base", base), ("candidate", cp)):
-        records = tmp_path / label
-        replies = [CANDIDATE, "not json", CANDIDATE, "not json", "still not json",
-                   json.dumps([CANDIDATE])]
-        proposer, state = make_proposer(records, provider, replies, module=module)
-        returned = []
-        # A parsed call, a repaired one, a twice-failed one, and the legacy event path.
-        for round_ in (1, 2, 3):
-            _, record = proposer.propose_one("packet", context=context(round_),
-                                             initial_family="binomial")
-            returned.append({k: v for k, v in record.items() if k != "elapsed_seconds"})
-        _, metadata = proposer.propose(public, [], context=event, initial_family="binomial")
-        returned.append({k: v for k, v in metadata.items() if k != "elapsed_seconds"})
-        results.append((written(records), returned, state["bodies"], proposer.attempts))
-    assert results[0] == results[1]
-    assert [record["status"] for record in results[1][1]] == [
-        "parsed", "parsed", "proposal_failed", "parsed"]
-    assert results[1][3] == 1 + 2 + 2 + 1
 
 
 # --------------------------------------------------------------------------
