@@ -4,7 +4,7 @@ Abbreviations used below and in the quoted record strings: EIG = expected inform
 
 ## Where the paper's code lives
 
-The experiments of the paper ran from the private development repository (not public), which also keeps the whole development history. The exact engine state of each benchmark's runs is frozen there as an annotated tag.
+The experiments of the paper ([arXiv:2610.25747](https://arxiv.org/abs/2610.25747)) ran from the private development repository (not public), which also keeps the whole development history. The exact engine state of each benchmark's runs is frozen there as an annotated tag.
 
 | benchmark | tag in the private repository | commit |
 | --- | --- | --- |

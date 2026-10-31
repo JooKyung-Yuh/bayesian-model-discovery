@@ -57,7 +57,7 @@ and the run script and tests find them through environment variables.
 | NeuronBench | https://github.com/murphyk/neuronbench | `c354622458c460b419cab821d482c879f0578377` | MIT | `NEURONBENCH_SRC`: the checkout |
 | ForceBench | DiscoverPhysics, https://github.com/SampsonML/DiscoverPhysics | `33b7fa9df96de9c35744efd181ca7e5a8dd60ad5` | MIT | `FB_DP`: the checkout; `FB_PY`: the ForceBench environment's python |
 
-- The paper runs used a fork of BoxingGym at commit `06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba`, which
+- The paper runs used a private fork of BoxingGym (not public) at commit `06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba`, which
   changes four files under `src/boxing_gym/agents/` relative to upstream commit
   `b43e38cb03d09c13efa9cf4d9bae740d51157bfd`. The environments the runner imports
   (`src/boxing_gym/envs/`) are identical in both, and the only thing they import from `agents` is

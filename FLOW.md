@@ -1,7 +1,7 @@
 # How the loop works
 
 This file describes one run of the loop: what happens in each round and which module does it,
-the five design criteria, the protocol the paper runs followed, the layout of a run folder, and
+the five design criteria, the protocol the runs of the paper ([arXiv:2610.25747](https://arxiv.org/abs/2610.25747)) followed, the layout of a run folder, and
 the terms you will meet in the code and in the outputs. The notebook
 [`examples/00_how_it_works.ipynb`](examples/00_how_it_works.ipynb) gives the same material at
 full length, with the formulas, the benchmark details and a longer glossary. Module names refer

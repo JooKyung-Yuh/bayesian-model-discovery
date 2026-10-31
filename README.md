@@ -5,6 +5,9 @@ engine fits and weighs them, and expected information gain picks the next experi
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](REQUIREMENTS.md)
+[![arXiv](https://img.shields.io/badge/arXiv-2610.25747-b31b1b.svg)](https://arxiv.org/abs/2610.25747)
+
+Code for the paper [*Bayesian Model Discovery with Language Models: Closing the Loop between Hypotheses and Experiments*](https://arxiv.org/abs/2610.25747) (arXiv:2610.25747).
 
 A language model proposes model families (functional forms with an observation distribution) from a
 *belief packet*: the observations so far, the current expressions, their evidence, parameter summaries
@@ -164,7 +167,23 @@ carries the trailer `Co-Authored-By: Claude <noreply@anthropic.com>`.
 
 ## Citation
 
-Cite the software through [`CITATION.cff`](CITATION.cff).
+If you use this code, please cite the paper ([arXiv:2610.25747](https://arxiv.org/abs/2610.25747)):
+
+```bibtex
+@article{yuh2026bayesian,
+  title         = {Bayesian Model Discovery with Language Models: Closing the Loop between Hypotheses and Experiments},
+  author        = {Yuh, JooKyung and Park, Byungmin and Choi, Eunseo and Baek, Jinheon and Cho, Junmo and
+                   Choi, Kyu Hyun and Hwang, Sung Ju and Jin, Kyong Hwan and Lee, Hae Beom},
+  journal       = {arXiv preprint arXiv:2610.25747},
+  year          = {2026},
+  eprint        = {2610.25747},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2610.25747}
+}
+```
+
+[`CITATION.cff`](CITATION.cff) carries the same reference (GitHub's "Cite this repository" button reads it).
 
 ## License
 

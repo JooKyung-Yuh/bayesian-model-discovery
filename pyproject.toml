@@ -21,6 +21,10 @@ dependencies = [
     "python-dotenv",     # unpinned: local API-key loading only
 ]
 
+[project.urls]
+Repository = "https://github.com/JooKyung-Yuh/bayesian-model-discovery"
+Paper = "https://arxiv.org/abs/2610.25747"
+
 [project.optional-dependencies]
 dev = ["pytest", "ruff==0.16.1"]   # ruff pinned to the version CI lints with
 # Benchmarks. None of the four benchmarks is a PyPI package at its pinned commit: each extra lists

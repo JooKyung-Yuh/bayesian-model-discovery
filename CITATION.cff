@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "If you use this software, please cite the paper below."
 title: "Bayesian Model Discovery"
 authors:
   - family-names: "Yuh"
@@ -8,3 +8,32 @@ authors:
 version: "0.1.0.dev0"
 date-released: "2026-08-05"
 license: MIT
+repository-code: "https://github.com/JooKyung-Yuh/bayesian-model-discovery"
+preferred-citation:
+  type: article
+  title: "Bayesian Model Discovery with Language Models: Closing the Loop between Hypotheses and Experiments"
+  authors:
+    - family-names: "Yuh"
+      given-names: "JooKyung"
+    - family-names: "Park"
+      given-names: "Byungmin"
+    - family-names: "Choi"
+      given-names: "Eunseo"
+    - family-names: "Baek"
+      given-names: "Jinheon"
+    - family-names: "Cho"
+      given-names: "Junmo"
+    - family-names: "Choi"
+      given-names: "Kyu Hyun"
+    - family-names: "Hwang"
+      given-names: "Sung Ju"
+    - family-names: "Jin"
+      given-names: "Kyong Hwan"
+    - family-names: "Lee"
+      given-names: "Hae Beom"
+  year: 2026
+  journal: "arXiv preprint arXiv:2610.25747"
+  url: "https://arxiv.org/abs/2610.25747"
+  identifiers:
+    - type: other
+      value: "arXiv:2610.25747"
