@@ -1,0 +1,694 @@
+{
+ "table": {
+  "10|chembench|A|registered": {
+   "geomean": 0.049876305000245334,
+   "band_low": 0.02306529574473591,
+   "band_high": 0.10785232619639147,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|B|registered": {
+   "geomean": 0.0385715539078199,
+   "band_low": 0.020002274727512242,
+   "band_high": 0.07437977885672682,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|C|registered": {
+   "geomean": 0.06262679539054214,
+   "band_low": 0.02979241068848516,
+   "band_high": 0.13164814159885144,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|C|Bayes action": {
+   "geomean": 0.042425446299097024,
+   "band_low": 0.02206797701682373,
+   "band_high": 0.08156246004359081,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|D|registered": {
+   "geomean": 0.047746250383944054,
+   "band_low": 0.023342088836433413,
+   "band_high": 0.0976649708473395,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|D|Bayes action": {
+   "geomean": 0.04244148523068763,
+   "band_low": 0.021273676033320435,
+   "band_high": 0.08467176362775178,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|BMD|registered": {
+   "geomean": 0.06956995775690163,
+   "band_low": 0.029470171743862093,
+   "band_high": 0.16423314612359274,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|chembench|BMD|Bayes action": {
+   "geomean": 0.03909864650614447,
+   "band_low": 0.020471732438423828,
+   "band_high": 0.07467390281748632,
+   "units": 27,
+   "worlds": 9
+  },
+  "10|newtonbench|A|registered": {
+   "geomean": 0.001010111516334941,
+   "band_low": 0.0003200054016676166,
+   "band_high": 0.0031884626638029865,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|B|registered": {
+   "geomean": 0.0004510046011717321,
+   "band_low": 0.00018323443971575028,
+   "band_high": 0.001110081437712329,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|C|registered": {
+   "geomean": 0.0013246977493409768,
+   "band_low": 0.0006898420227957444,
+   "band_high": 0.002543805783238919,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|C|Bayes action": {
+   "geomean": 0.0004049126667643998,
+   "band_low": 0.00025612938539269845,
+   "band_high": 0.0006401228326647585,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|D|registered": {
+   "geomean": 0.0012561934227798245,
+   "band_low": 0.0006190330662596047,
+   "band_high": 0.002549172251767103,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|D|Bayes action": {
+   "geomean": 0.0006272379313445879,
+   "band_low": 0.0003035071797653485,
+   "band_high": 0.0012962705621053492,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|BMD|registered": {
+   "geomean": 0.004824747444009579,
+   "band_low": 0.0021851563485838885,
+   "band_high": 0.010652870634891924,
+   "units": 21,
+   "worlds": 7
+  },
+  "10|newtonbench|BMD|Bayes action": {
+   "geomean": 0.0007186312517220737,
+   "band_low": 0.00036550194250639743,
+   "band_high": 0.0014129360637873908,
+   "units": 21,
+   "worlds": 7
+  },
+  "20|chembench|A|registered": {
+   "geomean": 0.010479727717480606,
+   "band_low": 0.005784343380021654,
+   "band_high": 0.01898654450768796,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|B|registered": {
+   "geomean": 0.01275512322050846,
+   "band_low": 0.009152717053310083,
+   "band_high": 0.017775395811183314,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|C|registered": {
+   "geomean": 0.013979573080917138,
+   "band_low": 0.010483029718035584,
+   "band_high": 0.018642364734355103,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|C|Bayes action": {
+   "geomean": 0.013025158405043619,
+   "band_low": 0.009605952229220421,
+   "band_high": 0.017661419443707447,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|D|registered": {
+   "geomean": 0.017628050974224728,
+   "band_low": 0.013142456380010744,
+   "band_high": 0.023644604339148004,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|D|Bayes action": {
+   "geomean": 0.017070389531307118,
+   "band_low": 0.01255531826602546,
+   "band_high": 0.023209144728658905,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|BMD|registered": {
+   "geomean": 0.016846119017066476,
+   "band_low": 0.01246610254540945,
+   "band_high": 0.02276507231537839,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|chembench|BMD|Bayes action": {
+   "geomean": 0.015772156550983425,
+   "band_low": 0.011445684516930068,
+   "band_high": 0.021734036256265032,
+   "units": 27,
+   "worlds": 9
+  },
+  "20|newtonbench|A|registered": {
+   "geomean": 9.278660391797435e-05,
+   "band_low": 5.3256940452520147e-05,
+   "band_high": 0.00016165693698282386,
+   "units": 21,
+   "worlds": 7
+  },
+  "20|newtonbench|B|registered": {
+   "geomean": 0.00023842183206409243,
+   "band_low": 8.974666705933698e-05,
+   "band_high": 0.0006333936609279827,
+   "units": 20,
+   "worlds": 7
+  },
+  "20|newtonbench|C|registered": {
+   "geomean": 1.793169487643145e-05,
+   "band_low": 1.2999545031988875e-05,
+   "band_high": 2.4735148834069834e-05,
+   "units": 20,
+   "worlds": 7
+  },
+  "20|newtonbench|C|Bayes action": {
+   "geomean": 1.626831869910643e-05,
+   "band_low": 1.1881674917452042e-05,
+   "band_high": 2.2274485300633894e-05,
+   "units": 20,
+   "worlds": 7
+  },
+  "20|newtonbench|D|registered": {
+   "geomean": 4.0975417424812075e-05,
+   "band_low": 2.47596890380574e-05,
+   "band_high": 6.781122454958438e-05,
+   "units": 21,
+   "worlds": 7
+  },
+  "20|newtonbench|D|Bayes action": {
+   "geomean": 3.7743838527276803e-05,
+   "band_low": 2.2009583755735044e-05,
+   "band_high": 6.472622847317304e-05,
+   "units": 21,
+   "worlds": 7
+  },
+  "20|newtonbench|BMD|registered": {
+   "geomean": 4.380956262795892e-05,
+   "band_low": 2.5280292831798057e-05,
+   "band_high": 7.591991874551978e-05,
+   "units": 21,
+   "worlds": 7
+  },
+  "20|newtonbench|BMD|Bayes action": {
+   "geomean": 4.038655203661285e-05,
+   "band_low": 2.2784389257986864e-05,
+   "band_high": 7.158732968162749e-05,
+   "units": 21,
+   "worlds": 7
+  }
+ },
+ "relations": {
+  "10|chembench|B": {
+   "contains_truth": 2,
+   "disjoint": 22,
+   "equivalent": 3
+  },
+  "10|chembench|C": {
+   "contains_truth": 2,
+   "disjoint": 22,
+   "equivalent": 3
+  },
+  "10|chembench|D": {
+   "contains_truth": 1,
+   "disjoint": 22,
+   "equivalent": 4
+  },
+  "10|chembench|truth_or_containing_present": 5,
+  "10|chembench|B_strict_truth_and_beats_C": 2,
+  "10|chembench|B_truthform_and_beats_C": 3,
+  "10|chembench|units": 27,
+  "10|newtonbench|B": {
+   "contains_truth": 17,
+   "disjoint": 4
+  },
+  "10|newtonbench|C": {
+   "contains_truth": 17,
+   "disjoint": 4
+  },
+  "10|newtonbench|D": {
+   "contains_truth": 10,
+   "disjoint": 11
+  },
+  "10|newtonbench|truth_or_containing_present": 18,
+  "10|newtonbench|B_strict_truth_and_beats_C": 0,
+  "10|newtonbench|B_truthform_and_beats_C": 9,
+  "10|newtonbench|units": 21,
+  "20|chembench|B": {
+   "contains_truth": 3,
+   "equivalent": 6,
+   "disjoint": 18
+  },
+  "20|chembench|C": {
+   "contains_truth": 3,
+   "equivalent": 6,
+   "disjoint": 18
+  },
+  "20|chembench|D": {
+   "contains_truth": 3,
+   "equivalent": 5,
+   "disjoint": 19
+  },
+  "20|chembench|truth_or_containing_present": 9,
+  "20|chembench|B_strict_truth_and_beats_C": 3,
+  "20|chembench|B_truthform_and_beats_C": 5,
+  "20|chembench|units": 27,
+  "20|newtonbench|B": {
+   "contains_truth": 17,
+   "(blank)": 1,
+   "disjoint": 3
+  },
+  "20|newtonbench|C": {
+   "contains_truth": 17,
+   "(blank)": 1,
+   "disjoint": 3
+  },
+  "20|newtonbench|D": {
+   "contains_truth": 14,
+   "disjoint": 7
+  },
+  "20|newtonbench|truth_or_containing_present": 18,
+  "20|newtonbench|B_strict_truth_and_beats_C": 0,
+  "20|newtonbench|B_truthform_and_beats_C": 2,
+  "20|newtonbench|units": 21
+ },
+ "checks": [
+  {
+   "benchmark": "chembench",
+   "condition": "A",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.0499,
+   "computed": 0.049876305000245334,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "A",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.0499,
+   "computed": 0.049876305000245334,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "A",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.0105,
+   "computed": 0.010479727717480606,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "A",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.0105,
+   "computed": 0.010479727717480606,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "B",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.0386,
+   "computed": 0.0385715539078199,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "B",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.0386,
+   "computed": 0.0385715539078199,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "B",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.0128,
+   "computed": 0.01275512322050846,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "B",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.0128,
+   "computed": 0.01275512322050846,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "C",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.0626,
+   "computed": 0.06262679539054214,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "C",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.0424,
+   "computed": 0.042425446299097024,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "C",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.014,
+   "computed": 0.013979573080917138,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "C",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.013,
+   "computed": 0.013025158405043619,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "D",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.0477,
+   "computed": 0.047746250383944054,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "D",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.0424,
+   "computed": 0.04244148523068763,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "D",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.0176,
+   "computed": 0.017628050974224728,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "D",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.0171,
+   "computed": 0.017070389531307118,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "BMD",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.0696,
+   "computed": 0.06956995775690163,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "BMD",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.0391,
+   "computed": 0.03909864650614447,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "BMD",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.0168,
+   "computed": 0.016846119017066476,
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "condition": "BMD",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.0158,
+   "computed": 0.015772156550983425,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "A",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.00101,
+   "computed": 0.001010111516334941,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "A",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.00101,
+   "computed": 0.001010111516334941,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "A",
+   "n": 20,
+   "kind": "registered",
+   "published": 9.28e-05,
+   "computed": 9.278660391797435e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "A",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 9.28e-05,
+   "computed": 9.278660391797435e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "B",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.000451,
+   "computed": 0.0004510046011717321,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "B",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.000451,
+   "computed": 0.0004510046011717321,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "B",
+   "n": 20,
+   "kind": "registered",
+   "published": 0.000238,
+   "computed": 0.00023842183206409243,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "B",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 0.000238,
+   "computed": 0.00023842183206409243,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "C",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.00132,
+   "computed": 0.0013246977493409768,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "C",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.000405,
+   "computed": 0.0004049126667643998,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "C",
+   "n": 20,
+   "kind": "registered",
+   "published": 1.79e-05,
+   "computed": 1.793169487643145e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "C",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 1.63e-05,
+   "computed": 1.626831869910643e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "D",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.00126,
+   "computed": 0.0012561934227798245,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "D",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.000627,
+   "computed": 0.0006272379313445879,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "D",
+   "n": 20,
+   "kind": "registered",
+   "published": 4.1e-05,
+   "computed": 4.0975417424812075e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "D",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 3.77e-05,
+   "computed": 3.7743838527276803e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "BMD",
+   "n": 10,
+   "kind": "registered",
+   "published": 0.00482,
+   "computed": 0.004824747444009579,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "BMD",
+   "n": 10,
+   "kind": "Bayes action",
+   "published": 0.000719,
+   "computed": 0.0007186312517220737,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "BMD",
+   "n": 20,
+   "kind": "registered",
+   "published": 4.38e-05,
+   "computed": 4.380956262795892e-05,
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "condition": "BMD",
+   "n": 20,
+   "kind": "Bayes action",
+   "published": 4.04e-05,
+   "computed": 4.038655203661285e-05,
+   "match": true
+  }
+ ],
+ "scope": {
+  "units": 96,
+  "seeds": [
+   31,
+   37,
+   41
+  ],
+  "worlds": {
+   "chembench": [
+    "c0_michaelis_menten__easy__v0",
+    "c0_michaelis_menten__hard__v0",
+    "c0_michaelis_menten__medium__v0",
+    "c2_product_inhibition__easy__v0",
+    "c2_product_inhibition__hard__v0",
+    "c2_product_inhibition__medium__v0",
+    "c5_pingpong_bisubstrate__easy__v0",
+    "c5_pingpong_bisubstrate__hard__v0",
+    "c5_pingpong_bisubstrate__medium__v0"
+   ],
+   "newtonbench": [
+    "m10_be_distribution__medium__v1",
+    "m11_heat_transfer__medium__v1",
+    "m2_magnetic_force__medium__v0",
+    "m3_fourier_law__medium__v0",
+    "m5_radioactive_decay__medium__v0",
+    "m8_sound_speed__medium__v0",
+    "m9_hooke_law__medium__v0"
+   ]
+  }
+ }
+}
