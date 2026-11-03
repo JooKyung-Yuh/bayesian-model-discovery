@@ -171,3 +171,58 @@ def test_no_api_key_shaped_strings(name):
              for value in all_strings(load(name), skip_binary=True)
              for label, pattern in KEY_SHAPES for match in pattern.finditer(value)]
     assert not found, f"{name}: key-shaped strings {found}"
+
+
+# ---------------------------------------------------------------------------------------------
+# Keyword arguments of repository calls (static).
+#
+# A committed notebook keeps its outputs even after a function's keyword is renamed, so the
+# committed-output checks above cannot see a cell that would now raise TypeError. This check
+# parses every code cell with `ast`, follows `from bayes_model_discovery... import <name>` to the
+# imported module, and for each call `<name>.<function>(..., keyword=...)` requires the keyword
+# in the function's current signature (or a `**kwargs` parameter). It imports the engine
+# modules, so it skips where they are unavailable; it still executes no cell.
+
+
+def _notebook_keyword_calls(path):
+    """(module name, function name, keywords, cell index) for each call with keywords."""
+    import ast
+
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    imported = {}
+    calls = []
+    for index, cell in enumerate(notebook["cells"]):
+        if cell["cell_type"] != "code":
+            continue
+        tree = ast.parse("".join(cell["source"]), filename=f"{path.name}#cell{index}")
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module and node.module.startswith("bayes_model_discovery"):
+                for alias in node.names:
+                    imported[alias.asname or alias.name] = f"{node.module}.{alias.name}"
+            if (isinstance(node, ast.Call) and node.keywords and isinstance(node.func, ast.Attribute)
+                    and isinstance(node.func.value, ast.Name) and node.func.value.id in imported):
+                keywords = [keyword.arg for keyword in node.keywords if keyword.arg is not None]
+                if keywords:
+                    calls.append((imported[node.func.value.id], node.func.attr, keywords, index))
+    return calls
+
+
+@pytest.mark.parametrize("name", NOTEBOOKS)
+def test_keyword_arguments_of_repository_calls_exist(name):
+    import importlib
+    import inspect
+
+    pytest.importorskip("pymc")
+    for module_name, function_name, keywords, index in _notebook_keyword_calls(EXAMPLES / name):
+        try:
+            module = importlib.import_module(module_name)
+        except ImportError:
+            package, _, attribute = module_name.rpartition(".")
+            module = getattr(importlib.import_module(package), attribute)
+        target = getattr(module, function_name)
+        parameters = inspect.signature(target).parameters
+        accepts_any = any(parameter.kind is inspect.Parameter.VAR_KEYWORD for parameter in parameters.values())
+        for keyword in keywords:
+            assert accepts_any or keyword in parameters, (
+                f"{name} cell {index}: {module_name}.{function_name}() has no keyword {keyword!r}; "
+                f"its signature is {inspect.signature(target)}")

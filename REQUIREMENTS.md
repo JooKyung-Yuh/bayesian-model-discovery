@@ -56,6 +56,7 @@ and the run script and tests find them through environment variables.
 | ChemBench | LLM-AutoSciLab, https://github.com/scientific-discovery/LLM-AutoSciLab | `467fa184ba537d26b2228ee3f3a8c052d9bfca58` | MIT | `BMD_AUTOSCILAB`: the checkout (on `PYTHONPATH`, not installed) |
 | BoxingGym | https://github.com/kanishkg/boxing-gym | `b43e38cb03d09c13efa9cf4d9bae740d51157bfd` | MIT | `BMD_BOXINGGYM_SRC`: the checkout's `src/` folder |
 | NeuronBench | https://github.com/murphyk/neuronbench | `c354622458c460b419cab821d482c879f0578377` | MIT | `NEURONBENCH_SRC`: the checkout |
+| NewtonBench | https://github.com/HKUST-KnowComp/NewtonBench | `912a4ba5f4356ddd06acc16e44460ca30be4abc2` | MIT | `BMD_NEWTONBENCH`: the checkout; only `modules/<domain>/laws.py` (and `m4_snell_law/physics.py`) are read, by path, after a sha256 check |
 | ForceBench | DiscoverPhysics, https://github.com/SampsonML/DiscoverPhysics | `33b7fa9df96de9c35744efd181ca7e5a8dd60ad5` | MIT | `FB_DP`: the checkout; `FB_PY`: the ForceBench environment's python |
 
 - The paper runs used a private fork of BoxingGym (not public) at commit `06c790aa8e23c1f8f1858f0955ec4ffc9e4c61ba`, which
@@ -82,9 +83,10 @@ are placeholders.
 | `BMD_AUTOSCILAB` | the LLM-AutoSciLab checkout (the ChemBench oracle) | `scripts/bmd_run.py` (adds it to `PYTHONPATH`), the ChemBench tests |
 | `BMD_BOXINGGYM_SRC` | the `src/` folder of the BoxingGym checkout | `scripts/bmd_run.py` (adds it to `PYTHONPATH`), the BoxingGym tests |
 | `NEURONBENCH_SRC` | the neuronbench checkout | `scripts/bmd_run.py`, the NeuronBench tests |
+| `BMD_NEWTONBENCH` | the NewtonBench checkout | `adapters/newtonbench_observation.py` (its law files, read by path) and the NewtonBench adapter tests |
 | `FB_PY` | the ForceBench environment's python | `scripts/bmd_run.py` and the ForceBench launch script |
 | `FB_DP` | the DiscoverPhysics checkout | `scripts/bmd_run.py` and the ForceBench launch script, which passes `$FB_DP/ScienceAgent` to the runner |
-| `BMD_FAC_PROMPT` | the paper's system prompt, `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` | a protocol test that checks the prompt's digests when the variable is set |
+| `BMD_FAC_PROMPT` | the system prompt `v2.9.FA-C`, `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` (the first-round prompt of the paper runs; the later rounds' `FA-C-R` prompt and the feedback variants are in `tools/paper_prompts/`) | a protocol test that checks the prompt's digests when the variable is set |
 | `BMD_ROOT` | the repository root | convenience |
 | `PYTENSOR_FLAGS` | `base_compiledir=<root>/.pytensor`, the PyTensor compile cache | PyTensor |
 | `NPY_DISABLE_CPU_FEATURES` | not set by the script. On a CPU with AVX-512, `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"` turns numpy's SIMD power dispatch off; the NeuronBench batch forward backend (`--forward-backend batch`) needs it, and the batch-backend bit-identity tests skip without it | numpy, at import |

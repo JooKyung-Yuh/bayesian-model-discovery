@@ -1,0 +1,2977 @@
+{
+ "rows": [
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "runs": 27,
+   "runs_note": null,
+   "calls": [
+    31,
+    30,
+    31,
+    30,
+    30,
+    30,
+    30,
+    30,
+    31,
+    30,
+    30,
+    31,
+    30,
+    30,
+    30,
+    30,
+    31,
+    30,
+    30,
+    31,
+    30,
+    30,
+    30,
+    30,
+    30,
+    31,
+    31
+   ],
+   "usd": [
+    5.81478,
+    5.004776,
+    5.545812,
+    5.557344,
+    5.569636,
+    5.933592,
+    5.344052,
+    6.724876,
+    5.905408,
+    5.151956,
+    5.296336,
+    5.806128,
+    5.622824,
+    5.669024,
+    5.354524,
+    5.796868,
+    5.540504,
+    5.53642,
+    5.876368,
+    5.366336,
+    5.568312,
+    5.846732,
+    5.19084,
+    5.81478,
+    6.20468,
+    5.468448,
+    6.086564
+   ],
+   "calls_mean": 30.296296296296298,
+   "calls_min": 30,
+   "calls_max": 31,
+   "usd_mean": 5.651774814814814,
+   "usd_min": 5.004776,
+   "usd_max": 6.724876,
+   "rule": "paid calls of rounds >= 1 (ChemBench/BoxingGym feedback-study cells replay the shared round 0 at 0 USD, so summary.paid_api_calls already excludes it; NewtonBench depth joint cells ran a live round 0, whose burst calls are subtracted; USD = site cell usd, which for NewtonBench includes round 0)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "runs": 15,
+   "runs_note": null,
+   "calls": [
+    30,
+    30,
+    30,
+    30,
+    32,
+    31,
+    31,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30
+   ],
+   "usd": [
+    5.29542,
+    3.573444,
+    3.424668,
+    3.629904,
+    5.123408,
+    4.691468,
+    4.945652,
+    4.08576,
+    4.800896,
+    4.302144,
+    3.639812,
+    3.698268,
+    3.564548,
+    5.29074,
+    5.356304
+   ],
+   "calls_mean": 30.266666666666666,
+   "calls_min": 30,
+   "calls_max": 32,
+   "usd_mean": 4.361495733333333,
+   "usd_min": 3.424668,
+   "usd_max": 5.356304,
+   "rule": "paid calls of rounds >= 1 (ChemBench/BoxingGym feedback-study cells replay the shared round 0 at 0 USD, so summary.paid_api_calls already excludes it; NewtonBench depth joint cells ran a live round 0, whose burst calls are subtracted; USD = site cell usd, which for NewtonBench includes round 0)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "runs": 27,
+   "runs_note": null,
+   "calls": [
+    32,
+    33,
+    31,
+    30,
+    31,
+    32,
+    32,
+    32,
+    31,
+    31,
+    30,
+    32,
+    31,
+    32,
+    32,
+    33,
+    34,
+    31,
+    30,
+    30,
+    30,
+    30,
+    32,
+    30,
+    30,
+    32,
+    32
+   ],
+   "usd": [
+    5.590752,
+    5.988456,
+    5.157444,
+    5.925512,
+    5.855908,
+    6.21128,
+    5.686644,
+    4.930208,
+    5.540312,
+    5.718372,
+    4.974036,
+    5.783292,
+    6.365956,
+    5.374796,
+    5.6673,
+    5.194492,
+    5.744116,
+    5.581844,
+    4.766436,
+    6.088184,
+    5.665852,
+    5.320628,
+    6.136708,
+    6.0374,
+    5.732592,
+    6.264724,
+    5.139412
+   ],
+   "calls_mean": 31.333333333333332,
+   "calls_min": 30,
+   "calls_max": 34,
+   "usd_mean": 5.6460242962962965,
+   "usd_min": 4.766436,
+   "usd_max": 6.365956,
+   "rule": "paid calls of rounds >= 1 (ChemBench/BoxingGym feedback-study cells replay the shared round 0 at 0 USD, so summary.paid_api_calls already excludes it; NewtonBench depth joint cells ran a live round 0, whose burst calls are subtracted; USD = site cell usd, which for NewtonBench includes round 0)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "runs": 15,
+   "runs_note": null,
+   "calls": [
+    45,
+    46,
+    46,
+    46,
+    44,
+    45,
+    44,
+    45,
+    48,
+    44,
+    45,
+    44,
+    47,
+    41,
+    45
+   ],
+   "usd": [
+    3.904928,
+    3.94756,
+    3.566576,
+    3.987596,
+    3.9291840000000002,
+    4.0269759999999994,
+    3.779552,
+    3.8081039999999997,
+    4.1471,
+    3.930148,
+    3.9538119999999997,
+    3.927444,
+    4.110836,
+    3.596896,
+    3.9875999999999996
+   ],
+   "calls_mean": 45,
+   "calls_min": 41,
+   "calls_max": 48,
+   "usd_mean": 3.906954133333333,
+   "usd_min": 3.566576,
+   "usd_max": 4.1471,
+   "rule": "proposer response records of rounds 1..16 (repair turns included) in the full-interface ForceBench runs joint cell; USD = usage_total at 4 / 20 USD per 1M tokens; the live round-0 burst is not in these records"
+  },
+  {
+   "method": "ICL",
+   "benchmark": "chembench",
+   "runs": 9,
+   "runs_note": "27 runs = 9 jobs x 3 seeds",
+   "calls": [
+    92.33333333333333,
+    92.0,
+    92.33333333333333,
+    92.0,
+    92.0,
+    92.0,
+    92.66666666666667,
+    92.66666666666667,
+    92.0
+   ],
+   "usd": [
+    16.607654666666665,
+    10.370709333333332,
+    14.743036000000002,
+    14.125533333333335,
+    19.084649333333335,
+    18.042592,
+    21.296072,
+    16.343101333333333,
+    19.873368
+   ],
+   "calls_mean": 92.22222222222223,
+   "calls_min": 92.0,
+   "calls_max": 92.66666666666667,
+   "usd_mean": 16.72074622222222,
+   "usd_min": 10.370709333333332,
+   "usd_max": 21.296072,
+   "rule": "one job per task runs the three seeds; cost and calls per run = job spent_usd and paid_api_calls / 3; range over tasks"
+  },
+  {
+   "method": "ICL",
+   "benchmark": "boxinggym",
+   "runs": 5,
+   "runs_note": "15 runs = 5 jobs x 3 seeds",
+   "calls": [
+    92.33333333333333,
+    93.33333333333333,
+    92.0,
+    81.66666666666667,
+    92.33333333333333
+   ],
+   "usd": [
+    4.083917333333333,
+    3.6746079999999997,
+    6.5835653333333335,
+    1.072824,
+    2.722773333333333
+   ],
+   "calls_mean": 90.33333333333333,
+   "calls_min": 81.66666666666667,
+   "calls_max": 93.33333333333333,
+   "usd_mean": 3.6275375999999997,
+   "usd_min": 1.072824,
+   "usd_max": 6.5835653333333335,
+   "rule": "one job per task runs the three seeds; cost and calls per run = job spent_usd and paid_api_calls / 3; range over tasks"
+  },
+  {
+   "method": "ICL",
+   "benchmark": "forcebench",
+   "runs": 5,
+   "runs_note": "15 runs = 5 jobs x 3 seeds",
+   "calls": [
+    33.0,
+    33.0,
+    33.0,
+    33.0,
+    33.333333333333336
+   ],
+   "usd": [
+    1.488456,
+    4.237094666666667,
+    1.483556,
+    1.6050893333333331,
+    1.537164
+   ],
+   "calls_mean": 33.06666666666667,
+   "calls_min": 33.0,
+   "calls_max": 33.333333333333336,
+   "usd_mean": 2.070272,
+   "usd_min": 1.483556,
+   "usd_max": 4.237094666666667,
+   "rule": "one job per task runs the three seeds; cost and calls per run = job spent_usd and paid_api_calls / 3; range over tasks"
+  },
+  {
+   "method": "ICL",
+   "benchmark": "newtonbench",
+   "runs": 9,
+   "runs_note": "27 runs = 9 jobs x 3 seeds",
+   "calls": [
+    113.66666666666667,
+    105.0,
+    115.0,
+    92.66666666666667,
+    94.33333333333333,
+    94.66666666666667,
+    93.0,
+    93.66666666666667,
+    95.66666666666667
+   ],
+   "usd": [
+    9.369929333333333,
+    14.125594666666666,
+    14.775,
+    12.05646,
+    7.789145333333334,
+    12.681579999999999,
+    8.400713333333334,
+    16.925065333333333,
+    5.842513333333333
+   ],
+   "calls_mean": 99.74074074074075,
+   "calls_min": 92.66666666666667,
+   "calls_max": 115.0,
+   "usd_mean": 11.329555703703704,
+   "usd_min": 5.842513333333333,
+   "usd_max": 16.925065333333333,
+   "rule": "one job per task runs the three seeds; cost and calls per run = job spent_usd and paid_api_calls / 3; range over tasks"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "runs": 27,
+   "runs_note": null,
+   "calls": [
+    31,
+    32,
+    31,
+    39,
+    31,
+    32,
+    33,
+    33,
+    31,
+    35,
+    39,
+    31,
+    33,
+    32,
+    33,
+    32,
+    32,
+    32,
+    31,
+    32,
+    33,
+    35,
+    32,
+    36,
+    32,
+    33,
+    31
+   ],
+   "usd": [
+    2.612176,
+    2.565724,
+    2.423324,
+    3.108192,
+    2.615172,
+    2.628976,
+    2.6951,
+    2.595076,
+    2.626652,
+    2.74186,
+    3.128036,
+    2.586896,
+    2.761052,
+    2.697304,
+    2.739948,
+    2.762116,
+    2.759652,
+    2.652528,
+    2.414428,
+    2.542876,
+    2.73478,
+    2.692552,
+    2.636412,
+    2.8072,
+    2.609264,
+    2.7268,
+    2.518236
+   ],
+   "calls_mean": 32.851851851851855,
+   "calls_min": 31,
+   "calls_max": 39,
+   "usd_mean": 2.6808271111111113,
+   "usd_min": 2.414428,
+   "usd_max": 3.128036,
+   "rule": "receipt.json usage.usd and usage.calls of every site autoscilab_er cell (all complete)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "runs": 15,
+   "runs_note": null,
+   "calls": [
+    72,
+    72,
+    75,
+    72,
+    73,
+    74,
+    77,
+    78,
+    77,
+    74,
+    72,
+    72,
+    72,
+    75,
+    76
+   ],
+   "usd": [
+    3.10526,
+    3.015236,
+    3.330616,
+    2.613224,
+    2.624708,
+    3.017044,
+    4.360924,
+    3.60768,
+    4.1166,
+    3.442932,
+    3.216268,
+    3.074784,
+    2.507068,
+    2.909116,
+    3.036304
+   ],
+   "calls_mean": 74.06666666666666,
+   "calls_min": 72,
+   "calls_max": 78,
+   "usd_mean": 3.1985176,
+   "usd_min": 2.507068,
+   "usd_max": 4.360924,
+   "rule": "receipt.json usage.usd and usage.calls of every site autoscilab_er cell (all complete)"
+  },
+  {
+   "method": "LLM-AutoSciLab (force oracle, Figure 2)",
+   "benchmark": "forcebench",
+   "runs": 15,
+   "runs_note": null,
+   "calls": [
+    39,
+    39,
+    40,
+    38,
+    38,
+    39,
+    39,
+    38,
+    38,
+    40,
+    38,
+    39,
+    38,
+    39,
+    39
+   ],
+   "usd": [
+    1.854604,
+    1.894732,
+    1.898752,
+    2.01832,
+    2.146204,
+    2.2354,
+    1.906364,
+    1.975408,
+    1.840196,
+    2.205484,
+    2.043976,
+    2.133996,
+    2.034724,
+    2.17086,
+    2.072508
+   ],
+   "calls_mean": 38.733333333333334,
+   "calls_min": 38,
+   "calls_max": 40,
+   "usd_mean": 2.0287685333333334,
+   "usd_min": 1.840196,
+   "usd_max": 2.2354,
+   "rule": "receipt.json usage.usd and usage.calls of every site autoscilab_er cell (all complete)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "runs": 27,
+   "runs_note": null,
+   "calls": [
+    74,
+    72,
+    72,
+    72,
+    73,
+    72,
+    72,
+    72,
+    73,
+    72,
+    72,
+    72,
+    37,
+    72,
+    73,
+    77,
+    77,
+    79,
+    57,
+    77,
+    80,
+    72,
+    30,
+    73,
+    52,
+    39,
+    76
+   ],
+   "usd": [
+    3.401596,
+    2.945128,
+    2.947592,
+    3.299884,
+    3.42844,
+    3.37312,
+    3.353548,
+    3.234068,
+    3.441956,
+    3.85338,
+    3.6432,
+    3.610516,
+    1.646536,
+    3.378344,
+    3.419604,
+    5.037088,
+    5.148724,
+    5.215316,
+    3.737776,
+    4.947524,
+    5.026988,
+    3.517352,
+    1.347576,
+    3.84018,
+    2.524916,
+    1.824544,
+    3.538644
+   ],
+   "calls_mean": 68.11111111111111,
+   "calls_min": 30,
+   "calls_max": 80,
+   "usd_mean": 3.506797777777778,
+   "usd_min": 1.347576,
+   "usd_max": 5.215316,
+   "rule": "receipt.json usage.usd and usage.calls of the 27 every-round cells"
+  },
+  {
+   "method": "LLM-AutoSciLab (matched)",
+   "benchmark": "forcebench",
+   "runs": 12,
+   "runs_note": "12 of 15 receipts reachable",
+   "calls": [
+    49,
+    49,
+    49,
+    50,
+    48,
+    49,
+    49,
+    49,
+    49,
+    49,
+    49,
+    49
+   ],
+   "usd": [
+    2.46922,
+    2.462372,
+    2.53088,
+    2.832476,
+    2.306016,
+    2.18888,
+    2.407912,
+    2.297968,
+    2.288072,
+    2.551572,
+    2.70392,
+    2.563624
+   ],
+   "calls_mean": 49,
+   "calls_min": 48,
+   "calls_max": 50,
+   "usd_mean": 2.466909333333333,
+   "usd_min": 2.18888,
+   "usd_max": 2.832476,
+   "rule": "receipt.json usage.usd and usage.calls of the 12 matched-run receipts reachable from the analysis host (worlds [('coulomb_easy', 3), ('gravity', 3), ('oscillator', 3), ('yukawa', 3)]); the extra_dimensions receipts are not on the analysis host, so the published 2.46 (2.19-2.83) over 15 runs from a second machine read of the 10-13 sparsebundle is kept beside this partial re-sum"
+  },
+  {
+   "method": "Box's Apprentice",
+   "benchmark": "boxinggym",
+   "runs": 14,
+   "runs_note": null,
+   "calls": [
+    141,
+    139,
+    133,
+    137,
+    131,
+    155,
+    149,
+    149,
+    130,
+    131,
+    125,
+    136,
+    119,
+    123
+   ],
+   "usd": [
+    7.006728,
+    6.799748,
+    7.239168,
+    6.066408,
+    6.090272,
+    7.638936,
+    7.65244,
+    7.73136,
+    6.861112,
+    6.944576,
+    6.116656,
+    6.002936,
+    6.103336,
+    5.94936
+   ],
+   "calls_mean": 135.57142857142858,
+   "calls_min": 119,
+   "calls_max": 155,
+   "usd_mean": 6.728788285714286,
+   "usd_min": 5.94936,
+   "usd_max": 7.73136,
+   "rule": "receipt.json usage.usd and usage.calls of the 14 attempted cells of the main set (dugongs s31 never started; hyperbolic s31 and s37 stopped at the 8 USD limit and count with their spend; reruns are not in the site's main set)"
+  },
+  {
+   "method": "DP-Agent",
+   "benchmark": "forcebench",
+   "runs": 15,
+   "runs_note": null,
+   "calls": [
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18
+   ],
+   "usd": [
+    1.312562,
+    1.359616,
+    1.321294,
+    1.313471,
+    1.313475,
+    1.537344,
+    1.448649,
+    1.427015,
+    1.476742,
+    1.457247,
+    1.48968,
+    1.412961,
+    1.463068,
+    1.366722,
+    1.40783
+   ],
+   "calls_mean": 18,
+   "calls_min": 18,
+   "calls_max": 18,
+   "usd_mean": 1.4071784,
+   "usd_min": 1.312562,
+   "usd_max": 1.537344,
+   "rule": "site cell usd (every model of the run, i.e. the agent's Claude Opus 5.5 calls plus the benchmark's one Claude Haiku 4.5 judge call) and usage.json calls"
+  }
+ ],
+ "bmd_cells": {
+  "chembench": [
+   {
+    "cell": "e2_cb__c0_michaelis_menten__easy__v0__full_allres__s41",
+    "paid_api_calls": 31,
+    "llm_calls_total": 48,
+    "round0_calls": 17,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.81478
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__hard__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.004776
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__medium__v0__full_allres__s41",
+    "paid_api_calls": 31,
+    "llm_calls_total": 43,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.545812
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__easy__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.557344
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__hard__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.569636
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__medium__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.933592
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__easy__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 46,
+    "round0_calls": 16,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.344052
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__hard__v0__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 6.724876
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__medium__v0__full_allres__s41",
+    "paid_api_calls": 31,
+    "llm_calls_total": 43,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.905408
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__easy__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.151956
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__easy__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 45,
+    "round0_calls": 15,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.296336
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__hard__v0__full_allres__s31",
+    "paid_api_calls": 31,
+    "llm_calls_total": 43,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.806128
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__hard__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 44,
+    "round0_calls": 14,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.622824
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__medium__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 45,
+    "round0_calls": 15,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.669024
+   },
+   {
+    "cell": "e2_cb__c0_michaelis_menten__medium__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.354524
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__easy__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.796868
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__easy__v0__full_allres__s37",
+    "paid_api_calls": 31,
+    "llm_calls_total": 47,
+    "round0_calls": 15,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.540504
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__hard__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 44,
+    "round0_calls": 14,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.53642
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__hard__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 43,
+    "round0_calls": 13,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.876368
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__medium__v0__full_allres__s31",
+    "paid_api_calls": 31,
+    "llm_calls_total": 46,
+    "round0_calls": 15,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.366336
+   },
+   {
+    "cell": "e2_cb__c2_product_inhibition__medium__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.568312
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__easy__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.846732
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__easy__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 44,
+    "round0_calls": 14,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.19084
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__hard__v0__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.81478
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__hard__v0__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 42,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 6.20468
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__medium__v0__full_allres__s31",
+    "paid_api_calls": 31,
+    "llm_calls_total": 43,
+    "round0_calls": 12,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 5.468448
+   },
+   {
+    "cell": "e2_cb__c5_pingpong_bisubstrate__medium__v0__full_allres__s37",
+    "paid_api_calls": 31,
+    "llm_calls_total": 45,
+    "round0_calls": 14,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 6.086564
+   }
+  ],
+  "boxinggym": [
+   {
+    "cell": "e2_bg__death__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 63,
+    "round0_calls": 33,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.29542
+   },
+   {
+    "cell": "e2_bg__dugongs__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 55,
+    "round0_calls": 25,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.573444
+   },
+   {
+    "cell": "e2_bg__dugongs__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 58,
+    "round0_calls": 28,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.424668
+   },
+   {
+    "cell": "e2_bg__dugongs__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 53,
+    "round0_calls": 23,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.629904
+   },
+   {
+    "cell": "e2_bg__peregrines__full_allres__s47",
+    "paid_api_calls": 32,
+    "llm_calls_total": 57,
+    "round0_calls": 25,
+    "round0_replayed": true,
+    "calls_excl_round0": 32,
+    "usd": 5.123408
+   },
+   {
+    "cell": "e2_bg__peregrines__full_allres__s41",
+    "paid_api_calls": 31,
+    "llm_calls_total": 53,
+    "round0_calls": 22,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 4.691468
+   },
+   {
+    "cell": "e2_bg__peregrines__full_allres__s31",
+    "paid_api_calls": 31,
+    "llm_calls_total": 54,
+    "round0_calls": 23,
+    "round0_replayed": true,
+    "calls_excl_round0": 31,
+    "usd": 4.945652
+   },
+   {
+    "cell": "e2_bg__hyperbolic__full_allres__s31",
+    "paid_api_calls": 30,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 4.08576
+   },
+   {
+    "cell": "e2_bg__hyperbolic__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 50,
+    "round0_calls": 20,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 4.800896
+   },
+   {
+    "cell": "e2_bg__hyperbolic__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 4.302144
+   },
+   {
+    "cell": "e2_bg__survival__full_allres__s53",
+    "paid_api_calls": 30,
+    "llm_calls_total": 52,
+    "round0_calls": 22,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.639812
+   },
+   {
+    "cell": "e2_bg__survival__full_allres__s61",
+    "paid_api_calls": 30,
+    "llm_calls_total": 58,
+    "round0_calls": 28,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.698268
+   },
+   {
+    "cell": "e2_bg__survival__full_allres__s43",
+    "paid_api_calls": 30,
+    "llm_calls_total": 63,
+    "round0_calls": 33,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 3.564548
+   },
+   {
+    "cell": "e2_bg__death__full_allres__s37",
+    "paid_api_calls": 30,
+    "llm_calls_total": 62,
+    "round0_calls": 32,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.29074
+   },
+   {
+    "cell": "e2_bg__death__full_allres__s41",
+    "paid_api_calls": 30,
+    "llm_calls_total": 61,
+    "round0_calls": 31,
+    "round0_replayed": true,
+    "calls_excl_round0": 30,
+    "usd": 5.356304
+   }
+  ],
+  "newtonbench": [
+   {
+    "cell": "nb__m2_magnetic_force__medium__v0__joint_eig__s31",
+    "paid_api_calls": 55,
+    "llm_calls_total": 55,
+    "round0_calls": 23,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.590752
+   },
+   {
+    "cell": "nb__m3_fourier_law__medium__v0__joint_eig__s31",
+    "paid_api_calls": 60,
+    "llm_calls_total": 60,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 33,
+    "usd": 5.988456
+   },
+   {
+    "cell": "nb__m4_snell_law__medium__v2__joint_eig__s31",
+    "paid_api_calls": 55,
+    "llm_calls_total": 55,
+    "round0_calls": 24,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 5.157444
+   },
+   {
+    "cell": "nb__m5_radioactive_decay__medium__v0__joint_eig__s31",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 5.925512
+   },
+   {
+    "cell": "nb__m7_malus_law__medium__v0__joint_eig__s31",
+    "paid_api_calls": 47,
+    "llm_calls_total": 47,
+    "round0_calls": 16,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 5.855908
+   },
+   {
+    "cell": "nb__m8_sound_speed__medium__v0__joint_eig__s31",
+    "paid_api_calls": 58,
+    "llm_calls_total": 58,
+    "round0_calls": 26,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 6.21128
+   },
+   {
+    "cell": "nb__m9_hooke_law__medium__v0__joint_eig__s31",
+    "paid_api_calls": 59,
+    "llm_calls_total": 59,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.686644
+   },
+   {
+    "cell": "nb__m10_be_distribution__medium__v1__joint_eig__s31",
+    "paid_api_calls": 44,
+    "llm_calls_total": 44,
+    "round0_calls": 12,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 4.930208
+   },
+   {
+    "cell": "nb__m2_magnetic_force__medium__v0__joint_eig__s37",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 26,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 5.540312
+   },
+   {
+    "cell": "nb__m3_fourier_law__medium__v0__joint_eig__s37",
+    "paid_api_calls": 60,
+    "llm_calls_total": 60,
+    "round0_calls": 29,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 5.718372
+   },
+   {
+    "cell": "nb__m4_snell_law__medium__v2__joint_eig__s37",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 4.974036
+   },
+   {
+    "cell": "nb__m5_radioactive_decay__medium__v0__joint_eig__s37",
+    "paid_api_calls": 56,
+    "llm_calls_total": 56,
+    "round0_calls": 24,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.783292
+   },
+   {
+    "cell": "nb__m7_malus_law__medium__v0__joint_eig__s37",
+    "paid_api_calls": 54,
+    "llm_calls_total": 54,
+    "round0_calls": 23,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 6.365956
+   },
+   {
+    "cell": "nb__m11_heat_transfer__medium__v1__joint_eig__s31",
+    "paid_api_calls": 56,
+    "llm_calls_total": 56,
+    "round0_calls": 24,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.374796
+   },
+   {
+    "cell": "nb__m10_be_distribution__medium__v1__joint_eig__s37",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 25,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.6673
+   },
+   {
+    "cell": "nb__m11_heat_transfer__medium__v1__joint_eig__s37",
+    "paid_api_calls": 51,
+    "llm_calls_total": 51,
+    "round0_calls": 18,
+    "round0_replayed": false,
+    "calls_excl_round0": 33,
+    "usd": 5.194492
+   },
+   {
+    "cell": "nb__m2_magnetic_force__medium__v0__joint_eig__s41",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 23,
+    "round0_replayed": false,
+    "calls_excl_round0": 34,
+    "usd": 5.744116
+   },
+   {
+    "cell": "nb__m3_fourier_law__medium__v0__joint_eig__s41",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 26,
+    "round0_replayed": false,
+    "calls_excl_round0": 31,
+    "usd": 5.581844
+   },
+   {
+    "cell": "nb__m4_snell_law__medium__v2__joint_eig__s41",
+    "paid_api_calls": 51,
+    "llm_calls_total": 51,
+    "round0_calls": 21,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 4.766436
+   },
+   {
+    "cell": "nb__m8_sound_speed__medium__v0__joint_eig__s37",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 6.088184
+   },
+   {
+    "cell": "nb__m9_hooke_law__medium__v0__joint_eig__s37",
+    "paid_api_calls": 52,
+    "llm_calls_total": 52,
+    "round0_calls": 22,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 5.665852
+   },
+   {
+    "cell": "nb__m10_be_distribution__medium__v1__joint_eig__s41",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 27,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 5.320628
+   },
+   {
+    "cell": "nb__m5_radioactive_decay__medium__v0__joint_eig__s41",
+    "paid_api_calls": 60,
+    "llm_calls_total": 60,
+    "round0_calls": 28,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 6.136708
+   },
+   {
+    "cell": "nb__m7_malus_law__medium__v0__joint_eig__s41",
+    "paid_api_calls": 49,
+    "llm_calls_total": 49,
+    "round0_calls": 19,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 6.0374
+   },
+   {
+    "cell": "nb__m8_sound_speed__medium__v0__joint_eig__s41",
+    "paid_api_calls": 53,
+    "llm_calls_total": 53,
+    "round0_calls": 23,
+    "round0_replayed": false,
+    "calls_excl_round0": 30,
+    "usd": 5.732592
+   },
+   {
+    "cell": "nb__m9_hooke_law__medium__v0__joint_eig__s41",
+    "paid_api_calls": 57,
+    "llm_calls_total": 57,
+    "round0_calls": 25,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 6.264724
+   },
+   {
+    "cell": "nb__m11_heat_transfer__medium__v1__joint_eig__s41",
+    "paid_api_calls": 49,
+    "llm_calls_total": 49,
+    "round0_calls": 17,
+    "round0_replayed": false,
+    "calls_excl_round0": 32,
+    "usd": 5.139412
+   }
+  ],
+  "forcebench": [
+   {
+    "cell": "c4_fb__gravity__joint_eig_full__s31",
+    "responses": 45,
+    "usd": 3.904928
+   },
+   {
+    "cell": "c4_fb__gravity__joint_eig_full__s37",
+    "responses": 46,
+    "usd": 3.94756
+   },
+   {
+    "cell": "c4_fb__gravity__joint_eig_full__s41",
+    "responses": 46,
+    "usd": 3.566576
+   },
+   {
+    "cell": "c4_fb__coulomb_easy__joint_eig_full__s31",
+    "responses": 46,
+    "usd": 3.987596
+   },
+   {
+    "cell": "c4_fb__coulomb_easy__joint_eig_full__s37",
+    "responses": 44,
+    "usd": 3.9291840000000002
+   },
+   {
+    "cell": "c4_fb__coulomb_easy__joint_eig_full__s41",
+    "responses": 45,
+    "usd": 4.0269759999999994
+   },
+   {
+    "cell": "c4_fb__oscillator__joint_eig_full__s31",
+    "responses": 44,
+    "usd": 3.779552
+   },
+   {
+    "cell": "c4_fb__oscillator__joint_eig_full__s37",
+    "responses": 45,
+    "usd": 3.8081039999999997
+   },
+   {
+    "cell": "c4_fb__oscillator__joint_eig_full__s41",
+    "responses": 48,
+    "usd": 4.1471
+   },
+   {
+    "cell": "c4_fb__extra_dimensions__joint_eig_full__s31",
+    "responses": 44,
+    "usd": 3.930148
+   },
+   {
+    "cell": "c4_fb__extra_dimensions__joint_eig_full__s37",
+    "responses": 45,
+    "usd": 3.9538119999999997
+   },
+   {
+    "cell": "c4_fb__extra_dimensions__joint_eig_full__s41",
+    "responses": 44,
+    "usd": 3.927444
+   },
+   {
+    "cell": "c4_fb__yukawa__joint_eig_full__s31",
+    "responses": 47,
+    "usd": 4.110836
+   },
+   {
+    "cell": "c4_fb__yukawa__joint_eig_full__s37",
+    "responses": 41,
+    "usd": 3.596896
+   },
+   {
+    "cell": "c4_fb__yukawa__joint_eig_full__s41",
+    "responses": 45,
+    "usd": 3.9875999999999996
+   }
+  ],
+  "apprentice_detail": [
+   {
+    "task": "death",
+    "seed": 31,
+    "status": "complete",
+    "usd": 7.006728,
+    "calls": 141,
+    "counted": true
+   },
+   {
+    "task": "death",
+    "seed": 37,
+    "status": "complete",
+    "usd": 6.799748,
+    "calls": 139,
+    "counted": true
+   },
+   {
+    "task": "death",
+    "seed": 41,
+    "status": "complete",
+    "usd": 7.239168,
+    "calls": 133,
+    "counted": true
+   },
+   {
+    "task": "dugongs",
+    "seed": 31,
+    "status": "not_started",
+    "counted": false
+   },
+   {
+    "task": "dugongs",
+    "seed": 37,
+    "status": "complete",
+    "usd": 6.066408,
+    "calls": 137,
+    "counted": true
+   },
+   {
+    "task": "dugongs",
+    "seed": 41,
+    "status": "complete",
+    "usd": 6.090272,
+    "calls": 131,
+    "counted": true
+   },
+   {
+    "task": "hyperbolic",
+    "seed": 31,
+    "status": "failed",
+    "usd": 7.638936,
+    "calls": 155,
+    "counted": true
+   },
+   {
+    "task": "hyperbolic",
+    "seed": 37,
+    "status": "failed",
+    "usd": 7.65244,
+    "calls": 149,
+    "counted": true
+   },
+   {
+    "task": "hyperbolic",
+    "seed": 41,
+    "status": "complete",
+    "usd": 7.73136,
+    "calls": 149,
+    "counted": true
+   },
+   {
+    "task": "peregrines",
+    "seed": 31,
+    "status": "complete",
+    "usd": 6.861112,
+    "calls": 130,
+    "counted": true
+   },
+   {
+    "task": "peregrines",
+    "seed": 41,
+    "status": "complete",
+    "usd": 6.944576,
+    "calls": 131,
+    "counted": true
+   },
+   {
+    "task": "peregrines",
+    "seed": 47,
+    "status": "complete",
+    "usd": 6.116656,
+    "calls": 125,
+    "counted": true
+   },
+   {
+    "task": "survival",
+    "seed": 43,
+    "status": "complete",
+    "usd": 6.002936,
+    "calls": 136,
+    "counted": true
+   },
+   {
+    "task": "survival",
+    "seed": 53,
+    "status": "complete",
+    "usd": 6.103336,
+    "calls": 119,
+    "counted": true
+   },
+   {
+    "task": "survival",
+    "seed": 61,
+    "status": "complete",
+    "usd": 5.94936,
+    "calls": 123,
+    "counted": true
+   }
+  ]
+ },
+ "icl_jobs": {
+  "chembench": {
+   "c0_michaelis_menten__easy__v0": [
+    49.822964,
+    277
+   ],
+   "c0_michaelis_menten__hard__v0": [
+    31.112128,
+    276
+   ],
+   "c0_michaelis_menten__medium__v0": [
+    44.229108000000004,
+    277
+   ],
+   "c2_product_inhibition__easy__v0": [
+    42.3766,
+    276
+   ],
+   "c2_product_inhibition__hard__v0": [
+    57.253948,
+    276
+   ],
+   "c2_product_inhibition__medium__v0": [
+    54.127776,
+    276
+   ],
+   "c5_pingpong_bisubstrate__easy__v0": [
+    63.888216,
+    278
+   ],
+   "c5_pingpong_bisubstrate__hard__v0": [
+    49.029303999999996,
+    278
+   ],
+   "c5_pingpong_bisubstrate__medium__v0": [
+    59.620104,
+    276
+   ]
+  },
+  "boxinggym": {
+   "death": [
+    12.251752,
+    277
+   ],
+   "dugongs": [
+    11.023824,
+    280
+   ],
+   "hyperbolic": [
+    19.750696,
+    276
+   ],
+   "peregrines": [
+    3.218472,
+    245
+   ],
+   "survival": [
+    8.16832,
+    277
+   ]
+  },
+  "forcebench": {
+   "gravity": [
+    4.465368,
+    99
+   ],
+   "coulomb_easy": [
+    12.711284000000001,
+    99
+   ],
+   "oscillator": [
+    4.450668,
+    99
+   ],
+   "extra_dimensions": [
+    4.815268,
+    99
+   ],
+   "yukawa": [
+    4.611492,
+    100
+   ]
+  },
+  "newtonbench": {
+   "m10_be_distribution__medium__v1": [
+    28.109788,
+    341,
+    "icl_newtonbench_v1r2_20261010"
+   ],
+   "m11_heat_transfer__medium__v1": [
+    42.376784,
+    315,
+    "icl_newtonbench_v1r2_20261010"
+   ],
+   "m2_magnetic_force__medium__v0": [
+    44.325,
+    345,
+    "icl_newtonbench_v1r2_20261010"
+   ],
+   "m3_fourier_law__medium__v0": [
+    36.16938,
+    278,
+    "icl_newtonbench_v1_20261009"
+   ],
+   "m4_snell_law__medium__v2": [
+    23.367436,
+    283,
+    "icl_newtonbench_v1_20261009"
+   ],
+   "m5_radioactive_decay__medium__v0": [
+    38.04474,
+    284,
+    "icl_newtonbench_v1_20261009"
+   ],
+   "m7_malus_law__medium__v0": [
+    25.20214,
+    279,
+    "icl_newtonbench_v1_20261009"
+   ],
+   "m8_sound_speed__medium__v0": [
+    50.775196,
+    281,
+    "icl_newtonbench_v1_20261009"
+   ],
+   "m9_hooke_law__medium__v0": [
+    17.52754,
+    287,
+    "icl_newtonbench_v1_20261009"
+   ]
+  }
+ },
+ "notes": [
+  {
+   "method": "LLM-AutoSciLab (matched)",
+   "benchmark": "forcebench",
+   "published_15_runs": "2.46 (2.19-2.83) USD from a second machine read of the 10-13 sparsebundle (kept)"
+  },
+  {
+   "method": "DP-Agent",
+   "benchmark": "forcebench",
+   "agent_only_usd_mean": 1.4050317333333333,
+   "agent_only_usd_min": 1.310632,
+   "agent_only_usd_max": 1.5346360000000001,
+   "note": "Opus-only cost at 4/20 USD per 1M tokens; the Haiku judge call adds about 0.01 USD per run"
+  }
+ ],
+ "checks": [
+  {
+   "method": "ICL",
+   "benchmark": "chembench",
+   "published": [
+    16.72,
+    10.37,
+    21.3
+   ],
+   "computed": [
+    16.72,
+    10.37,
+    21.3
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "ICL",
+   "benchmark": "boxinggym",
+   "published": [
+    3.63,
+    1.07,
+    6.58
+   ],
+   "computed": [
+    3.63,
+    1.07,
+    6.58
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "ICL",
+   "benchmark": "forcebench",
+   "published": [
+    2.07,
+    1.48,
+    4.24
+   ],
+   "computed": [
+    2.07,
+    1.48,
+    4.24
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "ICL",
+   "benchmark": "newtonbench",
+   "published": [
+    11.33,
+    5.84,
+    16.93
+   ],
+   "computed": [
+    11.33,
+    5.84,
+    16.93
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "published": [
+    2.68,
+    2.41,
+    3.13
+   ],
+   "computed": [
+    2.68,
+    2.41,
+    3.13
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "published": [
+    3.2,
+    2.51,
+    4.36
+   ],
+   "computed": [
+    3.2,
+    2.51,
+    4.36
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "published": [
+    3.51,
+    1.35,
+    5.22
+   ],
+   "computed": [
+    3.51,
+    1.35,
+    5.22
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "LLM-AutoSciLab (matched)",
+   "benchmark": "forcebench",
+   "published": [
+    2.46,
+    2.19,
+    2.83
+   ],
+   "computed": [
+    2.47,
+    2.19,
+    2.83
+   ],
+   "match": false,
+   "note": "12 of 15 receipts reachable on the analysis host; min and max match, the mean differs by 0.01"
+  },
+  {
+   "method": "Box's Apprentice",
+   "benchmark": "boxinggym",
+   "published": [
+    6.73,
+    5.95,
+    7.73
+   ],
+   "computed": [
+    6.73,
+    5.95,
+    7.73
+   ],
+   "match": true,
+   "note": null
+  },
+  {
+   "method": "DP-Agent",
+   "benchmark": "forcebench",
+   "published": [
+    1.41,
+    1.31,
+    1.54
+   ],
+   "computed": [
+    1.41,
+    1.31,
+    1.54
+   ],
+   "match": true,
+   "note": null
+  }
+ ],
+ "blocked_attempts": [
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__easy__v0",
+   "seed": 31,
+   "blocked_attempts": 51,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__easy__v0",
+   "seed": 37,
+   "blocked_attempts": 49,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__easy__v0",
+   "seed": 41,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__hard__v0",
+   "seed": 31,
+   "blocked_attempts": 55,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__hard__v0",
+   "seed": 37,
+   "blocked_attempts": 41,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__hard__v0",
+   "seed": 41,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 49,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 51,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c0_michaelis_menten__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 52,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__easy__v0",
+   "seed": 31,
+   "blocked_attempts": 43,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__easy__v0",
+   "seed": 37,
+   "blocked_attempts": 49,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__easy__v0",
+   "seed": 41,
+   "blocked_attempts": 48,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__hard__v0",
+   "seed": 31,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__hard__v0",
+   "seed": 37,
+   "blocked_attempts": 45,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__hard__v0",
+   "seed": 41,
+   "blocked_attempts": 41,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 48,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 37,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c2_product_inhibition__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 41,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 31,
+   "blocked_attempts": 47,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 37,
+   "blocked_attempts": 50,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 41,
+   "blocked_attempts": 45,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 31,
+   "blocked_attempts": 50,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 37,
+   "blocked_attempts": 47,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 41,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 48,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 44,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "chembench",
+   "world": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "death",
+   "seed": 31,
+   "blocked_attempts": 22,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "death",
+   "seed": 37,
+   "blocked_attempts": 16,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "death",
+   "seed": 41,
+   "blocked_attempts": 24,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "dugongs",
+   "seed": 31,
+   "blocked_attempts": 2,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "dugongs",
+   "seed": 37,
+   "blocked_attempts": 2,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "dugongs",
+   "seed": 41,
+   "blocked_attempts": 2,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "hyperbolic",
+   "seed": 31,
+   "blocked_attempts": 30,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "hyperbolic",
+   "seed": 37,
+   "blocked_attempts": 29,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "hyperbolic",
+   "seed": 41,
+   "blocked_attempts": 30,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "peregrines",
+   "seed": 31,
+   "blocked_attempts": 25,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "peregrines",
+   "seed": 41,
+   "blocked_attempts": 19,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "peregrines",
+   "seed": 47,
+   "blocked_attempts": 24,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "survival",
+   "seed": 43,
+   "blocked_attempts": 30,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "survival",
+   "seed": 53,
+   "blocked_attempts": 30,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "boxinggym",
+   "world": "survival",
+   "seed": 61,
+   "blocked_attempts": 27,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 31,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 37,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 41,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "extra_dimensions",
+   "seed": 31,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "extra_dimensions",
+   "seed": 37,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "extra_dimensions",
+   "seed": 41,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 31,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 37,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 41,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 31,
+   "blocked_attempts": 8,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 37,
+   "blocked_attempts": 2,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 41,
+   "blocked_attempts": 7,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 31,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 37,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 41,
+   "blocked_attempts": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m10_be_distribution__medium__v1",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m10_be_distribution__medium__v1",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m10_be_distribution__medium__v1",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m11_heat_transfer__medium__v1",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m11_heat_transfer__medium__v1",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m11_heat_transfer__medium__v1",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m2_magnetic_force__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m2_magnetic_force__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m2_magnetic_force__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m3_fourier_law__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m3_fourier_law__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m3_fourier_law__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m4_snell_law__medium__v2",
+   "seed": 31,
+   "blocked_attempts": 13,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 13
+   },
+   "n_oracle_calls": 12,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m4_snell_law__medium__v2",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m4_snell_law__medium__v2",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m5_radioactive_decay__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m5_radioactive_decay__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m5_radioactive_decay__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m7_malus_law__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 19,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 19
+   },
+   "n_oracle_calls": 18,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m7_malus_law__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m7_malus_law__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 27,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 27
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m8_sound_speed__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m8_sound_speed__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 11,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 11
+   },
+   "n_oracle_calls": 10,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m8_sound_speed__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 31,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 31
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m9_hooke_law__medium__v0",
+   "seed": 31,
+   "blocked_attempts": 18,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 18
+   },
+   "n_oracle_calls": 17,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m9_hooke_law__medium__v0",
+   "seed": 37,
+   "blocked_attempts": 14,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 14
+   },
+   "n_oracle_calls": 13,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "newtonbench",
+   "world": "m9_hooke_law__medium__v0",
+   "seed": 41,
+   "blocked_attempts": 27,
+   "blocked_where": {
+    "NewtonBenchOracle.evaluate_law": 27
+   },
+   "n_oracle_calls": 30,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 31,
+   "blocked_attempts": 30,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 37,
+   "blocked_attempts": 54,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "gravity",
+   "seed": 41,
+   "blocked_attempts": 54,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 31,
+   "blocked_attempts": 12,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 37,
+   "blocked_attempts": 38,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "yukawa",
+   "seed": 41,
+   "blocked_attempts": 39,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 31,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 37,
+   "blocked_attempts": 54,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "coulomb_easy",
+   "seed": 41,
+   "blocked_attempts": 46,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 31,
+   "blocked_attempts": 40,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 37,
+   "blocked_attempts": 26,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  },
+  {
+   "benchmark": "forcebench",
+   "world": "oscillator",
+   "seed": 41,
+   "blocked_attempts": 20,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "n_oracle_calls": 16,
+   "receipt_status": "completed"
+  }
+ ],
+ "blocked_summary": {
+  "chembench|site autoscilab_er (every-round)": {
+   "receipts": 27,
+   "blocked_attempts_total": 1261,
+   "receipts_with_blocked": 27,
+   "blocked_where": [
+    "ChemBenchOracle.evaluate_law"
+   ],
+   "min": 37,
+   "max": 55
+  },
+  "boxinggym|site autoscilab_er (every-round)": {
+   "receipts": 15,
+   "blocked_attempts_total": 312,
+   "receipts_with_blocked": 15,
+   "blocked_where": [
+    "BoxingGymOracle.evaluate_law"
+   ],
+   "min": 2,
+   "max": 30
+  },
+  "forcebench|site autoscilab_er (every-round)": {
+   "receipts": 15,
+   "blocked_attempts_total": 197,
+   "receipts_with_blocked": 15,
+   "blocked_where": [
+    "ForceBenchOracle.evaluate_law"
+   ],
+   "min": 2,
+   "max": 15
+  },
+  "newtonbench|every-round cells fcfd7c37": {
+   "receipts": 27,
+   "blocked_attempts_total": 749,
+   "receipts_with_blocked": 27,
+   "blocked_where": [
+    "NewtonBenchOracle.evaluate_law"
+   ],
+   "min": 11,
+   "max": 31
+  },
+  "forcebench|matched trajectory_native (matched LLM-AutoSciLab runs)": {
+   "receipts": 12,
+   "blocked_attempts_total": 459,
+   "receipts_with_blocked": 12,
+   "blocked_where": [
+    "ForceBenchTrajectoryNativeOracle.evaluate_law"
+   ],
+   "min": 12,
+   "max": 54
+  }
+ }
+}

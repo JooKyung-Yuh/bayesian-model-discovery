@@ -88,6 +88,7 @@ safeguards and the tests.
 | ChemBench (`chembench_core`) | a chemical rate law over seven named inputs | [scientific-discovery/LLM-AutoSciLab](https://github.com/scientific-discovery/LLM-AutoSciLab) at [`467fa184`](https://github.com/scientific-discovery/LLM-AutoSciLab/commit/467fa184ba537d26b2228ee3f3a8c052d9bfca58) (MIT) | yes |
 | BoxingGym (`boxinggym_core`) | ten simulated environments with count, binary, positive, real-valued or trajectory outcomes | [kanishkg/boxing-gym](https://github.com/kanishkg/boxing-gym) at [`b43e38cb`](https://github.com/kanishkg/boxing-gym/commit/b43e38cb03d09c13efa9cf4d9bae740d51157bfd) (MIT) | yes |
 | NeuronBench (`neuron_core`) | the ion-channel mechanism of a simulated neuron, from its voltage response (six worlds) | [murphyk/neuronbench](https://github.com/murphyk/neuronbench) at [`c3546224`](https://github.com/murphyk/neuronbench/commit/c354622458c460b419cab821d482c879f0578377) (MIT) | yes |
+| NewtonBench (adapter only) | a counterfactual physical law, from its noisy responses (nine laws at the medium difficulty in the paper) | [HKUST-KnowComp/NewtonBench](https://github.com/HKUST-KnowComp/NewtonBench) at [`912a4ba5`](https://github.com/HKUST-KnowComp/NewtonBench/tree/912a4ba5f4356ddd06acc16e44460ca30be4abc2) (MIT; read by file path, not installed) | adapter (`adapters/newtonbench_observation.py`); the runner extension `--benchmark newtonbench` of the development tree is not in this release |
 | ForceBench (`run_gravity.py`) | a force law, from simulated trajectories (five worlds) | [SampsonML/DiscoverPhysics](https://github.com/SampsonML/DiscoverPhysics) at [`33b7fa9d`](https://github.com/SampsonML/DiscoverPhysics/commit/33b7fa9df96de9c35744efd181ca7e5a8dd60ad5) (MIT) | yes, in its own jax environment |
 
 ChemBench's true laws, input ranges and noise model come from the ChemBench oracle of LLM-AutoSciLab
@@ -96,7 +97,10 @@ ChemBench's true laws, input ranges and noise model come from the ChemBench orac
 ## Notebooks
 
 The notebooks in [`examples/`](examples/) use the mock proposer (no API key, no network, no cost) and are
-committed with their outputs, so they can be read without running anything.
+committed with their outputs, so they can be read without running anything. To run or re-execute
+them, install the `notebooks` extra into the engine environment
+(`pip install -c requirements.lock -e ".[dev,notebooks]"`, which adds Jupyter, nbconvert and ipykernel);
+[`USAGE.md`](USAGE.md#notebooks) gives the execution order and the check that follows.
 
 | Notebook | What it shows | Needs |
 | --- | --- | --- |
@@ -128,7 +132,7 @@ Module paths are relative to `src/bayes_model_discovery/` unless they start with
 | fitting a family by SMC, its evidence and posterior predictive | `inference/smc.py` (backend), `experimental/count_inference.py` (counts), `positive_inference.py`, `real_inference.py`, `vector_inference.py` (NeuronBench), `tools/fb1_snapshot/fb1_core.py` (ForceBench) |
 | the pool of at most K families, evidence weights, Bayesian model averaging | the runners: `experimental/core_count.py`, `boxinggym_core.py`, `chembench_core.py`, `neuron_core.py`, `tools/fb1_snapshot/run_gravity.py` |
 | joint EIG = family information + parameter information; Model EIG, Parameter EIG, EPIG, random | `eig/joint.py` (the estimator and its decomposition), `experimental/design_policies.py`, `experimental/count_epig.py`; design search in `experimental/design_search.py`, `boxinggym_design_search.py`, `tools/fb1_snapshot/fb1_design_search.py` |
-| the prompt texts the proposer sends (hash-bound) | `src/bayes_model_discovery/experimental/prompts/`, `tools/fb1_launch_c/*.txt`, `tools/fb1_snapshot/prompts/` |
+| the prompt texts the proposer sends (hash-bound) | `src/bayes_model_discovery/experimental/prompts/`, `tools/fb1_launch_c/*.txt`, `tools/paper_prompts/` (the later-round and feedback-variant prompts of the paper runs), `tools/fb1_snapshot/prompts/` |
 | benchmark interfaces | `experimental/chembench_core.py` + `adapters/chembench_observation.py`, `boxinggym_core.py`, `neuron_core.py` + `neuron_forward.py`, `tools/fb1_snapshot/fb1_forward.py` + `world_constants.py` |
 
 </details>

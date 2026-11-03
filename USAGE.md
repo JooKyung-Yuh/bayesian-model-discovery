@@ -234,8 +234,8 @@ packaged prompt files are in `src/bayes_model_discovery/experimental/prompts/`;
 
 | Text | Location | sha256 |
 | --- | --- | --- |
-| system prompt `v2.9.FA-C` of the paper runs (3,548 bytes) | `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` | `196f82b7a0f94e12a7cb8be2d07e776b1536aed11bf8ebd4bea1872c7002953c` |
-| the same with sine and cosine in its operator list (ForceBench oscillator runs; 3,568 bytes) | `tools/fb1_launch_c/proposer_system_v2_9_FA-C_trig.txt` | `4dac3b091359f4297dadfebe7e7525e54a718069fb48c5c9f5f70105e6499ab9` |
+| system prompt `v2.9.FA-C` (3,548 bytes): the first round of every paper run, the ChemBench and BoxingGym design-criterion runs and the 24 further ChemBench tasks | `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` | `196f82b7a0f94e12a7cb8be2d07e776b1536aed11bf8ebd4bea1872c7002953c` |
+| the same with sine and cosine in its operator list (ForceBench; 3,568 bytes): the first round of the ForceBench runs and every round of the earlier runs with the masked interface | `tools/fb1_launch_c/proposer_system_v2_9_FA-C_trig.txt` | `4dac3b091359f4297dadfebe7e7525e54a718069fb48c5c9f5f70105e6499ab9` |
 | the same with a block that lets the proposer write numeric coefficient priors (`v2.9.FA-C-priors`, 4,969 bytes; selected by `--prompt-version v2.9.FA-C-priors`) | `tools/fb1_launch_c/proposer_system_v2_9_FA-C_priors.txt` | `dc03d1a61dc484c6bc28aa216887e82469f00ec791c568b01f96fb65b9779324` |
 | multi-candidate paragraph, version 2 (525 bytes) | `COMPOSITION_PARAGRAPH_V2` in `src/bayes_model_discovery/experimental/count_proposer.py` | `782a30b74cd25adb6b51351096cf97e31a7375d8630d726ee8eb7d7949c35be6` |
 | archive review paragraph, version 1 (675 bytes) | `ARCHIVE_REVIEW_PARAGRAPH` in the same file | `8b4c5359d81b6b3e5afed570c1e3c3f1bb217a57e70977bcbdb42d1238cd6cde` |
@@ -263,7 +263,11 @@ packaged prompt files are in `src/bayes_model_discovery/experimental/prompts/`;
 | repair-turn text after an empty reply | `prompts/slot_repair_v1_empty.txt` | `f6d969239867cffc98b06b165d0e15028caefddd415273ef6bc2ecc5d44c5260` |
 
 The sine-and-cosine variant declares the same version tag, `v2.9.FA-C`, on its first line, so
-only its sha256 tells the two files apart. The two paragraph digests are taken over the
+only its sha256 tells the two files apart. The prompts of the later proposal rounds of the paper's
+main runs (`v2.9.FA-C-R`, digest `e465265a…`, and its `_trig` form `445949c6…`), of the three
+feedback-ablation variants and the two neutral paragraphs they use, and the ForceBench task
+description of the full interface are in `tools/paper_prompts/` with their own `SHA256SUMS` and
+README; `tests/unit/test_paper_prompts.py` checks them. The two paragraph digests are taken over the
 constants' bytes with their `{limit}` placeholder unfilled, as notebook 02 computes them.
 
 ## Reproducing the benchmark runs

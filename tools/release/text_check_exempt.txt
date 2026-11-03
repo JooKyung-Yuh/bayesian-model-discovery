@@ -2,3 +2,4 @@
 # tab and the reason. Only files whose bytes must stay exactly as recorded belong here.
 tools/release/release_checks.sh	holds the search patterns themselves
 tools/release/text_check_exempt.txt	this list
+tests/unit/test_paper_data.py	holds the private-path search pattern it checks the data files against
