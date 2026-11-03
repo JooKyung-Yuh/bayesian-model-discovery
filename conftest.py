@@ -17,6 +17,8 @@ BENCHMARK_SOURCES = {
     ),
     "neuronbench": (("NEURONBENCH_SRC",), "c354622458c460b419cab821d482c879f0578377"),
 }
+# NewtonBench is read by file path (modules/<domain>/laws.py), never imported as a package.
+NEWTONBENCH_SOURCE = ("BMD_NEWTONBENCH", "912a4ba5f4356ddd06acc16e44460ca30be4abc2")
 
 
 def _package_exists_in_head(source, package):
@@ -100,6 +102,25 @@ def require_boxinggym_source():
 def require_autoscilab_source():
     """Return the verified AutoSciLab source directory, or skip/fail the test."""
     return _require_external_source("autoscilab", *BENCHMARK_SOURCES["autoscilab"])
+
+
+@pytest.fixture
+def require_newtonbench_source():
+    """Return the verified NewtonBench checkout (law files read by path), or skip/fail the test."""
+    variable, expected_revision = NEWTONBENCH_SOURCE
+    value = os.environ.get(variable)
+    if not value:
+        pytest.skip(f"NewtonBench requires {variable} (a checkout at commit {expected_revision})")
+    source = Path(value).expanduser().resolve()
+    if not (source / "modules").is_dir():
+        # The provisioning script exports a placeholder path for benchmarks that were not requested;
+        # like the other source fixtures, skip when the checkout is simply not there.
+        pytest.skip(f"NewtonBench requires {variable} to name a checkout at commit {expected_revision}; "
+                    f"{value!r} has no modules/ folder")
+    revision = subprocess.run(["git", "-C", str(source), "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
+    if revision.returncode != 0 or revision.stdout.strip() != expected_revision:
+        pytest.fail(f"{variable} is not a checkout at {expected_revision}: {revision.stdout.strip() or revision.stderr.strip()}")
+    return source
 
 
 @pytest.fixture
