@@ -1,0 +1,107 @@
+diff --git a/run_experiment.py b/run_experiment.py
+index 92cdabe..b734568 100644
+--- a/run_experiment.py
++++ b/run_experiment.py
+@@ -234,27 +234,86 @@ def ppl_evaluate(final_results, goal, scientist, num_evals, include_prior, propo
+     proposed_programs_all.append(proposed_programs)
+     critic_info_all.append(critic_info)
+ 
+-    assert len(proposed_programs_all[-1]) > 0
++    # CCR-5b (bai minimal patch, main ruling 3): a generated program that raises while being executed for
++    # predictions is fed back (error message) to the proposer and re-proposed at most CCR5B_MAX_RETRIES times
++    # through the existing prev_synthesis/prev_str_hypotheses prompt hooks. If it still fails, the budget step is
++    # recorded as "measurement unavailable" ((None, None)) instead of crashing the whole run. Prompts, evaluation
++    # and budget rules are otherwise unchanged. Retry/crash events are appended to ./ccr5b_retries.json.
++    # v2: the upstream `assert len(proposed_programs_all[-1]) > 0` (every proposed program failed to fit/score,
++    # errors swallowed inside score_programs) is handled by the same feedback loop and retry budget.
++    retries = 0
++    while len(proposed_programs_all[-1]) == 0:
++        _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "n_programs_all": len(proposed_programs_all),
++                       "retry_index": retries, "error": "no scoreable program returned by run_box_loop (all proposals failed to fit)"})
++        print(f"[CCR-5b] no scoreable program; retry {retries + 1}/{CCR5B_MAX_RETRIES}")
++        if retries >= CCR5B_MAX_RETRIES:
++            _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "outcome": "measurement_unavailable"})
++            return (None, None), [], [], []
++        retries += 1
++        feedback = ("All programs you proposed previously failed to compile or sample (numerical errors or invalid pymc code). "
++                    "Propose a corrected program that samples without errors (keep parameters and rates in a numerically safe range).")
++        proposed_programs, critic_info = run_box_loop(env=goal.env, prior_mode=prior_mode, critic_mode=critic_mode,
++                                                      prev_synthesis=feedback, prev_str_hypotheses="",
++                                                      warm_start_examples=proposed_programs_all[-2])
++        proposed_programs_all[-1] = proposed_programs
++        critic_info_all[-1] = critic_info
+     program_dict = proposed_programs_all[-1][0]
+ 
+-    predictions, gts, questions = [], [], []
+-    print(f"running {num_evals} evals")
+-    goal.eval_pointer = 0 # reset pointer, some goals have a static eval set
+-    for _ in tqdm.tqdm(range(num_evals)):
+-        _, _= goal.get_goal_eval_question(include_prior)
++    while True:
++        predictions, gts, questions = [], [], []
++        print(f"running {num_evals} evals")
++        goal.eval_pointer = 0 # reset pointer, some goals have a static eval set
++        try:
++            for _ in tqdm.tqdm(range(num_evals)):
++                _, _= goal.get_goal_eval_question(include_prior)
++
++                input_output_tuple = goal.eval_points[goal.eval_pointer-1]
++                question = input_output_tuple[:-1]
++                gt = input_output_tuple[-1]
++                prediction = get_ppl_prediction(goal.env, program_dict, question, prior_mode)
++
++                gts.append(gt)
++                questions.append(str(question))
++                predictions.append(prediction)
++                print(f"prediction: {prediction}, gt: {gt}")
++            break
++        except Exception as e:
++            err = f"{type(e).__name__}: {e}"
++            _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "n_programs_all": len(proposed_programs_all),
++                           "retry_index": retries, "error": err[:500]})
++            print(f"[CCR-5b] generated program failed ({err[:200]}); retry {retries + 1}/{CCR5B_MAX_RETRIES}")
++            if retries >= CCR5B_MAX_RETRIES:
++                _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "outcome": "measurement_unavailable"})
++                return (None, None), questions, gts, predictions
++            retries += 1
++            feedback = (f"The program you proposed previously raised an error when it was executed to make predictions: {err}. "
++                        f"Propose a corrected program that executes without numerical errors (keep parameters and rates in a "
++                        f"numerically safe range so sampling does not overflow).")
++            proposed_programs, critic_info = run_box_loop(env=goal.env,
++                                                          prior_mode=prior_mode,
++                                                          critic_mode=critic_mode,
++                                                          prev_synthesis=feedback,
++                                                          prev_str_hypotheses=str(program_dict.get('str_prob_prog', '')),
++                                                          warm_start_examples=proposed_programs_all[-2])
++            assert len(proposed_programs) > 0
++            proposed_programs_all[-1] = proposed_programs
++            critic_info_all[-1] = critic_info
++            program_dict = proposed_programs_all[-1][0]
++
++    return goal.evaluate_predictions(predictions, gts), questions, gts, predictions
+ 
+-        input_output_tuple = goal.eval_points[goal.eval_pointer-1]
+-        question = input_output_tuple[:-1]
+-        gt = input_output_tuple[-1]
+-        prediction = get_ppl_prediction(goal.env, program_dict, question, prior_mode)
+ 
+-        gts.append(gt)
+-        questions.append(str(question))
+-        predictions.append(prediction)
+-        print(f"prediction: {prediction}, gt: {gt}")
+-    
++CCR5B_MAX_RETRIES = 2
++CCR5B_LOG = "ccr5b_retries.json"
+ 
+-    return goal.evaluate_predictions(predictions, gts), questions, gts, predictions
++def _ccr5b_record(entry):
++    try:
++        data = json.load(open(CCR5B_LOG)) if os.path.exists(CCR5B_LOG) else []
++    except Exception:
++        data = []
++    data.append(entry)
++    with open(CCR5B_LOG, "w") as f:
++        json.dump(data, f, indent=1)
+ 
+ def evaluate(final_results, goal, scientist, num_evals, include_prior):
+     predictions, gts, questions = [], [], []

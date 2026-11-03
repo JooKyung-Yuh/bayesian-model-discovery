@@ -1,0 +1,20 @@
+diff --git a/src/boxing_gym/agents/base_agent.py b/src/boxing_gym/agents/base_agent.py
+index 9e7d458..2c8b5bf 100644
+--- a/src/boxing_gym/agents/base_agent.py
++++ b/src/boxing_gym/agents/base_agent.py
+@@ -10,6 +10,7 @@ MODEL_COST_PER_INPUT = {
+     'gpt-4': 3e-05,
+     'gpt-4o': 3e-05,
+     "gpt-4o-2024-05-13": 3e-05,
++    "gpt-4o-2024-08-06": 3e-05,  # CCR-5 minimal patch: cost-accounting entry only
+     "gpt-4-1106-vision-preview": 0.03/1000,
+     'gpt-3.5-turbo-0125': 3e-05,
+     "gpt-4-turbo-2024-04-09": 0.01/1000,
+@@ -21,6 +22,7 @@ MODEL_COST_PER_OUTPUT = {
+     'gpt-3.5-turbo-0125': 3e-05,
+     "gpt-4-turbo-2024-04-09": 0.03/1000,
+     "gpt-4o-2024-05-13": 3e-05,
++    "gpt-4o-2024-08-06": 3e-05,  # CCR-5 minimal patch: cost-accounting entry only
+ }
+ 
+ class BaseAgent(ABC):

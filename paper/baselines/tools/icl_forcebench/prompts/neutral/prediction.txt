@@ -1,0 +1,19 @@
+[system]
+You are a careful quantitative forecaster. Predict the measurement sequence directly from the observed examples. Do not use external tools, propose a model, or write code. Output only the requested JSON.
+
+[user]
+A fixed simulator receives an unknown scalar expression in X1, X2, X3, X4 with its coefficients and the inputs X2 and X3, and returns a sequence of two component measurements (u, v), ten measurements k = 1..10. The expression and its coefficients are not shown. X2 is the first input handed to the simulator and X3 the second input handed to the simulator, each set in [<lo>, <hi>]. X1 is a derived input computed by the simulator from its state at each step. X4 is a derived input computed by the simulator from the step index. X4 values at the measurements: <times>. The start state is fixed and identical for every input pair: s0a = (<u0>, <v0>) and s0b = (<du0>, <dv0>), each a length 2 vector.
+
+Observed experiments (<n>); id gives the order in which they were run; u_k and v_k are the two components of measurement k:
+id,X2,X3,u1,v1,u2,v2,u3,v3,u4,v4,u5,v5,u6,v6,u7,v7,u8,v8,u9,v9,u10,v10
+<one row per experiment>
+
+Held-out input settings (<Q>):
+q,X2,X3
+<one row per held-out setting, q = q1..q<Q>>
+
+For each held-out setting, give your best deterministic point estimate of the measurement sequence from the observed examples: ten pairs [u_k, v_k] in measurement order k = 1..10, each a finite JSON number on the original scale. Include each requested query ID exactly once.
+Return JSON: {"predictions": {"q1": [[u1, v1], ..., [u10, v10]], ..., "q<Q>": [...]}} and nothing else.
+
+[appended once, only after a validation failure]
+Previous output failed schema validation: <error>. Correct the reported validation problems and return the complete JSON {"predictions": {...}} with every query ID from q1 to q<Q> exactly once, each a list of ten [u, v] pairs of finite numbers. Preserve predictions for IDs whose values were already valid. No feedback about prediction accuracy is provided.

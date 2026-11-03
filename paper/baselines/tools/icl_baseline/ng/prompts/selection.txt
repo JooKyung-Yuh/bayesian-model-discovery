@@ -1,0 +1,10 @@
+[system]
+Choose the next experiment to improve prediction of y across the declared input ranges. Only the previous observations are available. <variable names sentence> Do not use external tools. Output only the requested JSON.
+
+[user]
+(the same data block and observation table as the forecast request)
+Choose one new experiment. The held-out evaluation inputs are not shown. Every input must lie inside its range, bounds included; you may repeat an earlier experiment.
+Return JSON: {"x": {<selection fields>}} and nothing else.
+
+[appended once, only after a validation failure]
+Invalid previous selection: <error>. Return one complete corrected selection in the same JSON format, <selection inputs phrase>. No new observation or evaluation feedback is available.

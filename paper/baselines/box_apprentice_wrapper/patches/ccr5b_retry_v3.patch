@@ -1,0 +1,147 @@
+diff --git a/run_experiment.py b/run_experiment.py
+index 92cdabe..8c67f24 100644
+--- a/run_experiment.py
++++ b/run_experiment.py
+@@ -234,27 +234,117 @@ def ppl_evaluate(final_results, goal, scientist, num_evals, include_prior, propo
+     proposed_programs_all.append(proposed_programs)
+     critic_info_all.append(critic_info)
+ 
+-    assert len(proposed_programs_all[-1]) > 0
++    # CCR-5b (bai minimal patch, main ruling 3): a generated program that raises while being executed for
++    # predictions is fed back (error message) to the proposer and re-proposed at most CCR5B_MAX_RETRIES times
++    # through the existing prev_synthesis/prev_str_hypotheses prompt hooks. If it still fails, the budget step is
++    # recorded as "measurement unavailable" ((None, None)) instead of crashing the whole run. Prompts, evaluation
++    # and budget rules are otherwise unchanged. Retry/crash events are appended to ./ccr5b_retries.json.
++    # v2: the upstream `assert len(proposed_programs_all[-1]) > 0` (every proposed program failed to fit/score,
++    # errors swallowed inside score_programs) is handled by the same feedback loop and retry budget.
++    retries = 0
++    while len(proposed_programs_all[-1]) == 0:
++        _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "n_programs_all": len(proposed_programs_all),
++                       "retry_index": retries, "error": "no scoreable program returned by run_box_loop (all proposals failed to fit)"})
++        print(f"[CCR-5b] no scoreable program; retry {retries + 1}/{CCR5B_MAX_RETRIES}")
++        if retries >= CCR5B_MAX_RETRIES:
++            _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "outcome": "measurement_unavailable"})
++            _ccr5b_placeholder(proposed_programs_all, critic_info_all, critic_mode)
++            return (None, None), [], [], []
++        retries += 1
++        feedback = ("All programs you proposed previously failed to compile or sample (numerical errors or invalid pymc code). "
++                    "Propose a corrected program that samples without errors (keep parameters and rates in a numerically safe range).")
++        proposed_programs, critic_info = run_box_loop(env=goal.env, prior_mode=prior_mode, critic_mode=critic_mode,
++                                                      prev_synthesis=feedback, prev_str_hypotheses="",
++                                                      warm_start_examples=proposed_programs_all[-2])
++        proposed_programs_all[-1] = proposed_programs
++        critic_info_all[-1] = critic_info
+     program_dict = proposed_programs_all[-1][0]
+ 
+-    predictions, gts, questions = [], [], []
+-    print(f"running {num_evals} evals")
+-    goal.eval_pointer = 0 # reset pointer, some goals have a static eval set
+-    for _ in tqdm.tqdm(range(num_evals)):
+-        _, _= goal.get_goal_eval_question(include_prior)
++    while True:
++        predictions, gts, questions = [], [], []
++        print(f"running {num_evals} evals")
++        goal.eval_pointer = 0 # reset pointer, some goals have a static eval set
++        try:
++            for _ in tqdm.tqdm(range(num_evals)):
++                _, _= goal.get_goal_eval_question(include_prior)
++
++                input_output_tuple = goal.eval_points[goal.eval_pointer-1]
++                question = input_output_tuple[:-1]
++                gt = input_output_tuple[-1]
++                prediction = get_ppl_prediction(goal.env, program_dict, question, prior_mode)
++
++                gts.append(gt)
++                questions.append(str(question))
++                predictions.append(prediction)
++                print(f"prediction: {prediction}, gt: {gt}")
++            break
++        except Exception as e:
++            err = f"{type(e).__name__}: {e}"
++            _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "n_programs_all": len(proposed_programs_all),
++                           "retry_index": retries, "error": err[:500]})
++            print(f"[CCR-5b] generated program failed ({err[:200]}); retry {retries + 1}/{CCR5B_MAX_RETRIES}")
++            if retries >= CCR5B_MAX_RETRIES:
++                _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "outcome": "measurement_unavailable"})
++                return (None, None), questions, gts, predictions
++            retries += 1
++            feedback = (f"The program you proposed previously raised an error when it was executed to make predictions: {err}. "
++                        f"Propose a corrected program that executes without numerical errors (keep parameters and rates in a "
++                        f"numerically safe range so sampling does not overflow).")
++            proposed_programs, critic_info = run_box_loop(env=goal.env,
++                                                          prior_mode=prior_mode,
++                                                          critic_mode=critic_mode,
++                                                          prev_synthesis=feedback,
++                                                          prev_str_hypotheses=str(program_dict.get('str_prob_prog', '')),
++                                                          warm_start_examples=proposed_programs_all[-2])
++            # v3: a re-proposal that yields no scoreable program consumes the same retry budget instead of asserting
++            while len(proposed_programs) == 0:
++                _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "error": "no scoreable program returned after error feedback"})
++                print(f"[CCR-5b] no scoreable program after feedback; retry {retries + 1}/{CCR5B_MAX_RETRIES}")
++                if retries >= CCR5B_MAX_RETRIES:
++                    _ccr5b_record({"stage": "prior" if prior_mode else "posterior", "retry_index": retries, "outcome": "measurement_unavailable"})
++                    _ccr5b_placeholder(proposed_programs_all, critic_info_all, critic_mode)
++                    return (None, None), questions, gts, predictions
++                retries += 1
++                proposed_programs, critic_info = run_box_loop(env=goal.env, prior_mode=prior_mode, critic_mode=critic_mode,
++                                                              prev_synthesis=feedback, prev_str_hypotheses="", warm_start_examples=proposed_programs_all[-2])
++            proposed_programs_all[-1] = proposed_programs
++            critic_info_all[-1] = critic_info
++            program_dict = proposed_programs_all[-1][0]
+ 
+-        input_output_tuple = goal.eval_points[goal.eval_pointer-1]
+-        question = input_output_tuple[:-1]
+-        gt = input_output_tuple[-1]
+-        prediction = get_ppl_prediction(goal.env, program_dict, question, prior_mode)
++    return goal.evaluate_predictions(predictions, gts), questions, gts, predictions
+ 
+-        gts.append(gt)
+-        questions.append(str(question))
+-        predictions.append(prediction)
+-        print(f"prediction: {prediction}, gt: {gt}")
+-    
+ 
+-    return goal.evaluate_predictions(predictions, gts), questions, gts, predictions
++def _ccr5c_json_default(o):
++    """CCR-5c (bai minimal patch, ruling 11): make numpy arrays/scalars JSON-serializable at save time only.
++    No effect on any computation; without it location_finding_source crashes when writing results."""
++    if isinstance(o, np.ndarray):
++        return o.tolist()
++    if isinstance(o, np.generic):
++        return o.item()
++    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
++
++
++def _ccr5b_placeholder(proposed_programs_all, critic_info_all, critic_mode):
++    """CCR-5b v3: when every proposal failed, leave a documented placeholder so the upstream
++    augment_scientist_with_ppl asserts do not crash the run (failure path only)."""
++    if len(proposed_programs_all[-1]) == 0:
++        proposed_programs_all[-1] = [{"full_llm_response": "", "str_prob_prog": "No valid probabilistic program could be proposed in this round (all proposals failed to compile or sample).",
++                                      "trace": "", "loo": "", "waic": "", "round": "", "ccr5b_placeholder": True}]
++    if critic_mode and (not critic_info_all or len(critic_info_all[-1]) == 0):
++        if critic_info_all: critic_info_all[-1] = [{"str_hypotheses": "", "synthesis": "", "ccr5b_placeholder": True}]
++
++
++CCR5B_MAX_RETRIES = 2
++CCR5B_LOG = "ccr5b_retries.json"
++
++def _ccr5b_record(entry):
++    try:
++        data = json.load(open(CCR5B_LOG)) if os.path.exists(CCR5B_LOG) else []
++    except Exception:
++        data = []
++    data.append(entry)
++    with open(CCR5B_LOG, "w") as f:
++        json.dump(data, f, indent=1)
+ 
+ def evaluate(final_results, goal, scientist, num_evals, include_prior):
+     predictions, gts, questions = [], [], []
+@@ -445,7 +535,7 @@ def main(config: DictConfig):
+     if not os.path.exists(res_dir):
+         os.makedirs(res_dir)
+     with open(os.path.join(res_dir, res_filename), 'w') as f:
+-        json.dump(store_dict, f, indent=4)
++        json.dump(store_dict, f, indent=4, default=_ccr5c_json_default)  # CCR-5c (ruling 11): serialization-only fix for ndarray/numpy scalars
+ 
+     print(model_name)
+     print("finished successfully :)")

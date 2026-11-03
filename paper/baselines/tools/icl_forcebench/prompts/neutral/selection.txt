@@ -1,0 +1,19 @@
+[system]
+Choose the next experiment to improve prediction of the measurement sequence at input settings not yet seen. Only the previous observations are available. Do not use external tools or propose a model. Output only the requested JSON.
+
+[user]
+A fixed simulator receives an unknown scalar expression in X1, X2, X3, X4 with its coefficients and the inputs X2 and X3, and returns a sequence of two component measurements (u, v), ten measurements k = 1..10. The expression and its coefficients are not shown. X2 is the first input handed to the simulator and X3 the second input handed to the simulator, each set in [<lo>, <hi>]. X1 is a derived input computed by the simulator from its state at each step. X4 is a derived input computed by the simulator from the step index. X4 values at the measurements: <times>. The start state is fixed and identical for every input pair: s0a = (<u0>, <v0>) and s0b = (<du0>, <dv0>), each a length 2 vector.
+
+Observed experiments (<n>); id gives the order in which they were run; u_k and v_k are the two components of measurement k:
+id,X2,X3,u1,v1,u2,v2,u3,v3,u4,v4,u5,v5,u6,v6,u7,v7,u8,v8,u9,v9,u10,v10
+<one row per experiment>
+
+Candidate input settings (<C>), one per line; pick exactly one by its id:
+c,X2,X3
+<one row per candidate, c = c1..c<C>>
+
+Choose one candidate. The held-out input settings are not shown. You may repeat an earlier setting.
+Return JSON: {"choice": "<candidate id>"} and nothing else.
+
+[appended once, only after a validation failure]
+Invalid previous selection: <error>. Return one complete corrected selection in the same JSON format, naming exactly one candidate id from the list. No new observation or evaluation feedback is available.
