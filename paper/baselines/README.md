@@ -44,8 +44,7 @@ path, this is what ran on the development host after the launch material was rem
 | Kit | Result | Needs |
 | --- | --- | --- |
 | `tools/icl_boxinggym` | 43 passed | the BoxingGym checkout (`BMD_BOXINGGYM_SRC`) |
-| `tools/icl_forcebench` | 3 skipped (no jax in the engine environment) | the ForceBench environment (`FB_PY`) |
-| `tools/icl_baseline` | 71 passed, 41 skipped; 2 failed and 12 errors in the tests that read the registration seals and a frozen engine tree, which are not here | the LLM-AutoSciLab checkout (`BMD_AUTOSCILAB`), the NewtonBench adapter |
+| `tools/icl_baseline` and `tools/icl_forcebench` together | 85 passed, 44 skipped (the skips need the LLM-AutoSciLab checkout, a frozen engine tree with its registration seals, and jax) | the LLM-AutoSciLab checkout (`BMD_AUTOSCILAB`), the NewtonBench adapter, the ForceBench environment (`FB_PY`) |
 | `llm_autoscilab_wrapper` | the tests that read the data packs and recorded runs fail (not here); the others pass | the LLM-AutoSciLab checkout, the packs built by `build/*.py` from the benchmark checkouts |
 | `box_apprentice_wrapper` | not run (needs the BoxingGym checkout's dependencies, the pack and the vendored file) | the BoxingGym checkout with its dependencies, `APPR_BG_CHECKOUT`, `APPR_ASL_KIT` |
 | `dp_agent_wrapper` | `kit/test_dp_current_law.py` runs with the DiscoverPhysics checkout | `FB_DP` |
