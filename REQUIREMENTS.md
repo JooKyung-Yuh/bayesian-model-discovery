@@ -84,7 +84,7 @@ are placeholders.
 | `NEURONBENCH_SRC` | the neuronbench checkout | `scripts/bmd_run.py`, the NeuronBench tests |
 | `FB_PY` | the ForceBench environment's python | `scripts/bmd_run.py` and the ForceBench launch script |
 | `FB_DP` | the DiscoverPhysics checkout | `scripts/bmd_run.py` and the ForceBench launch script, which passes `$FB_DP/ScienceAgent` to the runner |
-| `BMD_FAC_PROMPT` | the paper's system prompt, `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` | a protocol test that checks the prompt's digests when the variable is set |
+| `BMD_FAC_PROMPT` | the system prompt `v2.9.FA-C`, `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt` (the first-round prompt of the paper runs; the later rounds' `FA-C-R` prompt and the feedback variants are in `tools/paper_prompts/`) | a protocol test that checks the prompt's digests when the variable is set |
 | `BMD_ROOT` | the repository root | convenience |
 | `PYTENSOR_FLAGS` | `base_compiledir=<root>/.pytensor`, the PyTensor compile cache | PyTensor |
 | `NPY_DISABLE_CPU_FEATURES` | not set by the script. On a CPU with AVX-512, `NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL"` turns numpy's SIMD power dispatch off; the NeuronBench batch forward backend (`--forward-backend batch`) needs it, and the batch-backend bit-identity tests skip without it | numpy, at import |

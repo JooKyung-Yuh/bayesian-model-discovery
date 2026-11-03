@@ -128,7 +128,7 @@ Module paths are relative to `src/bayes_model_discovery/` unless they start with
 | fitting a family by SMC, its evidence and posterior predictive | `inference/smc.py` (backend), `experimental/count_inference.py` (counts), `positive_inference.py`, `real_inference.py`, `vector_inference.py` (NeuronBench), `tools/fb1_snapshot/fb1_core.py` (ForceBench) |
 | the pool of at most K families, evidence weights, Bayesian model averaging | the runners: `experimental/core_count.py`, `boxinggym_core.py`, `chembench_core.py`, `neuron_core.py`, `tools/fb1_snapshot/run_gravity.py` |
 | joint EIG = family information + parameter information; Model EIG, Parameter EIG, EPIG, random | `eig/joint.py` (the estimator and its decomposition), `experimental/design_policies.py`, `experimental/count_epig.py`; design search in `experimental/design_search.py`, `boxinggym_design_search.py`, `tools/fb1_snapshot/fb1_design_search.py` |
-| the prompt texts the proposer sends (hash-bound) | `src/bayes_model_discovery/experimental/prompts/`, `tools/fb1_launch_c/*.txt`, `tools/fb1_snapshot/prompts/` |
+| the prompt texts the proposer sends (hash-bound) | `src/bayes_model_discovery/experimental/prompts/`, `tools/fb1_launch_c/*.txt`, `tools/paper_prompts/` (the later-round and feedback-variant prompts of the paper runs), `tools/fb1_snapshot/prompts/` |
 | benchmark interfaces | `experimental/chembench_core.py` + `adapters/chembench_observation.py`, `boxinggym_core.py`, `neuron_core.py` + `neuron_forward.py`, `tools/fb1_snapshot/fb1_forward.py` + `world_constants.py` |
 
 </details>
