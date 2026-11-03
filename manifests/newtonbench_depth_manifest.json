@@ -1,0 +1,92 @@
+[
+  {
+    "id": "m2_magnetic_force__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m2_magnetic_force",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m2_magnetic_force__medium__v0__seed0"
+  },
+  {
+    "id": "m3_fourier_law__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m3_fourier_law",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m3_fourier_law__medium__v0__seed1"
+  },
+  {
+    "id": "m4_snell_law__medium__v2",
+    "benchmark": "newtonbench",
+    "domain": "m4_snell_law",
+    "difficulty": "medium",
+    "law_version": "v2",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m4_snell_law__medium__v2__seed0"
+  },
+  {
+    "id": "m5_radioactive_decay__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m5_radioactive_decay",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "newtonbench_evaluate_law",
+    "autoscilab_task_id": "m5_radioactive_decay__medium__v0__seed0"
+  },
+  {
+    "id": "m7_malus_law__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m7_malus_law",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m7_malus_law__medium__v0__seed1"
+  },
+  {
+    "id": "m8_sound_speed__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m8_sound_speed",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m8_sound_speed__medium__v0__seed0"
+  },
+  {
+    "id": "m9_hooke_law__medium__v0",
+    "benchmark": "newtonbench",
+    "domain": "m9_hooke_law",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m9_hooke_law__medium__v0__seed0"
+  },
+  {
+    "id": "m10_be_distribution__medium__v1",
+    "benchmark": "newtonbench",
+    "domain": "m10_be_distribution",
+    "difficulty": "medium",
+    "law_version": "v1",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m10_be_distribution__medium__v1__seed1"
+  },
+  {
+    "id": "m11_heat_transfer__medium__v1",
+    "benchmark": "newtonbench",
+    "domain": "m11_heat_transfer",
+    "difficulty": "medium",
+    "law_version": "v1",
+    "system": "vanilla_equation",
+    "input_box": "autoscilab_registry",
+    "autoscilab_task_id": "m11_heat_transfer__medium__v1__seed0"
+  }
+]

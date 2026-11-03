@@ -99,12 +99,12 @@ UNIT = "ICL-FORCEBENCH-CLOSED-LOOP"
 INTERFACE_ENV = "ICL_FB_INTERFACE_NEUTRAL"
 #: The neutral addendum to registration v2; a neutral seal binds it (dependencies("neutral")).
 NEUTRAL_ADDENDUM = Path(__file__).resolve().parent / "v2" / "ICL_FORCEBENCH_NEUTRAL_ADDENDUM_20261011.md"
-VOCABULARY_AUDIT = Path(__file__).resolve().parents[1] / "e2" / "fb_vocabulary_audit.py"
+VOCABULARY_AUDIT = Path(__file__).resolve().parent / "audits" / "fb_vocabulary_audit.py"
 #: Unit the full-interface ForceBench edition: the variable that states the full interface ("1"; unset, empty or "0" = not stated); its addendum and the
 #: prompt audit a full seal binds (dependencies("full")) with the description file.
 INTERFACE_FULL_ENV = "ICL_FB_INTERFACE_FULL"
 FULL_ADDENDUM = Path(__file__).resolve().parent / "v2" / "ICL_FORCEBENCH_FULL_ADDENDUM_20261012.md"
-FULL_PROMPT_AUDIT = Path(__file__).resolve().parents[1] / "e2" / "fb_full_prompt_audit.py"
+FULL_PROMPT_AUDIT = Path(__file__).resolve().parent / "audits" / "fb_full_prompt_audit.py"
 #: Main's cap (2026-10-02): 15 USD per world; the checks and the per-kind projection are the
 #: ChemBench tool's `Budget`.
 CAP_USD = 15.0
@@ -112,7 +112,10 @@ CAP_USD = 15.0
 MAX_CAP_USD = 100.0
 SEEDS = (31, 37, 41)
 ROOT = Path(__file__).resolve().parent
-FB1_DIR = ROOT.parent / "fb1_snapshot"
+#: The repository root (this file is paper/baselines/tools/icl_forcebench/icl_forcebench.py); the frozen
+#: ForceBench simulator lives at tools/fb1_snapshot there.
+REPO_ROOT = ROOT.parents[3]
+FB1_DIR = REPO_ROOT / "tools" / "fb1_snapshot"
 RUNNER = FB1_DIR / "run_gravity.py"
 #: The runner's observation-noise seed rule (run_gravity.py:90), repeated here only for the record.
 OBSERVATION_SEED_RULE = "20260906 + (seed - 11)"

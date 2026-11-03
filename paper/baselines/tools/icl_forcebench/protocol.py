@@ -82,7 +82,8 @@ def interface_plan(interface="default"):
 #: it. Everything else -- the numbers, the tables (with native column names), the candidates, the scores, the plan --
 #: is the default's.
 FULL_VERSION = "icl_fb_interface_full_v1"
-FULL_DESCRIPTION = ROOT.parent / "forcebench_full" / "FB_FULL_DESCRIPTION.md"
+#: The description file is published with the paper prompts at tools/paper_prompts/ of the repository root.
+FULL_DESCRIPTION = ROOT.parents[3] / "tools" / "paper_prompts" / "FB_FULL_DESCRIPTION.md"
 FULL_NAME_MAP = {"X1": "r", "X2": "p1", "X3": "p2", "X4": "t"}
 MASKED_TOKEN = re.compile(r"(?<![A-Za-z0-9_])X[1-4](?![A-Za-z0-9_])")
 FULL_DROPPED_SENTENCE = " X2 and X3 are variable names with no additional meaning provided."

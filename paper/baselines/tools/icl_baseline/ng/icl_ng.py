@@ -96,8 +96,11 @@ from tools.icl_baseline.transport import (
 )
 
 BENCHMARK = "newtonbench"
+#: The repository root (this file is paper/baselines/tools/icl_baseline/ng/icl_ng.py); the depth manifest is manifests/
+#: there.
+REPO_ROOT = Path(__file__).resolve().parents[5]
 ENGINE_ROOT = Path(engine.__file__).resolve().parents[3]
-MANIFEST = ENGINE_ROOT / "manifests" / "newtonbench_depth_manifest.json"
+MANIFEST = REPO_ROOT / "manifests" / "newtonbench_depth_manifest.json"
 ENGINE_PINS = NG_ROOT / "engine_22583bd_files.json"
 #: Registration v1-r: the resume paragraph (v1 itself unchanged); every seal binds it and the live gate requires it.
 REGISTRATION_ADDENDUM = NG_ROOT / "ICL_NG_REGISTRATION_V1_R_20261009.md"

@@ -60,7 +60,9 @@ INPUT_FILES = ("config.json", "observations.jsonl", "evaluation_inputs.npz",
                "official_evaluation_inputs.npz", "reference_after_finish.npz",
                "official_reference_after_finish.npz", "official_scores_after_finish.json")
 # Task mode (CLOSED without recorded histories): one of the paper manifest's task ids.
-PAPER_MANIFEST = Path(__file__).resolve().parents[2] / "manifests" / "chembench_paper_manifest.json"
+#: The repository root (this file is paper/baselines/tools/icl_baseline/icl_baseline.py).
+REPO_ROOT = Path(__file__).resolve().parents[4]
+PAPER_MANIFEST = REPO_ROOT / "manifests" / "chembench_paper_manifest.json"
 DEFAULT_TASK = "c5_pingpong_bisubstrate__easy__v0"
 REGISTERED_NOISE = .01
 #: Unit ICL-X: the CLOSED plan. The fixed3 start, the released plan, and a guard against a mistyped cap.
