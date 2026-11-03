@@ -39,6 +39,9 @@ chembench = []
 # NeuronBench: checkout github.com/murphyk/neuronbench @ c354622 on NEURONBENCH_SRC (provision.sh installs it with
 # `pip install --no-deps -e`); its own dependencies are numpy and scipy.
 neuronbench = []
+# NewtonBench: checkout github.com/HKUST-KnowComp/NewtonBench @ 912a4ba5 on BMD_NEWTONBENCH; the adapter reads its law
+# files by path (nothing installed, no package import). Its own dependencies are not needed.
+newtonbench = []
 # ForceBench runs in its own venv (FB_PY, requirements-forcebench.lock: jax 0.11.1 with numpy 2.5.2, which cannot share
 # the engine's numpy 1.26.4) with DiscoverPhysics @ 33b7fa9 on FB_DP; nothing is installed into this environment.
 forcebench = []
