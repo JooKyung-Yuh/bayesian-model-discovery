@@ -159,6 +159,8 @@ def harvest(run_json, out_path, world, budget):
                                  else f"DP did not fit: {fit.get('error') or 'no fit block'}")
         if res.get("law") and final_src and res["law"].strip("\n") != final_src:
             final["note"] = "results.json law differs from the run log's final_law; the run log's is used"
+    # The final law sits at b = budget by the registered rule (README: the mission consumed its budget; a refused or
+    # failed round adds no experiment but is still a round of the mission); the paper's DP-Agent rows use this placement.
     rows[budget] = final
     for b in range(0, budget + 1):
         rows.setdefault(b, {"b": b, "round": None, "status": "missing", "law": None})

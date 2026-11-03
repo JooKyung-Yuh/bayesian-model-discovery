@@ -6,29 +6,33 @@ Checks before writing: the draft names the benchmark, the task and this tree's r
 n = 4..34, no official layer, 200 USD); every bound file still has the draft's sha256; the registration bound is this
 tree's v1 registration; the draft's six start-forecast digests are recomputed and equal. After writing:
 `transport.verify_seal` with the settings and required inputs `main()` hands to `live_client`.
-Usage: seal_ng.py <task id> <dry-run output folder | build> <new sealed manifest path>"""
+Usage: seal_ng.py <task id> <dry-run output folder | build> <new sealed manifest path> <registration document>
+The registration document is the v1 registration the draft binds; it is not part of the published tree. The
+LLM-AutoSciLab checkout is BMD_AUTOSCILAB."""
 import json
+import os
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2]
-sys.path[:0] = [str(ROOT)]
-from tools.icl_baseline.ng.run_ng_task import (
-    AUTOSCILAB,
-    ENGINE_TREE,
-    REGISTRATION,
-    TASKS,
-)
+ROOT = HERE.parents[2]                      # paper/baselines: the `tools` package of the wrappers
+ENGINE_TREE = str(HERE.parents[4])          # the repository root: its src/ is the engine
+#: The LLM-AutoSciLab checkout (its `autoscilab` package is the oracle), as for the other wrappers.
+AUTOSCILAB = os.environ.get("BMD_AUTOSCILAB")
 
-# The engine tree first: its `adapters` and `bayes_model_discovery` packages, never this checkout's.
-sys.path[:0] = [f"{ENGINE_TREE}/src", ENGINE_TREE, str(ROOT), AUTOSCILAB]
+# The engine tree first: its `bayes_model_discovery` package, never another checkout's.
+sys.path[:0] = [f"{ENGINE_TREE}/src", ENGINE_TREE, str(ROOT)] + ([AUTOSCILAB] if AUTOSCILAB else [])
 
 from tools.icl_baseline import transport
 from tools.icl_baseline.ng import icl_ng as tool
 
 
-def seal(task, dry, target):
+def seal(task, dry, target, registration):
+    REGISTRATION = Path(registration)
+    if not AUTOSCILAB:
+        raise SystemExit("BMD_AUTOSCILAB names the LLM-AutoSciLab checkout")
+    if not REGISTRATION.is_file():
+        raise SystemExit(f"registration document not found: {REGISTRATION}")
     tool.check_engine()
     plan = tool.REGISTERED_PLAN
     if Path(target).exists():
@@ -62,6 +66,7 @@ def seal(task, dry, target):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4 or sys.argv[1] not in TASKS:
-        raise SystemExit("usage: seal_ng.py <task id> <dry-run output folder | build> <new sealed manifest path>")
-    print(json.dumps(seal(*sys.argv[1:4]), indent=1))
+    if len(sys.argv) != 5 or sys.argv[1] not in tool.depth_tasks():
+        raise SystemExit("usage: seal_ng.py <task id> <dry-run output folder | build> <new sealed manifest path> "
+                         "<registration document>")
+    print(json.dumps(seal(*sys.argv[1:5]), indent=1))
