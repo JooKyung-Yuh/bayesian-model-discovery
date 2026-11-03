@@ -113,7 +113,10 @@ def require_newtonbench_source():
         pytest.skip(f"NewtonBench requires {variable} (a checkout at commit {expected_revision})")
     source = Path(value).expanduser().resolve()
     if not (source / "modules").is_dir():
-        pytest.fail(f"{variable}={value!r} has no modules/ folder")
+        # The provisioning script exports a placeholder path for benchmarks that were not requested;
+        # like the other source fixtures, skip when the checkout is simply not there.
+        pytest.skip(f"NewtonBench requires {variable} to name a checkout at commit {expected_revision}; "
+                    f"{value!r} has no modules/ folder")
     revision = subprocess.run(["git", "-C", str(source), "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
     if revision.returncode != 0 or revision.stdout.strip() != expected_revision:
         pytest.fail(f"{variable} is not a checkout at {expected_revision}: {revision.stdout.strip() or revision.stderr.strip()}")
