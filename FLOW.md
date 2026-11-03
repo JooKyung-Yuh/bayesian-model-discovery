@@ -101,8 +101,13 @@ benchmark is not part of the paper; it serves development and tests.
   Within a benchmark and world, every arm uses the same prompt, grammar, likelihood families,
   priors, compute profile, initial-design rule and seeds; only the design criterion differs.
 - **What the LLM is given.** The system prompt `tools/fb1_launch_c/proposer_system_v2_9_FA-C.txt`
-  (version tag `v2.9.FA-C`; ForceBench oscillator runs use the variant with sine and cosine),
-  and each round's belief packet with input names masked as `X1`, `X2`, … and no task name.
+  (version tag `v2.9.FA-C`; ForceBench uses the variant with sine and cosine) in the first round
+  and in the ChemBench and BoxingGym design-criterion runs; `tools/paper_prompts/proposer_system_v2_9_FA-C-R.txt`
+  (`v2.9.FA-C-R`, the same prompt with the belief-packet fields of the Full feedback variant) in
+  every later proposal round of the main runs, with the neutral three-candidate and
+  archive-review paragraphs of that folder; and each round's belief packet with input names
+  masked as `X1`, `X2`, … and no task name, except on ForceBench, whose full interface names
+  `r`, `p1`, `p2`, `t` and opens with the task description in that folder.
 - **NeuronBench exceptions.** Candidates come from a fixed vocabulary of ten mechanism names and
   a mechanism prompt of its own. The run starts from four fixed mechanisms instead of an initial
   batch, keeps at most six models (profile `paper_neuron`), and has no archive review; of the
