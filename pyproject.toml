@@ -46,6 +46,8 @@ newtonbench = []
 # the engine's numpy 1.26.4) with DiscoverPhysics @ 33b7fa9 on FB_DP; nothing is installed into this environment.
 forcebench = []
 notebooks = ["jupyter", "nbconvert", "ipykernel"]
+# The structural-recovery judge (paper/recovery_judge): the sympy and mpmath versions its judgments were made with.
+judge = ["sympy==1.14.0", "mpmath==1.4.1"]
 
 [build-system]
 requires = ["setuptools>=68"]
