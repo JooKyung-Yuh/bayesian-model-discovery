@@ -1,0 +1,137 @@
+{
+ "results": {
+  "final": {
+   "pairs": 24,
+   "joint_lower": 19,
+   "ties": 0,
+   "mean_log10_diff_random_minus_joint": 0.6482415075249057,
+   "ci": [
+    0.22323182216228568,
+    1.1455498471592036
+   ]
+  },
+  "aulc": {
+   "pairs": 24,
+   "joint_lower": 16,
+   "ties": 0,
+   "mean_log10_diff_random_minus_joint": 0.5040038279613824,
+   "ci": [
+    0.12677604504462425,
+    0.9327983942792654
+   ]
+  }
+ },
+ "geomean_floored": {
+  "joint_eig": 4.123967572263907e-05,
+  "random": 0.00018346648868171767
+ },
+ "geomean_unfloored": {
+  "joint_eig": 4.123967572263907e-05,
+  "random": 0.00018346648868171767
+ },
+ "per_task": {
+  "c14_mm_noncompetitive_arrhenius|31": {
+   "joint_eig": 7.764125949213966e-06,
+   "random": 1.4015780071117882e-05
+  },
+  "c1_competitive_inhibition|31": {
+   "joint_eig": 7.043326531165802e-06,
+   "random": 7.331754002692352e-05
+  },
+  "c23_pingpong_arrhenius|31": {
+   "joint_eig": 9.018973115901777e-06,
+   "random": 0.0005042502631608509
+  },
+  "c26_pingpong_noncompetitive|31": {
+   "joint_eig": 0.0005028425697168858,
+   "random": 0.00017319302192963859
+  },
+  "c33_hill_competitive|31": {
+   "joint_eig": 6.444884069864201e-06,
+   "random": 0.08145448705808374
+  },
+  "c35_hill_noncompetitive|31": {
+   "joint_eig": 2.3657462912049242e-05,
+   "random": 0.0013179387409620452
+  },
+  "c65_ordered_bi_bi|31": {
+   "joint_eig": 0.0002162109454140347,
+   "random": 0.00043125544572711534
+  },
+  "c68_anticoop_hill|31": {
+   "joint_eig": 1.453495478242863e-05,
+   "random": 0.00012211090874865554
+  },
+  "c69_fractal_kinetics|31": {
+   "joint_eig": 9.601186847540029e-06,
+   "random": 9.829426814618223e-06
+  },
+  "c6_uncompetitive_inhibition|31": {
+   "joint_eig": 5.089078647126416e-05,
+   "random": 5.4338500055618265e-05
+  },
+  "c71_coop_inhibition|31": {
+   "joint_eig": 5.003671149616995e-05,
+   "random": 0.00014597324391840938
+  },
+  "c73_metal_activation|31": {
+   "joint_eig": 0.0002016875610453332,
+   "random": 5.8232929312581045e-05
+  },
+  "c74_product_activation|31": {
+   "joint_eig": 1.944742098356355e-05,
+   "random": 2.1540482695596435e-05
+  },
+  "c75_two_substrate_inhibition|31": {
+   "joint_eig": 2.0744933127848164e-05,
+   "random": 2.7072216959994124e-05
+  },
+  "c76_ordered_bi_bi_arrhenius|31": {
+   "joint_eig": 0.0003419122535019364,
+   "random": 1.0688070860684943e-05
+  },
+  "c79_anticoop_arrhenius|31": {
+   "joint_eig": 4.5659320093711354e-05,
+   "random": 1.2505390132999772e-05
+  },
+  "c7_substrate_inhibition|31": {
+   "joint_eig": 1.0443329430657784e-05,
+   "random": 1.8901217538040723e-05
+  },
+  "c89_ordered_bi_bi_competitive|31": {
+   "joint_eig": 0.00011645643644343166,
+   "random": 0.0002725476080071626
+  },
+  "c8_hill_cooperativity|31": {
+   "joint_eig": 1.6577112090131506e-05,
+   "random": 7.4147116198976e-06
+  },
+  "c90_ordered_bi_bi_noncomp|31": {
+   "joint_eig": 0.00014680286394975253,
+   "random": 0.010368387352438195
+  },
+  "c93_fractal_competitive|31": {
+   "joint_eig": 9.016335875089312e-06,
+   "random": 9.086243872182138e-05
+  },
+  "c94_metal_act_competitive|31": {
+   "joint_eig": 0.003243217074774803,
+   "random": 0.04582870409708261
+  },
+  "c98_two_sub_inh_arrhenius|31": {
+   "joint_eig": 1.9185447672237496e-05,
+   "random": 0.005648150986203122
+  },
+  "c9_noncompetitive_inhibition|31": {
+   "joint_eig": 9.555592162767965e-05,
+   "random": 0.0012648573515069623
+  }
+ },
+ "status": {
+  "joint_eig|complete|31": 24,
+  "random|complete|31": 24,
+  "autoscilab|complete|31": 24,
+  "autoscilab_er|complete|31": 24
+ },
+ "check": true
+}

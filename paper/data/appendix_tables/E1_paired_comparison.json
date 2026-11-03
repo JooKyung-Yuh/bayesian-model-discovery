@@ -1,0 +1,6133 @@
+{
+ "rule": "Pairs = (task, seed) with a value at x in both methods. Per task: mean over seeds of log(error); then mean over tasks; ratio = log10(BMD / baseline) averaged the same way; 95% interval = task-cluster bootstrap of the per-task mean ratios, 2,000 resamples, numpy seed 20261015. Primary floor rule = Figure 2: max(error, 1e-6) on ForceBench only, other benchmarks unfloored. Secondary: floor 1e-6 on all benchmarks (the analysis scripts/the Figure 2 pairing script).",
+ "rows": [
+  {
+   "benchmark": "chembench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "x": 33,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 0.00021214611972020803,
+    "bmd_lower": 26,
+    "ties": 0,
+    "mean_log10_ratio": -1.1135906417217567,
+    "ci_lo": -1.4014423638026314,
+    "ci_hi": -0.7996178018950753,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 0.00021214611972020803,
+    "bmd_lower": 26,
+    "ties": 0,
+    "mean_log10_ratio": -1.1135906417217567,
+    "ci_lo": -1.4014423638026314,
+    "ci_hi": -0.7996178018950753,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 0.00021214611972020803,
+    "bmd_lower": 26,
+    "ties": 0,
+    "mean_log10_ratio": -1.1135906417217567,
+    "ci_lo": -1.4014423638026314,
+    "ci_hi": -0.7996178018950753,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "x": 18,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.00028237352325810193,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.6245886091677566,
+    "ci_lo": -0.9990712938839199,
+    "ci_hi": -0.25002516229932864,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.00028237352325810193,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.6245886091677566,
+    "ci_lo": -0.9990712938839199,
+    "ci_hi": -0.25002516229932864,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.00028237352325810193,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.6245886091677566,
+    "ci_lo": -0.9990712938839199,
+    "ci_hi": -0.25002516229932864,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "x": 33,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 8.575172100791277e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.7201983939980825,
+    "ci_lo": -0.8989210115561505,
+    "ci_hi": -0.5689100843488221,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 8.575172100791277e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.7201983939980825,
+    "ci_lo": -0.8989210115561505,
+    "ci_hi": -0.5689100843488221,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.63321910272479e-05,
+    "baseline_geomean": 8.575172100791277e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -0.7201983939980825,
+    "ci_lo": -0.8989210115561505,
+    "ci_hi": -0.5689100843488221,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "x": 18,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.0003525296006527171,
+    "bmd_lower": 21,
+    "ties": 0,
+    "mean_log10_ratio": -0.7209602254998958,
+    "ci_lo": -1.288128210750147,
+    "ci_hi": -0.10116060529600404,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.0003525296006527171,
+    "bmd_lower": 21,
+    "ties": 0,
+    "mean_log10_ratio": -0.7209602254998958,
+    "ci_lo": -1.288128210750147,
+    "ci_hi": -0.10116060529600404,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 6.702477481044841e-05,
+    "baseline_geomean": 0.0003525296006527171,
+    "bmd_lower": 21,
+    "ties": 0,
+    "mean_log10_ratio": -0.7209602254998958,
+    "ci_lo": -1.288128210750147,
+    "ci_hi": -0.10116060529600404,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "c0_michaelis_menten__easy__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__easy__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__hard__v0",
+      41
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      31
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      37
+     ],
+     [
+      "c0_michaelis_menten__medium__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__easy__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__hard__v0",
+      41
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      31
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      37
+     ],
+     [
+      "c2_product_inhibition__medium__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__easy__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__hard__v0",
+      41
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      31
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      37
+     ],
+     [
+      "c5_pingpong_bisubstrate__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "x": 32,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.013257384927542026,
+    "baseline_geomean": 0.06220410141749042,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -0.6713611545874901,
+    "ci_lo": -1.13436484005335,
+    "ci_hi": -0.2429890214964468,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.013257384927542026,
+    "baseline_geomean": 0.06220410141749042,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -0.6713611545874901,
+    "ci_lo": -1.13436484005335,
+    "ci_hi": -0.2429890214964468,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.013257384927542026,
+    "baseline_geomean": 0.06220410141749042,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -0.6713611545874901,
+    "ci_lo": -1.13436484005335,
+    "ci_hi": -0.2429890214964468,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "x": 17,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.02498391161749394,
+    "baseline_geomean": 0.12279287400281955,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": -0.6915127293973835,
+    "ci_lo": -1.0561850644617654,
+    "ci_hi": -0.3310958790395493,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.02498391161749394,
+    "baseline_geomean": 0.12279287400281955,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": -0.6915127293973835,
+    "ci_lo": -1.0561850644617654,
+    "ci_hi": -0.3310958790395493,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 0.02498391161749394,
+    "baseline_geomean": 0.12279287400281955,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": -0.6915127293973835,
+    "ci_lo": -1.0561850644617654,
+    "ci_hi": -0.3310958790395493,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      31
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "x": 32,
+   "figure": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.01240561421462739,
+    "baseline_geomean": 0.43838483072972145,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.548237246499062,
+    "ci_lo": -2.3079704208610097,
+    "ci_hi": -0.7885040721371143,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.01240561421462739,
+    "baseline_geomean": 0.43838483072972145,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.548237246499062,
+    "ci_lo": -2.3079704208610097,
+    "ci_hi": -0.7885040721371143,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.01240561421462739,
+    "baseline_geomean": 0.43838483072972145,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.548237246499062,
+    "ci_lo": -2.3079704208610097,
+    "ci_hi": -0.7885040721371143,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "x": 17,
+   "figure": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.019381207314680255,
+    "baseline_geomean": 0.7171813076973669,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.5682481346856323,
+    "ci_lo": -1.9957830220661592,
+    "ci_hi": -1.1407132473051051,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.019381207314680255,
+    "baseline_geomean": 0.7171813076973669,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.5682481346856323,
+    "ci_lo": -1.9957830220661592,
+    "ci_hi": -1.1407132473051051,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.019381207314680255,
+    "baseline_geomean": 0.7171813076973669,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.5682481346856323,
+    "ci_lo": -1.9957830220661592,
+    "ci_hi": -1.1407132473051051,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      31
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      37
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "Box's Apprentice",
+   "x_kind": "final",
+   "x": 32,
+   "figure": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.010337266295155738,
+    "baseline_geomean": 0.028884367161972364,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44625715272210353,
+    "ci_lo": -0.9219524678808229,
+    "ci_hi": 0.09961030575200318,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.010337266295155738,
+    "baseline_geomean": 0.028884367161972364,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44625715272210353,
+    "ci_lo": -0.9219524678808229,
+    "ci_hi": 0.09961030575200318,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 0.010337266295155738,
+    "baseline_geomean": 0.028884367161972364,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44625715272210353,
+    "ci_lo": -0.9219524678808229,
+    "ci_hi": 0.09961030575200318,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "death",
+      41
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "Box's Apprentice",
+   "x_kind": "middle",
+   "x": 17,
+   "figure": {
+    "pairs": 11,
+    "tasks": 5,
+    "bmd_geomean": 0.022049780790511418,
+    "baseline_geomean": 0.0620748920711905,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44951169686972287,
+    "ci_lo": -0.9359934351439029,
+    "ci_hi": 0.2313549005652103,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 11,
+    "tasks": 5,
+    "bmd_geomean": 0.022049780790511418,
+    "baseline_geomean": 0.0620748920711905,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44951169686972287,
+    "ci_lo": -0.9359934351439029,
+    "ci_hi": 0.2313549005652103,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 11,
+    "tasks": 5,
+    "bmd_geomean": 0.022049780790511418,
+    "baseline_geomean": 0.0620748920711905,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -0.44951169686972287,
+    "ci_lo": -0.9359934351439029,
+    "ci_hi": 0.2313549005652103,
+    "below_floor_bmd": 0,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "death",
+      31
+     ],
+     [
+      "death",
+      37
+     ],
+     [
+      "dugongs",
+      37
+     ],
+     [
+      "dugongs",
+      41
+     ],
+     [
+      "hyperbolic",
+      41
+     ],
+     [
+      "peregrines",
+      31
+     ],
+     [
+      "peregrines",
+      41
+     ],
+     [
+      "peregrines",
+      47
+     ],
+     [
+      "survival",
+      43
+     ],
+     [
+      "survival",
+      53
+     ],
+     [
+      "survival",
+      61
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "x": 18,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.0006957159876130405,
+    "bmd_lower": 13,
+    "ties": 0,
+    "mean_log10_ratio": -1.4897221511965062,
+    "ci_lo": -2.6462148228352023,
+    "ci_hi": -0.0920306904074416,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.0006957159876130405,
+    "bmd_lower": 13,
+    "ties": 0,
+    "mean_log10_ratio": -1.4897221511965062,
+    "ci_lo": -2.6462148228352023,
+    "ci_hi": -0.0920306904074416,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.148431954535373e-05,
+    "baseline_geomean": 0.0006957159876130405,
+    "bmd_lower": 13,
+    "ties": 0,
+    "mean_log10_ratio": -1.7823267155809617,
+    "ci_lo": -2.7512324052932158,
+    "ci_hi": -0.6483670678783182,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "x": 10,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.0009055801272386299,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.451073096595709,
+    "ci_lo": -1.9027926583157762,
+    "ci_hi": -0.9269431452311057,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.0009055801272386299,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.451073096595709,
+    "ci_lo": -1.9027926583157762,
+    "ci_hi": -0.9269431452311057,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.503038908479353e-05,
+    "baseline_geomean": 0.0009055801272386299,
+    "bmd_lower": 12,
+    "ties": 0,
+    "mean_log10_ratio": -1.7799566603350179,
+    "ci_lo": -2.2613733221434513,
+    "ci_hi": -1.3358751025569544,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "x": 18,
+   "figure": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 4.38192545369053e-05,
+    "baseline_geomean": 0.0005218623328667219,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -1.0758909663802334,
+    "ci_lo": -2.949667569984485,
+    "ci_hi": 0.7900557042234289,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 4.38192545369053e-05,
+    "baseline_geomean": 0.0005218623328667219,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": -1.0758909663802334,
+    "ci_lo": -2.949667569984485,
+    "ci_hi": 0.7900557042234289,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 2.2338829869277004e-05,
+    "baseline_geomean": 8.347992363596469e-07,
+    "bmd_lower": 8,
+    "ties": 0,
+    "mean_log10_ratio": 1.427478377468181,
+    "ci_lo": -3.122606294705636,
+    "ci_hi": 8.960848191064722,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "x": 10,
+   "figure": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 1.705117859694442e-05,
+    "baseline_geomean": 0.00027230588597493586,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": -1.2033026255525816,
+    "ci_lo": -2.434076883883166,
+    "ci_hi": 0.48172660066241796,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 1.705117859694442e-05,
+    "baseline_geomean": 0.00027230588597493586,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": -1.2033026255525816,
+    "ci_lo": -2.434076883883166,
+    "ci_hi": 0.48172660066241796,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 12,
+    "tasks": 5,
+    "bmd_geomean": 7.995964173409677e-06,
+    "baseline_geomean": 4.3559523527858954e-07,
+    "bmd_lower": 10,
+    "ties": 0,
+    "mean_log10_ratio": 1.2637877189409799,
+    "ci_lo": -2.8330197112144986,
+    "ci_hi": 8.694599428883654,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 2,
+    "keys": [
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab (force oracle, Figure 2)",
+   "x_kind": "final",
+   "x": 18,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.003355258014629886,
+    "bmd_lower": 13,
+    "ties": 1,
+    "mean_log10_ratio": -2.1730160900247326,
+    "ci_lo": -3.24903294446528,
+    "ci_hi": -1.096999235584186,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.003355258014629886,
+    "bmd_lower": 13,
+    "ties": 1,
+    "mean_log10_ratio": -2.1730160900247326,
+    "ci_lo": -3.24903294446528,
+    "ci_hi": -1.096999235584186,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.148431954535373e-05,
+    "baseline_geomean": 0.0032393296486143163,
+    "bmd_lower": 14,
+    "ties": 0,
+    "mean_log10_ratio": -2.4503498779843187,
+    "ci_lo": -3.3398761460343565,
+    "ci_hi": -1.5608236099342814,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab (force oracle, Figure 2)",
+   "x_kind": "middle",
+   "x": 10,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.006979058697569391,
+    "bmd_lower": 13,
+    "ties": 1,
+    "mean_log10_ratio": -2.3379430641332823,
+    "ci_lo": -3.2767813588240187,
+    "ci_hi": -1.3991047694425458,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.006979058697569391,
+    "bmd_lower": 13,
+    "ties": 1,
+    "mean_log10_ratio": -2.3379430641332823,
+    "ci_lo": -3.2767813588240187,
+    "ci_hi": -1.3991047694425458,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.503038908479353e-05,
+    "baseline_geomean": 0.006087961867930099,
+    "bmd_lower": 13,
+    "ties": 0,
+    "mean_log10_ratio": -2.607501700444303,
+    "ci_lo": -3.675724186155352,
+    "ci_hi": -1.5664832144517296,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "DP-Agent",
+   "x_kind": "final",
+   "x": 18,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.0009951246370136634,
+    "bmd_lower": 12,
+    "ties": 1,
+    "mean_log10_ratio": -1.6451676461116698,
+    "ci_lo": -3.2405597422213597,
+    "ci_hi": 0.23235979121729128,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 2.2527335777471447e-05,
+    "baseline_geomean": 0.0009951246370136634,
+    "bmd_lower": 12,
+    "ties": 1,
+    "mean_log10_ratio": -1.6451676461116698,
+    "ci_lo": -3.2405597422213597,
+    "ci_hi": 0.23235979121729128,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.148431954535373e-05,
+    "baseline_geomean": 0.0009848090005896305,
+    "bmd_lower": 13,
+    "ties": 0,
+    "mean_log10_ratio": -1.933246741128174,
+    "ci_lo": -3.3314029437904358,
+    "ci_hi": -0.2200872992463959,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 1,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "DP-Agent",
+   "x_kind": "middle",
+   "x": 10,
+   "figure": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.002346752907699034,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -1.8646135777885071,
+    "ci_lo": -3.0361632391014832,
+    "ci_hi": -0.9098026542497439,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 3.205190057237236e-05,
+    "baseline_geomean": 0.002346752907699034,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -1.8646135777885071,
+    "ci_lo": -3.0361632391014832,
+    "ci_hi": -0.9098026542497439,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 15,
+    "tasks": 5,
+    "bmd_geomean": 1.503038908479353e-05,
+    "baseline_geomean": 0.002346752907699034,
+    "bmd_lower": 11,
+    "ties": 0,
+    "mean_log10_ratio": -2.1934971415278164,
+    "ci_lo": -3.175735514919488,
+    "ci_hi": -1.409625813185818,
+    "below_floor_bmd": 6,
+    "below_floor_baseline": 0,
+    "keys": [
+     [
+      "coulomb_easy",
+      31
+     ],
+     [
+      "coulomb_easy",
+      37
+     ],
+     [
+      "coulomb_easy",
+      41
+     ],
+     [
+      "extra_dimensions",
+      31
+     ],
+     [
+      "extra_dimensions",
+      37
+     ],
+     [
+      "extra_dimensions",
+      41
+     ],
+     [
+      "gravity",
+      31
+     ],
+     [
+      "gravity",
+      37
+     ],
+     [
+      "gravity",
+      41
+     ],
+     [
+      "oscillator",
+      31
+     ],
+     [
+      "oscillator",
+      37
+     ],
+     [
+      "oscillator",
+      41
+     ],
+     [
+      "yukawa",
+      31
+     ],
+     [
+      "yukawa",
+      37
+     ],
+     [
+      "yukawa",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "x": 34,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.9471996534906867e-07,
+    "baseline_geomean": 2.393516468172465e-06,
+    "bmd_lower": 20,
+    "ties": 0,
+    "mean_log10_ratio": -1.0896259363135101,
+    "ci_lo": -1.8766902612974679,
+    "ci_hi": -0.266213148194266,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 8,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.4218009052662893e-06,
+    "baseline_geomean": 6.6532117091267705e-06,
+    "bmd_lower": 19,
+    "ties": 6,
+    "mean_log10_ratio": -0.6701925567635562,
+    "ci_lo": -1.2404535332227096,
+    "ci_hi": -0.21662262887983547,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 8,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.9471996534906867e-07,
+    "baseline_geomean": 2.393516468172465e-06,
+    "bmd_lower": 20,
+    "ties": 0,
+    "mean_log10_ratio": -1.0896259363135101,
+    "ci_lo": -1.8766902612974679,
+    "ci_hi": -0.266213148194266,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 8,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "x": 19,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 9.233381975582582e-07,
+    "baseline_geomean": 1.1907928332750958e-06,
+    "bmd_lower": 14,
+    "ties": 0,
+    "mean_log10_ratio": -0.1104754099522963,
+    "ci_lo": -0.676526490024485,
+    "ci_hi": 0.5754932774587526,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 12,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 2.275297360060676e-06,
+    "baseline_geomean": 4.543810029818625e-06,
+    "bmd_lower": 13,
+    "ties": 5,
+    "mean_log10_ratio": -0.3003820029283243,
+    "ci_lo": -0.6817060132010473,
+    "ci_hi": 0.10140527922854471,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 12,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 9.233381975582582e-07,
+    "baseline_geomean": 1.1907928332750958e-06,
+    "bmd_lower": 14,
+    "ties": 0,
+    "mean_log10_ratio": -0.1104754099522963,
+    "ci_lo": -0.676526490024485,
+    "ci_hi": 0.5754932774587526,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 12,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "x": 34,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.9471996534906867e-07,
+    "baseline_geomean": 3.339317794600206e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -2.234247268148748,
+    "ci_lo": -3.1268909111849412,
+    "ci_hi": -1.4909227995641958,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 5,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.4218009052662893e-06,
+    "baseline_geomean": 4.5023181372074713e-05,
+    "bmd_lower": 22,
+    "ties": 4,
+    "mean_log10_ratio": -1.5005973929162424,
+    "ci_lo": -2.274888880649798,
+    "ci_hi": -0.8649723298607983,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 5,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 1.9471996534906867e-07,
+    "baseline_geomean": 3.339317794600206e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -2.234247268148748,
+    "ci_lo": -3.1268909111849412,
+    "ci_hi": -1.4909227995641958,
+    "below_floor_bmd": 19,
+    "below_floor_baseline": 5,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   }
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "x": 19,
+   "figure": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 9.233381975582582e-07,
+    "baseline_geomean": 3.9395775970552724e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -1.6300888568578047,
+    "ci_lo": -2.6261488745124364,
+    "ci_hi": -0.9227069676864402,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 4,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "all": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 2.275297360060676e-06,
+    "baseline_geomean": 4.517083958406531e-05,
+    "bmd_lower": 21,
+    "ties": 3,
+    "mean_log10_ratio": -1.2978199998823932,
+    "ci_lo": -2.1851710515861678,
+    "ci_hi": -0.6349186243788334,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 4,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   },
+   "none": {
+    "pairs": 27,
+    "tasks": 9,
+    "bmd_geomean": 9.233381975582582e-07,
+    "baseline_geomean": 3.9395775970552724e-05,
+    "bmd_lower": 23,
+    "ties": 0,
+    "mean_log10_ratio": -1.6300888568578047,
+    "ci_lo": -2.6261488745124364,
+    "ci_hi": -0.9227069676864402,
+    "below_floor_bmd": 12,
+    "below_floor_baseline": 4,
+    "keys": [
+     [
+      "m10_be_distribution__medium__v1",
+      31
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      37
+     ],
+     [
+      "m10_be_distribution__medium__v1",
+      41
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      31
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      37
+     ],
+     [
+      "m11_heat_transfer__medium__v1",
+      41
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      31
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      37
+     ],
+     [
+      "m2_magnetic_force__medium__v0",
+      41
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      31
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      37
+     ],
+     [
+      "m3_fourier_law__medium__v0",
+      41
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      31
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      37
+     ],
+     [
+      "m4_snell_law__medium__v2",
+      41
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      31
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      37
+     ],
+     [
+      "m5_radioactive_decay__medium__v0",
+      41
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      31
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      37
+     ],
+     [
+      "m7_malus_law__medium__v0",
+      41
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      31
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      37
+     ],
+     [
+      "m8_sound_speed__medium__v0",
+      41
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      31
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      37
+     ],
+     [
+      "m9_hooke_law__medium__v0",
+      41
+     ]
+    ]
+   }
+  }
+ ],
+ "checks": [
+  {
+   "benchmark": "chembench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "chembench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "Box's Apprentice",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "boxinggym",
+   "baseline": "Box's Apprentice",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "DP-Agent",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "forcebench",
+   "baseline": "DP-Agent",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "ICL",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "ICL",
+   "x_kind": "middle",
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "AutoSciLab",
+   "x_kind": "final",
+   "match": true
+  },
+  {
+   "benchmark": "newtonbench",
+   "baseline": "AutoSciLab",
+   "x_kind": "middle",
+   "match": true
+  }
+ ]
+}

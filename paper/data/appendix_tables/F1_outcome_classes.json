@@ -1,0 +1,1614 @@
+{
+ "summary": {
+  "BMD|chembench": {
+   "runs": 27,
+   "classes": {
+    "certified non-equivalent": 9,
+    "strict": 17,
+    "containment (symbolic)": 1
+   },
+   "reasons": {
+    "certified non-equivalent|N_DOMAIN_NARROWER": 1,
+    "certified non-equivalent|N_DIMENSION": 7,
+    "certified non-equivalent|N_DEPENDENCE": 1
+   },
+   "containment_total": 18,
+   "failures": {
+    "selection failure (strict top-1 earlier, lost)": 10,
+    "final top-1 strict": 17
+   }
+  },
+  "BMD|boxinggym": {
+   "runs": 12,
+   "classes": {
+    "strict": 1,
+    "certified non-equivalent": 11
+   },
+   "reasons": {
+    "certified non-equivalent|N_DIMENSION": 4,
+    "certified non-equivalent|N_NUMERIC_WITNESS": 7
+   },
+   "containment_total": 1,
+   "failures": {
+    "final top-1 strict": 1,
+    "selection failure (strict top-1 earlier, lost)": 4,
+    "proposal failure (truth never admitted)": 5,
+    "selection failure (admitted, never top-1)": 2
+   }
+  },
+  "BMD|forcebench": {
+   "runs": 9,
+   "classes": {
+    "containment (symbolic)": 2,
+    "containment (numeric)": 2,
+    "strict": 2,
+    "certified non-equivalent": 3
+   },
+   "reasons": {
+    "certified non-equivalent|N_DEPENDENCE": 1,
+    "certified non-equivalent|N_NUMERIC_WITNESS": 1,
+    "certified non-equivalent|N_DIMENSION": 1
+   },
+   "containment_total": 6,
+   "failures": {
+    "selection failure (admitted, never top-1)": 2,
+    "proposal failure (truth never admitted)": 4,
+    "final top-1 strict": 2,
+    "selection failure (strict top-1 earlier, lost)": 1
+   }
+  },
+  "BMD|newtonbench": {
+   "runs": 24,
+   "classes": {
+    "strict": 17,
+    "surrogate": 1,
+    "containment (symbolic)": 3,
+    "containment (numeric)": 3
+   },
+   "reasons": {
+    "surrogate|U_NOT_IDENTIFIABLE; surrogate:symbolic": 1
+   },
+   "containment_total": 24,
+   "failures": {
+    "final top-1 strict": 17,
+    "selection failure (strict top-1 earlier, lost)": 7
+   }
+  },
+  "LLM-AutoSciLab|chembench": {
+   "runs": 27,
+   "classes": {
+    "strict": 15,
+    "containment (symbolic)": 12
+   },
+   "reasons": {},
+   "containment_total": 27,
+   "failures": {}
+  },
+  "LLM-AutoSciLab|boxinggym": {
+   "runs": 12,
+   "classes": {
+    "unresolved": 10,
+    "certified non-equivalent": 2
+   },
+   "reasons": {
+    "unresolved|U_PARSE": 7,
+    "certified non-equivalent|N_DIMENSION": 1,
+    "unresolved|U_EVAL": 1,
+    "certified non-equivalent|N_DEPENDENCE": 1,
+    "unresolved|U_JUDGE_EXCEPTION": 1,
+    "unresolved|U_EVAL_INFINITE_LOGIT": 1
+   },
+   "containment_total": 0,
+   "failures": {}
+  },
+  "LLM-AutoSciLab|forcebench": {
+   "runs": 9,
+   "classes": {
+    "containment (symbolic)": 4,
+    "unresolved": 1,
+    "strict": 1,
+    "certified non-equivalent": 3
+   },
+   "reasons": {
+    "unresolved|U_EVAL": 1,
+    "certified non-equivalent|N_DEPENDENCE": 3
+   },
+   "containment_total": 5,
+   "failures": {}
+  },
+  "LLM-AutoSciLab|newtonbench": {
+   "runs": 24,
+   "classes": {
+    "unresolved": 2,
+    "surrogate": 5,
+    "containment (numeric)": 11,
+    "certified non-equivalent": 6
+   },
+   "reasons": {
+    "unresolved|U_NOT_IDENTIFIABLE": 1,
+    "surrogate|U_NOT_IDENTIFIABLE; surrogate:numeric": 2,
+    "surrogate|U_NOT_IDENTIFIABLE; surrogate:symbolic": 3,
+    "certified non-equivalent|N_DIMENSION": 6,
+    "unresolved|U_EVAL": 1
+   },
+   "containment_total": 16,
+   "failures": {}
+  }
+ },
+ "runs": [
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "log(exp(k*X1) - 1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "log(c) + log(log(1 + exp(k*X1)) - 0.6931)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "log(X1) - log(sqrt(c + square(X1)) - X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "log(a + b*log(1 + X1)/(k + log(1 + X1)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "log(a + b*X1/sqrt(c + square(X1)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "a + log(c + square(X1)) - log(k + X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "a + log(1 + h*X1 + e*square(X1)) - b*power(X101, m)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "selection failure (admitted, never top-1)",
+   "final_expression": "a + log(X1 + k) - log(1 + exp(s*(square(X1) - c)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 47,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "selection failure (admitted, never top-1)",
+   "final_expression": "b0 + log(1 + a*X1 + q*square(X1)) - d*power(X1/2, 3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 43,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "b0 + log(exp(b1*sqrt(X101 + b2*X201 + b3*X101*X201)) - 0.999)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 53,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "log((X2 + b0 + b1*X1/(b2 + X1))/(1.01 - X2))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 61,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "b0*tanh(k*X1)*(1 - (1 - X201)*X101)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DOMAIN_NARROWER",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X1*X5) - log(1 + exp(2.302585*(pK - X7)) + X1) + log(X6)/3"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1/(1 + X1)) - c*square(100/X6) - log(1 + power(10, p - X7))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1/(1 + X1)) + log(1 - exp(-X6/(c*100)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1*(1 - exp(-X6/(100*T)))/((0.01 + X1)*(1 + 0.001*c*X2)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*(c + X6/310)/(1 + exp(p1 - X7) + (K + exp(p2 - X7))/(100*X1)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1/(0.01 + X1)) + 0.3333*log(X6/310)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5) + log(X1) - log(K + X1) + log(X6) - log(X6 + 310*t)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1/(K + X1)) + log(X6/sqrt(square(T*310) + square(X6)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1*power(X6, b)/((K + X1)*(1 + 10**(p - X7) + 10**(X7 - 10 - q))))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1*power(X6, 0.3333)/(K*(1 + X4/Kj)*(1 + exp(q*(pk - X7))) + X1))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1/((1 + 0.2*X4 + X1)*(1 + exp(p - X7)))) + log(X6)/3"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X1*X5*power(X6, 0.3333)/(K*(1 + X4/Kj)*(1 + power(10, p - X7)) + X1))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1/(K + Kq*X4 + X1)) - log(1 + exp(g + d*320/X6))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1*sqrt(X6)) - log(K*(1 + X4/Kj) + X1*power(X6, 0.3333))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1*power(X6/310, e)/(K*power(X6/310, b) + c*X4 + X1))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*X1*X6/((K*(1 + exp(p - X7)) + X4*m + X1)*(X6 + 100*Th)))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1*power(X6, 0.3333)) - log(K + X4*kj + (kc + X1*ku)*X2/1000 + X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*X1*power(X6, q)/((1 + X1)*(1 + power(10, p - X7)) + c*X4))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X1*X3*X5/(ka*X3 + kb*X1 + X1*X3)) - e*(1000/X6 - 3.11)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5*power(X6, 0.3333)/(1 + 1/X1 + 2/X3))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5/((1 + A/X1 + B/X3)*(1 + exp(p - X7)))) + log(X6/310)/3"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X5/(1/X3 + 0.02 + 0.001*K/X1)) + n*log(X6/310)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5/(1 + 10*k3/X3 + 0.1*k1/X1)) + h*log(X6/310)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5*power(X6, g)/(1 + 10*K3/X3 + 0.01*Km*(1 + exp(p - X7))/X1))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5/(1 + K/X1 + Kc/X3)) + n*log(X6/310)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X5) + 0.3333*log(X6) - log(K/X1 + K3/X3 + 1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X1*X3*X5/(K3*X1 + X3*(K1 + X1))) - E*(1000/X6 - 3.11)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (admitted, never top-1)",
+   "final_expression": "c*p1*cos(r/k)/sqrt(r**2+e)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 37,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "c*p1*exp(-b*r)*log(1 + a/r)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "c*p1*tanh(square(a/r))/r"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "c*p1*p2**2/r**2"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "c*p1*square(p2)*(1 + b*sin(a*t))/r**2"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "c*p1*p2**2/r**2"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "c*p1*(sin(a*r) + k/r)/r"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_NUMERIC_WITNESS",
+   "failure": "proposal failure (truth never admitted)",
+   "final_expression": "c*p1*power(p2,b)*(1 - a*t)/r**2"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": "selection failure (admitted, never top-1)",
+   "final_expression": "c*p1*cos(1.570796*t)/r"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a - 0.5*X1l - X2l"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a - 0.5*log(X1/10000000000.0) - log(X2/1000.0)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 41,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:symbolic",
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a - 0.5*(log(X1 + k*X2) - 25.226) - X2l"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X2) - log(X3) - 2.5*log(X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X2/X3) - 2.5*log(X1) - log(1 + exp(c - X2/K))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "c0 + log(X2) - log(X3) - 2.5*log(X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + 1.5*log(X1*X2) - 3*log(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + 1.5*log(X1) + 1.5*log(X2) - 3*log(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + 1.5*log(X1*X2) - 3*log(X3) + b*tanh(c*X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "c0 + log(X1) + log(X3) + 0.5*log(X2) - 2*log(X4)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X1) + log(X3) + 0.5*log(X2) - 2*log(X4)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "a + log(X1*X3/square(X4)) + 0.5*log(tanh(X2/k))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "c0 + log(X1) - log(X2) + log(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "b0 + log(X1*X3/X2)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "b0 + log(X1*X3/X2)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + 1.2*log(X1) - X2*X3*sqrt(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "b0 + 1.2*log(X1) - X2*X3*sqrt(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + 1.2*log(X1) - X2*X3*sqrt(X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 31,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "c0 + 0.5*log(X1) + log(X2) - log(X3) + 0.25*log(X3/(X3 + s))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "b0 + log(X2) - 0.75*log(X3) + 0.5*log(X1 + c*X3)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X2*sqrt(X1)/X3**0.75)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "log(X1*(a+b*X1))"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": "final top-1 strict",
+   "final_expression": "a + log(X1) + log(1 + c*X1)"
+  },
+  {
+   "method": "BMD",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": "selection failure (strict top-1 earlier, lost)",
+   "final_expression": "b0 + log(X1) + log(1 + k*X1*tanh(m*X1))"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 31,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 37,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "death",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 31,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 37,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "dugongs",
+   "seed": 41,
+   "class": "unresolved",
+   "reason": "U_EVAL",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 31,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 41,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "peregrines",
+   "seed": 47,
+   "class": "unresolved",
+   "reason": "U_PARSE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 43,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 53,
+   "class": "unresolved",
+   "reason": "U_JUDGE_EXCEPTION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "boxinggym",
+   "task": "survival",
+   "seed": 61,
+   "class": "unresolved",
+   "reason": "U_EVAL_INFINITE_LOGIT",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__easy__v0",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__hard__v0",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c0_michaelis_menten__medium__v0",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__easy__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__hard__v0",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c2_product_inhibition__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__easy__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 31,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__hard__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "chembench",
+   "task": "c5_pingpong_bisubstrate__medium__v0",
+   "seed": 41,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 31,
+   "class": "unresolved",
+   "reason": "U_NOT_IDENTIFIABLE",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 37,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:numeric",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m10_be_distribution__medium__v1",
+   "seed": 41,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:numeric",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 31,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 37,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m11_heat_transfer__medium__v1",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 31,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 37,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m2_magnetic_force__medium__v0",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 31,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 37,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m3_fourier_law__medium__v0",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 31,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:symbolic",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 37,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:symbolic",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m4_snell_law__medium__v2",
+   "seed": 41,
+   "class": "surrogate",
+   "reason": "U_NOT_IDENTIFIABLE; surrogate:symbolic",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m5_radioactive_decay__medium__v0",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 31,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m8_sound_speed__medium__v0",
+   "seed": 41,
+   "class": "containment (numeric)",
+   "reason": null,
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 37,
+   "class": "unresolved",
+   "reason": "U_EVAL",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "newtonbench",
+   "task": "m9_hooke_law__medium__v0",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DIMENSION",
+   "failure": null,
+   "final_expression": null
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 31,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": "(0.1972260096) * p1**(0.9722379074) * p2**(-0.05361646535) / r**(1.337999601)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 37,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": "(0.2361162677) * p1**(1.011050325) * p2**(0.01942068966) / r**(1.400073032)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "gravity",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": "(0.194655269) * p1**(0.9679759719) * p2**(-0.01267679906) / r**(1.242987233)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 31,
+   "class": "unresolved",
+   "reason": "U_EVAL",
+   "failure": null,
+   "final_expression": "(0.8023246071) * p1 * p2 / (r**2 + (-0.01427700561))**(0.8563034803)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 37,
+   "class": "strict",
+   "reason": null,
+   "failure": null,
+   "final_expression": "(1) * p1 * p2 / r**2"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "coulomb_easy",
+   "seed": 41,
+   "class": "containment (symbolic)",
+   "reason": null,
+   "failure": null,
+   "final_expression": "(1) * (p1 * p2)**(1) / r**2"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 31,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": null,
+   "final_expression": "(0.9999977599) * (p1/p2)**(0.9930584203) / r**(1.058331777)"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 37,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": null,
+   "final_expression": "(-0.01761566731) * p1 * p2 / (((0.02576791401) + p2) * r**(-0.7096675368))"
+  },
+  {
+   "method": "LLM-AutoSciLab",
+   "benchmark": "forcebench",
+   "task": "oscillator",
+   "seed": 41,
+   "class": "certified non-equivalent",
+   "reason": "N_DEPENDENCE",
+   "failure": null,
+   "final_expression": "(11.99851106) * p1**(0.7227021108) * p2 / ((0.2122765955) + p2) / r**(2.368596611)"
+  }
+ ],
+ "checks": [
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  },
+  {
+   "strict_match": true,
+   "contain_match": true
+  }
+ ]
+}

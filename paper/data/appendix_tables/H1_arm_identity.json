@@ -1,0 +1,637 @@
+{
+ "scans": {
+  "c4_chembench": [
+   {
+    "joint_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "generated"
+     ],
+     "design_policy": [
+      "joint_eig"
+     ]
+    },
+    "model_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "generated"
+     ],
+     "design_policy": [
+      "structure_eig"
+     ]
+    },
+    "parameter_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "generated"
+     ],
+     "design_policy": [
+      "parameter_eig"
+     ]
+    },
+    "random": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "generated"
+     ],
+     "design_policy": [
+      "joint_eig"
+     ]
+    }
+   },
+   {
+    "pairs_with_all_arms": 27,
+    "identical_initial_pool_sha256": 0,
+    "pairs": 27
+   },
+   {
+    "joint_eig": 27,
+    "model_eig": 27,
+    "parameter_eig": 27,
+    "random": 27
+   }
+  ],
+  "c4_boxinggym": [
+   {
+    "joint_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "None"
+     ],
+     "design_policy": [
+      "None"
+     ]
+    },
+    "model_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "None"
+     ],
+     "design_policy": [
+      "structure_eig"
+     ]
+    },
+    "parameter_eig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "None"
+     ],
+     "design_policy": [
+      "parameter_eig"
+     ]
+    },
+    "epig": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "None"
+     ],
+     "design_policy": [
+      "epig"
+     ]
+    },
+    "random": {
+     "prompt_version": [
+      "v2.9.the first-round prompt"
+     ],
+     "prompt_sha256": [
+      "196f82b7"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "0ed50159"
+     ],
+     "proposer_feedback": [
+      "None"
+     ],
+     "proposer_feedback_prompt": [
+      "None"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "None"
+     ],
+     "design_policy": [
+      "None"
+     ]
+    }
+   },
+   {
+    "pairs_with_all_arms": 15,
+    "identical_initial_pool_sha256": 15,
+    "pairs": 15
+   },
+   {
+    "joint_eig": 15,
+    "model_eig": 15,
+    "parameter_eig": 15,
+    "epig": 15,
+    "random": 15
+   }
+  ],
+  "c4_newtonbench_joint": [
+   {
+    "joint_eig": {
+     "prompt_version": [
+      "v2.9.the later-round prompt"
+     ],
+     "prompt_sha256": [
+      "e465265a"
+     ],
+     "burst_prompt_sha256": [
+      "02a852c1"
+     ],
+     "composed_prompt_sha256": [
+      "83fd60e8"
+     ],
+     "proposer_feedback": [
+      "full_allres"
+     ],
+     "proposer_feedback_prompt": [
+      "e465265a (v2.9.the later-round prompt)"
+     ],
+     "replay_round0": [
+      "none (live round 0)"
+     ],
+     "initial_pool_source": [
+      "generated"
+     ],
+     "design_policy": [
+      "joint_eig"
+     ]
+    }
+   },
+   {
+    "pairs_with_all_arms": 27,
+    "identical_initial_pool_sha256": 27,
+    "pairs": 27
+   },
+   {
+    "joint_eig": 27
+   }
+  ],
+  "c4_forcebench_default": {
+   "base_prompt_sha256": [
+    "4dac3b09"
+   ],
+   "burst_prompt_sha256": [
+    "3d3e203b"
+   ],
+   "composed_prompt_sha256": [
+    "5643d454"
+   ],
+   "composition_paragraph_sha256": [
+    "782a30b7"
+   ],
+   "archive_review_paragraph_sha256": [
+    "8b4c5359"
+   ],
+   "protocol": [
+    "the shared protocol (PROTOCOL_U3.md, 2026-10-06)"
+   ],
+   "initial_pool": [
+    "llm_burst:12"
+   ],
+   "design_policy|joint_eig": [
+    "joint_eig"
+   ],
+   "prompt_file_from_folder_name": [
+    "proposer_system_v2_9_FA-C_trig"
+   ],
+   "design_policy|model_eig": [
+    "model_eig"
+   ],
+   "design_policy|parameter_eig": [
+    "parameter_eig"
+   ],
+   "design_policy|epig": [
+    "epig"
+   ],
+   "design_policy|random": [
+    "random"
+   ],
+   "cells_without_compact_record": [
+    "gravity__joint_eig__b16__s41__grammar_tr",
+    "gravity__model_eig__b16__s41__grammar_tr",
+    "gravity__parameter_eig__b16__s41__gramma",
+    "gravity__random__b16__s37__grammar_trig-",
+    "gravity__random__b16__s41__grammar_trig-",
+    "yukawa__joint_eig__b16__s31__grammar_tri",
+    "yukawa__joint_eig__b16__s37__grammar_tri",
+    "yukawa__joint_eig__b16__s41__grammar_tri",
+    "yukawa__model_eig__b16__s31__grammar_tri",
+    "yukawa__model_eig__b16__s37__grammar_tri",
+    "yukawa__model_eig__b16__s41__grammar_tri",
+    "yukawa__parameter_eig__b16__s31__grammar",
+    "yukawa__parameter_eig__b16__s37__grammar",
+    "yukawa__parameter_eig__b16__s41__grammar",
+    "yukawa__random__b16__s31__grammar_trig-1",
+    "yukawa__random__b16__s37__grammar_trig-1",
+    "yukawa__random__b16__s41__grammar_trig-1"
+   ]
+  },
+  "c4_forcebench_default_cells": 58,
+  "c4_forcebench_full": {
+   "proposer_feedback": [
+    "full_allres"
+   ],
+   "interface_full": [
+    "True"
+   ],
+   "description_sha256": [
+    "d6660770"
+   ],
+   "prompt_audit_pass": [
+    "True"
+   ],
+   "rounds_prompt": [
+    "445949c6 (v2.9.the later-round prompt, proposer_system_v2_9_FA-C-R_trig.txt)"
+   ],
+   "round0_prompt": [
+    "4dac3b09 (v2.9.the first-round prompt, proposer_system_v2_9_FA-C_trig.txt)"
+   ],
+   "burst_prompt_sha256": [
+    "3d3e203b"
+   ],
+   "replay_round0": [
+    "None"
+   ],
+   "paragraphs": [
+    "{\"archive_review\": \"v2_neutral\", \"composition\": \"v3_neutral\"}"
+   ],
+   "FB1_REPLAY_ACROSS_DESIGN": [
+    "None"
+   ]
+  },
+  "c4_forcebench_full_cells": 60,
+  "c3_chembench": {
+   "full_allres": {
+    "prompt_sha256": [
+     "e465265a"
+    ],
+    "proposer_feedback": [
+     "full_allres"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls 0)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "belief_only": {
+    "prompt_sha256": [
+     "0a922682"
+    ],
+    "proposer_feedback": [
+     "belief_only"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls 0)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "diagnostics_only": {
+    "prompt_sha256": [
+     "37ab98c7"
+    ],
+    "proposer_feedback": [
+     "diagnostics_only"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls 0)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "none": {
+    "prompt_sha256": [
+     "c53ba372"
+    ],
+    "proposer_feedback": [
+     "none"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls 0)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   }
+  },
+  "c3_chembench_cells": {
+   "full_allres": 27,
+   "belief_only": 27,
+   "diagnostics_only": 27,
+   "none": 27
+  },
+  "c3_boxinggym": {
+   "full_allres": {
+    "prompt_sha256": [
+     "e465265a"
+    ],
+    "proposer_feedback": [
+     "full_allres"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls not recorded)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "belief_only": {
+    "prompt_sha256": [
+     "0a922682"
+    ],
+    "proposer_feedback": [
+     "belief_only"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls not recorded)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "diagnostics_only": {
+    "prompt_sha256": [
+     "37ab98c7"
+    ],
+    "proposer_feedback": [
+     "diagnostics_only"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls not recorded)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   },
+   "none": {
+    "prompt_sha256": [
+     "c53ba372"
+    ],
+    "proposer_feedback": [
+     "none"
+    ],
+    "replay_round0": [
+     "replayed from the the shared protocol joint cell of the same task and seed (live round-0 calls not recorded)"
+    ],
+    "round0_prompt": [
+     "196f82b7"
+    ],
+    "composition_paragraph_sha256": [
+     "8f41727f"
+    ],
+    "archive_review_paragraph_sha256": [
+     "1711c11a"
+    ]
+   }
+  },
+  "c3_boxinggym_cells": {
+   "full_allres": 15,
+   "belief_only": 15,
+   "diagnostics_only": 15,
+   "none": 15
+  }
+ },
+ "figure5": {
+  "figures/feedback_joint_pair.tex": [
+   "\\includegraphics[width=\\linewidth]",
+   "{figures/exp_joint_pair_chembench_forcebench_forcebench_full.pdf}",
+   "\\includegraphics[width=\\linewidth]{figures/c3_pair_chembench_forcebench_forcebench_full.pdf}"
+  ],
+  "exp_joint_design.tex": [
+   "\\includegraphics[width=\\linewidth]{figures/exp_joint_pair_chembench_forcebench.pdf}"
+  ],
+  "sections/experiments.tex": [
+   "\\input{figures/exp_main_results}",
+   "\\input{figures/structural_recovery}",
+   "\\input{figures/pool_evolution}",
+   "\\input{figures/feedback_joint_pair}"
+  ],
+  "files": {
+   "exp_joint_pair_chembench_forcebench_forcebench_full.pdf": {
+    "sha256": "fe4c33202497ddab5017edc365b6fe988d133685c23a8a5cb76cbb071acabfed",
+    "bytes": 17006
+   },
+   "c3_pair_chembench_forcebench_forcebench_full.pdf": {
+    "sha256": "317f7ada465f1b745f40d5ba9b9d84ceba4976a62f6a0b399bd133e45568d5b7",
+    "bytes": 16610
+   },
+   "exp_joint_pair_chembench_forcebench.pdf": {
+    "sha256": "9419e58bc359b263c206fd61e30e8b9244fe1318f2d29703e789504fd01cbad1",
+    "bytes": 34163
+   }
+  }
+ }
+}

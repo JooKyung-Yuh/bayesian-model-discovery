@@ -1,0 +1,199 @@
+{
+ "masked": {
+  "coulomb_easy": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "extra_dimensions": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "gravity": [
+   {
+    "align_measurement_times": false,
+    "design_gate": "off",
+    "dt": 0.02,
+    "dt_override": false,
+    "method": "leapfrog",
+    "mode": "legacy",
+    "noise_inflate": false,
+    "tau": 0.1
+   }
+  ],
+  "oscillator": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "yukawa": [
+   {
+    "align_measurement_times": false,
+    "design_gate": "off",
+    "dt": 0.02,
+    "dt_override": false,
+    "method": "leapfrog",
+    "mode": "legacy",
+    "noise_inflate": false,
+    "tau": 0.1
+   }
+  ]
+ },
+ "masked_cells_without_numerics": 0,
+ "full": {
+  "gravity": [
+   {
+    "align_measurement_times": false,
+    "design_gate": "off",
+    "dt": 0.02,
+    "dt_override": false,
+    "method": "leapfrog",
+    "mode": "legacy",
+    "noise_inflate": false,
+    "tau": 0.1
+   }
+  ],
+  "coulomb_easy": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "oscillator": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "extra_dimensions": [
+   {
+    "align_measurement_times": true,
+    "design_gate": "off",
+    "dt": 0.005,
+    "dt_override": false,
+    "method": "yoshida4",
+    "mode": "match_truth",
+    "noise_inflate": false,
+    "softening": 0.05,
+    "softening_option": "world",
+    "tau": 0.1
+   }
+  ],
+  "yukawa": [
+   {
+    "align_measurement_times": false,
+    "design_gate": "off",
+    "dt": 0.02,
+    "dt_override": false,
+    "method": "leapfrog",
+    "mode": "legacy",
+    "noise_inflate": false,
+    "tau": 0.1
+   }
+  ]
+ },
+ "c2_shared_candidates_n10": {
+  "units": 15,
+  "units_with_description_sha": 15,
+  "units_with_masked_sentence": 0,
+  "numerics": {
+   "coulomb_easy": [
+    {
+     "dt": 0.005,
+     "method": "yoshida4",
+     "mode": "match_truth",
+     "softening": 0.05
+    }
+   ],
+   "gravity": [
+    {
+     "dt": 0.005,
+     "method": "symplectic_euler",
+     "mode": "match_truth"
+    }
+   ],
+   "oscillator": [
+    {
+     "dt": 0.005,
+     "method": "yoshida4",
+     "mode": "match_truth",
+     "softening": 0.05
+    }
+   ]
+  }
+ },
+ "c2_identification_n18": {
+  "units": 8,
+  "units_with_description_sha": 8,
+  "units_with_masked_sentence": 0,
+  "numerics": {
+   "coulomb_easy": [
+    {
+     "dt": 0.005,
+     "method": "yoshida4",
+     "mode": "match_truth",
+     "softening": 0.05
+    }
+   ],
+   "gravity": [
+    {
+     "dt": 0.005,
+     "method": "symplectic_euler",
+     "mode": "match_truth"
+    }
+   ],
+   "oscillator": [
+    {
+     "dt": 0.005,
+     "method": "yoshida4",
+     "mode": "match_truth",
+     "softening": 0.05
+    }
+   ]
+  }
+ }
+}
