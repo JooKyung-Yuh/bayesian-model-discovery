@@ -96,7 +96,10 @@ ChemBench's true laws, input ranges and noise model come from the ChemBench orac
 ## Notebooks
 
 The notebooks in [`examples/`](examples/) use the mock proposer (no API key, no network, no cost) and are
-committed with their outputs, so they can be read without running anything.
+committed with their outputs, so they can be read without running anything. To run or re-execute
+them, install the `notebooks` extra into the engine environment
+(`pip install -c requirements.lock -e ".[dev,notebooks]"`, which adds Jupyter, nbconvert and ipykernel);
+[`USAGE.md`](USAGE.md#notebooks) gives the execution order and the check that follows.
 
 | Notebook | What it shows | Needs |
 | --- | --- | --- |
