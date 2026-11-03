@@ -102,7 +102,7 @@ def interface_violations(text, interface="default"):
         return forbidden_words(text)
     if interface == "full":
         return sorted({m.group(0).lower() for m in FULL_FORBIDDEN.finditer(text)} | set(MASKED_TOKEN.findall(text)))
-    from tools.e2.fb_vocabulary_audit import hits_in
+    from tools.icl_forcebench.audits.fb_vocabulary_audit import hits_in
     return sorted({m.group(0).lower() for m in NEUTRAL_FORBIDDEN.finditer(text)} | set(hits_in(text)))
 
 

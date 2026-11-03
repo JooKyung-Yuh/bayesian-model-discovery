@@ -134,8 +134,10 @@ def check_engine():
     if np.__version__ != REGISTERED_NUMPY:
         raise ValueError(f"this process runs numpy {np.__version__}; the registered D0 needs the engine venv's numpy "
                          f"{REGISTERED_NUMPY}")
-    if Path(adapters.__file__).resolve().parents[1] != ENGINE_ROOT:
-        raise ValueError(f"the adapters package ({adapters.__file__}) is not the engine tree's ({ENGINE_ROOT})")
+    # `adapters` is the wrapper layout's compatibility package; the identity check is on the engine's own adapter.
+    from bayes_model_discovery.adapters import newtonbench_observation as engine_adapter
+    if Path(engine_adapter.__file__).resolve().parents[3] != ENGINE_ROOT:
+        raise ValueError(f"the NewtonBench adapter ({engine_adapter.__file__}) is not the engine tree's ({ENGINE_ROOT})")
     pins = json.loads(ENGINE_PINS.read_text())
     changed = [path for path, digest in pins["files"].items()
                if not (ENGINE_ROOT / path).is_file() or sha(ENGINE_ROOT / path) != digest]

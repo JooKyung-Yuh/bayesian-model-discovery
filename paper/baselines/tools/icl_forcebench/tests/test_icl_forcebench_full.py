@@ -1,6 +1,6 @@
 """Unit the full-interface ForceBench edition (2026-10-12): the opt-in full interface of the ForceBench ICL tool. Synthetic clients only, no provider
 call. Full = the released prompts with the input-name mask off (r, p1, p2, t) and the shared description block
-tools/forcebench_full/FB_FULL_DESCRIPTION.md prepended to the system text; full and neutral together are refused; a seal
+tools/paper_prompts/FB_FULL_DESCRIPTION.md prepended to the system text; full and neutral together are refused; a seal
 opens only a run of its own mode; the settings, the receipts and the seal draft carry the description's sha256. The
 default requests are the released ones byte for byte (sha256 pinned from base 7b28b76, as the neutral tests pin them)."""
 
@@ -32,7 +32,7 @@ import os  # noqa: E402
 if not os.environ.get("DP_SCIENCEAGENT_DIR"):
     pytest.skip("DP_SCIENCEAGENT_DIR names the DiscoverPhysics/ScienceAgent directory", allow_module_level=True)
 
-from tools.e2 import fb_full_prompt_audit as full_audit  # noqa: E402
+from tools.icl_forcebench.audits import fb_full_prompt_audit as full_audit  # noqa: E402
 
 REGISTRATION = module.ROOT.parent / "icl_baseline" / "prices.json"
 CONTEXT = Context(p_range=(0.1, 10.0), times=tuple(0.5 * k for k in range(1, 11)), pos0=(-2.5, -6.0), vel0=(-0.1, 2.0))

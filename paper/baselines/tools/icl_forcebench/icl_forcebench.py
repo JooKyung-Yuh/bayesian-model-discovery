@@ -23,7 +23,7 @@ the settings are the released ones; stated, the settings carry an `interface` bl
 neutral run and a default seal only a default run. The receipts and the seal draft name the mode (`interface_mode`).
 
 Unit the full-interface ForceBench edition (2026-10-12): `--interface full` (or ICL_FB_INTERFACE_FULL=1) sends the released prompts with the input-name
-mask off (r, p1, p2, t instead of X1..X4) and the shared description block tools/forcebench_full/FB_FULL_DESCRIPTION.md
+mask off (r, p1, p2, t instead of X1..X4) and the shared description block tools/paper_prompts/FB_FULL_DESCRIPTION.md
 prepended to the system text (protocol.prompt_parts). Full together with neutral is refused before any output. The
 settings carry an `interface` block with the description's sha256 (computed from the file at run time), so a full seal
 opens only a full run; the receipts and the seal draft name the mode and the sha256 (`description_sha256`).
@@ -162,15 +162,15 @@ def interface_settings(interface):
     if interface == "full":
         return {"interface": {"mode": "full", "version": FULL_VERSION, "prompts": "prompts (the released ones), input-name mask off",
                               "input_names": dict(FULL_NAME_MAP), "dropped_masked_sentence": FULL_DROPPED_SENTENCE.strip(),
-                              "description": "tools/forcebench_full/FB_FULL_DESCRIPTION.md",
+                              "description": "tools/paper_prompts/FB_FULL_DESCRIPTION.md",
                               "description_sha256": description_sha256(),
                               "description_prepend": "system text = description file text + one newline + default system text",
                               "forbidden_stems": list(FULL_FORBIDDEN_STEMS), "masked_names_forbidden": sorted(FULL_NAME_MAP),
-                              "prompt_audit": "tools/e2/fb_full_prompt_audit.py"}}
+                              "prompt_audit": "paper/baselines/tools/icl_forcebench/audits/fb_full_prompt_audit.py"}}
     return {"interface": {"mode": "neutral", "version": NEUTRAL_VERSION, "engine_wording": ENGINE_NEUTRAL_VERSION,
                           "prompts": "prompts/neutral", "start_state_names": {"pos0": "s0a", "vel0": "s0b"},
                           "measurement_schedule_name": "X4 values at the measurements",
-                          "allowed_stems": list(NEUTRAL_ALLOWED_STEMS), "vocabulary_rule": "tools/e2/fb_vocabulary_audit.py hits_in"}}
+                          "allowed_stems": list(NEUTRAL_ALLOWED_STEMS), "vocabulary_rule": "paper/baselines/tools/icl_forcebench/audits/fb_vocabulary_audit.py hits_in"}}
 
 
 def cap_plan(cap_usd=CAP_USD):

@@ -31,13 +31,15 @@ import os  # noqa: E402
 if not os.environ.get("DP_SCIENCEAGENT_DIR"):
     pytest.skip("DP_SCIENCEAGENT_DIR names the DiscoverPhysics/ScienceAgent directory", allow_module_level=True)
 
-from tools.e2 import fb_vocabulary_audit as audit  # noqa: E402
+from tools.icl_forcebench.audits import fb_vocabulary_audit as audit  # noqa: E402
 
 REGISTRATION = module.ROOT.parent / "icl_baseline" / "prices.json"
 CONTEXT = Context(p_range=(0.1, 10.0), times=tuple(0.5 * k for k in range(1, 11)), pos0=(-2.5, -6.0), vel0=(-0.1, 2.0))
 ENGINE_REFERENCE = module.ROOT / "tests" / "engine_reference" / "fb1_neutral.py"
 ENGINE_NEUTRAL_SHA256 = "102222a8b601a538859529edb21863bc8459487d649b1bc7d6507f2aeb37002a"   # 48c84d5:tools/fb1_snapshot/fb1_neutral.py
-ENGINE_AUDIT_SHA256 = "b5a012eae70ba37a6814044b9f3b93f6ed3737621ffb467afd983994f6ad424e"     # 48c84d5:tools/e2/fb_vocabulary_audit.py
+#: The engine branch's audit was 48c84d5:tools/e2/fb_vocabulary_audit.py, sha256 b5a012ea...; the published copy under
+#: audits/ differs from it in two docstring lines only (internal unit names removed), and this is its digest.
+ENGINE_AUDIT_SHA256 = "449709928e455016767a6b69fa34203233c1d9fb8daad05fbf7d3186a8d08c5b"
 #: sha256 of json_bytes(request_body(...)) of these renders on base 7b28b76 (released tool), computed 2026-10-11
 BASE_DEFAULT_BODIES = {
     "prediction": "d28687fdd1049fb9733bdaa229706c47a0d65ec5643fe2b4c399347cb2b5f936",
