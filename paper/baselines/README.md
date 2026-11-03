@@ -6,7 +6,7 @@ the upstream repositories, commits and licenses), and the wrappers import it fro
 
 | Folder | Baseline | What the wrapper does |
 | --- | --- | --- |
-| `tools/icl_baseline/` | ICL on ChemBench and NewtonBench (our own baseline; `ng/` is the NewtonBench variant) | the design request and the separate prediction request per observation count, the closed plan, the transport with its two attempts and repair text, the per-timepoint validity rule, scoring |
+| `tools/icl_baseline/` | ICL on ChemBench and NewtonBench (our own baseline; `ng/` is the NewtonBench variant, bound by file digests to the frozen development tree it ran in: `ng/engine_22583bd_files.json` pins 237 engine files, of which this release matches 38 byte for byte, so its `check_engine` stops a run here; the variant documents the paper's NewtonBench ICL runs rather than rerunning them) | the design request and the separate prediction request per observation count, the closed plan, the transport with its two attempts and repair text, the per-timepoint validity rule, scoring |
 | `tools/icl_boxinggym/` | ICL on BoxingGym | the same protocol over BoxingGym's listed candidate designs |
 | `tools/icl_forcebench/` | ICL on ForceBench | the same protocol with 64 random `(p1, p2)` settings per round; the masked, neutral and full interfaces |
 | `llm_autoscilab_wrapper/` | LLM-AutoSciLab | runs the released loop one experiment per round with the equation learner after every experiment, refuses the released loop's ground-truth evaluator queries (`blocked_attempts` in the receipt), records the current law per round, and on ForceBench integrates the force law to the distance observation (`asl_kit/forcebench.py`) |
