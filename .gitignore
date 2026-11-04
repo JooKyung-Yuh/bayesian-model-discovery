@@ -20,3 +20,6 @@ external/
 .smoke_*
 # Jupyter's autosave copies
 .ipynb_checkpoints/
+
+# the LLM-AutoSciLab wrapper's pack builders are source, not a build folder
+!paper/baselines/llm_autoscilab_wrapper/build/
