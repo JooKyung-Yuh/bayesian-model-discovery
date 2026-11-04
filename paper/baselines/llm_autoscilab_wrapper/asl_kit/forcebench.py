@@ -22,7 +22,7 @@ body 1 (positive = attraction). F is the force the trajectory simulator applies:
   oscillator        5 cos(pi t / 2) p1 / (2 pi r)   true_force x G(t), G0 = 5, omega = pi/2, phi = 0
                                                     (DiscoverPhysics NBodyOscillatorExecutor)
   extra_dimensions  p1 (2 pi 0.5)/(4 pi) sum_{n=-20..20} r / (r^2 + (n 2 pi 0.5)^2)^1.5  (true_force)
-Noise (default relative, main's decision 2026-10-06 01:5x): NewtonBench's own rule (utils/noise.py
+Noise (default relative, decided 2026-10-06): NewtonBench's own rule (utils/noise.py
 inject_noise at noise_level 0.05): F + Normal(0, max(0.05 |F|, 1e-9)). Seeded per (world, seed).
 --force-noise additive_var keeps the brief's mapping as a non-default option: sigma_F = 0.05 *
 sqrt(var_F), var_F = the variance of F along the nine noise-free scoring trajectories (9 designs x
@@ -184,7 +184,7 @@ _CLASS = {}
 
 
 NOISE_MODES = ("relative", "additive_var")
-DEFAULT_NOISE = "relative"   # main's decision 2026-10-06 01:5x (NewtonBench's 5 % relative noise)
+DEFAULT_NOISE = "relative"   # decided 2026-10-06 (NewtonBench's 5 % relative noise)
 RELATIVE_NOISE_LEVEL = 0.05
 NOISE_RULES = {"relative": "F + Normal(0, max(0.05 |F|, 1e-9)) (NewtonBench utils/noise.py inject_noise, level 0.05)",
                "additive_var": "F + Normal(0, sigma_F), sigma_F = 0.05 sqrt(var_F along the scoring trajectories)"}

@@ -1,6 +1,6 @@
 """Registered ICL units. Dry runs and mock runs never construct a live client.
 
-Unit ICL-X (2026-10-06): CLOSED takes `--rounds`, `--checkpoints`, `--official-checkpoints` and
+CLOSED takes `--rounds`, `--checkpoints`, `--official-checkpoints` and
 `--cap-usd` (e.g. 30 rounds with a forecast after every observation, x = 3, 4, ..., 33). Their
 defaults are the released plan (60 rounds, TIMES, OFFICIAL_TIMES, the unit's cap), and an unstated
 plan leaves every request, record and setting as released; a stated plan enters the settings, which
@@ -65,7 +65,7 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 PAPER_MANIFEST = REPO_ROOT / "manifests" / "chembench_paper_manifest.json"
 DEFAULT_TASK = "c5_pingpong_bisubstrate__easy__v0"
 REGISTERED_NOISE = .01
-#: Unit ICL-X: the CLOSED plan. The fixed3 start, the released plan, and a guard against a mistyped cap.
+#: the CLOSED plan. The fixed3 start, the released plan, and a guard against a mistyped cap.
 D0_COUNT = 3
 RELEASED_ROUNDS = 60
 MAX_CAP_USD = 400.0
@@ -348,9 +348,9 @@ class Unit:
         self.global_spent_before = global_spent_before
         self.budget = Budget(self.cap_usd, load_prices())
         self.transport = Transport(client, self.output, self.budget, max_tokens=max_tokens, synthetic=mock)
-        # Unit ICL-K: the plan by request kind. FIXED and NAME-VISIBLE send predictions only;
+        # the plan by request kind. FIXED and NAME-VISIBLE send predictions only;
         # CLOSED sends, per replicate, 16 (256-point) + 30 (1,000-point) predictions and 60 selections
-        # in the released plan (unit ICL-X: in general 2 per checkpoint, 10 per official checkpoint
+        # in the released plan (in general 2 per checkpoint, 10 per official checkpoint
         # and 1 per round).
         closed_predictions = 3 * (BATCHES[256] * len(self.checkpoints) + BATCHES[1000] * len(self.official_times))
         self.planned = (len(histories) * 44 + 6 if unit_id == FIXED
@@ -649,7 +649,7 @@ def parser():
     result.add_argument("--max-tokens", type=int, choices=(16000, 32000), default=32000)
     result.add_argument("--global-spent-before", default="unverified")
     result.add_argument("--masked-receipt", type=Path, action="append", default=[])
-    # Unit ICL-X: the CLOSED plan; the defaults are the released plan.
+    # the CLOSED plan; the defaults are the released plan.
     result.add_argument("--rounds", type=int, default=RELEASED_ROUNDS)
     result.add_argument("--checkpoints", type=integer_list, default=TIMES, help="comma-separated, e.g. 3,4,...,33")
     result.add_argument("--official-checkpoints", type=integer_list, default=OFFICIAL_TIMES,

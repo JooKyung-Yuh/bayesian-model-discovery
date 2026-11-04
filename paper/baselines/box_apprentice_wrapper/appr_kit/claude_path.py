@@ -1,6 +1,6 @@
 """The Claude path for both LLM roles of the released Box's Apprentice (the only change that can alter the agent).
 
-Conventions are the AutoSciLab kit's (unified_run_20261005/autoscilab_kit/asl_kit/claude_client.py):
+Conventions are the LLM-AutoSciLab wrapper's (unified_run_20261005/autoscilab_kit/asl_kit/claude_client.py):
   official anthropic SDK, Messages API, model claude-opus-5-5
   thinking      = {"type": "adaptive"}       (Opus 5.5 cannot switch thinking off)
   output_config = {"effort": "medium"}       (rides in extra_body when the installed SDK has no such argument)
@@ -35,7 +35,7 @@ PRICE_INPUT_PER_M = 4.0
 PRICE_OUTPUT_PER_M = 20.0
 MAX_TOKENS_FLOOR = 16000
 EFFORT = "medium"
-CHARS_PER_TOKEN_ESTIMATE = 1.9   # the AutoSciLab kit's rule (1.942 measured on 533 Opus 5.5 requests, rounded down)
+CHARS_PER_TOKEN_ESTIMATE = 1.9   # the LLM-AutoSciLab wrapper's rule (1.942 measured on 533 Opus 5.5 requests, rounded down)
 DEFAULT_MODEL = "claude-opus-5-5"
 PRICE_RULE = "(input + cache_creation + cache_read) x 4 + output x 20 USD per 1M tokens"
 # The Messages API rejects a turn without text. The released prior-mode proposal sends an EMPTY user message

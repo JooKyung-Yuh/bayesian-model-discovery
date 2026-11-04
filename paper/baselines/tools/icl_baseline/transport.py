@@ -32,7 +32,7 @@ MODEL = "claude-opus-5-5"
 CAPS = {"ICL-MASKED-FIXED-HISTORY": 90.0, "ICL-MASKED-CLOSED-LOOP": 90.0,
         "ICL-NAME-VISIBLE-EXPLORATORY": 25.0}
 RESERVATION_RULE = "utf8_request_bytes_plus_1024_input_tokens_and_max_output_tokens"
-# Unit ICL-K: the ten-call projection multiplies each request kind's remaining count by that
+# the ten-call projection multiplies each request kind's remaining count by that
 # kind's own c_hi (a selection costs about 1/40 of a prediction), instead of one c_hi for all.
 PROJECTION_RULE = "per_kind_max_cost_x1.25_after_10_calls"
 KINDS = ("prediction", "selection")

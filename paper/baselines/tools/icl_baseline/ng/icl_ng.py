@@ -1,4 +1,4 @@
-"""ICL-MASKED-CLOSED-LOOP in task mode for NewtonBench: `--benchmark newtonbench` (unit ICL-NG, 2026-10-09). Dry runs and mock
+"""ICL-MASKED-CLOSED-LOOP in task mode for NewtonBench: `--benchmark newtonbench` (2026-10-09). Dry runs and mock
 runs never construct a live client.
 
 The ChemBench task-mode CLOSED protocol under registration v6 (ICL + LLM design: the model picks every design inside the
@@ -19,12 +19,12 @@ depth task, with the engine's own NewtonBench path as oracle and evaluation:
 - the 1,000-point official layer (`sample_designs(1000, 42)`, AutoSciLab's evaluate_law points on its box) is off by
   default and can be stated for the last checkpoint only (`--official-checkpoints last`).
 
-The D0 is pinned twice (unit ICL-NG, 2026-10-09 20:3x KST, after unit ASL-NG found that NewtonBench's per-design noise
+The D0 is pinned twice (2026-10-09, after the LLM-AutoSciLab NewtonBench wrapper found that NewtonBench's per-design noise
 makes D0 depend on the numpy build): the process must run numpy 1.26.4, the engine venv's (sealed in the settings), and
 the 27 computed D0s must equal d0_engine_rows_22583bd.json, rows the unit proved byte-equal to the engine's own 30-round
-observations.jsonl and to unit ASL-NG's pack. Either mismatch refuses the run before any output.
+observations.jsonl and to the LLM-AutoSciLab wrapper's pack. Either mismatch refuses the run before any output.
 
-`--resume` continues an unfinished run in its own folder with the semantics of the ChemBench v6 resume (unit ICL-RUN,
+`--resume` continues an unfinished run in its own folder with the semantics of the ChemBench v6 resume (the ChemBench resume,
 a693e40; registration v6-r): resume_ng.py and registration v1-r (ICL_NG_REGISTRATION_V1_R_20261009.md). A run that is not
 resumed goes through the shared `Transport.call` unchanged.
 
@@ -106,12 +106,12 @@ ENGINE_PINS = NG_ROOT / "engine_22583bd_files.json"
 REGISTRATION_ADDENDUM = NG_ROOT / "ICL_NG_REGISTRATION_V1_R_20261009.md"
 #: The engine's D0 rows of the 9 tasks x 3 seeds (30-round draw), full precision, byte-proved against the engine's records.
 D0_PINS = NG_ROOT / "d0_engine_rows_22583bd.json"
-#: The engine venv's numpy (<development path>): NewtonBench's noise is seeded from the
+#: The engine environment's numpy: NewtonBench's noise is seeded from the
 #: full-precision design, and another numpy build moves the sampler's last bits and so the D0 observations.
 REGISTERED_NUMPY = "1.26.4"
 SEEDS = (31, 37, 41)
 D0_COUNT = 4
-#: The paid joint cell's round count (tools/newtonbench_launch/run_cell.sh ROUNDS=30): its D0 is drawn with it.
+#: The paid joint cell's round count (the launch script's ROUNDS=30): its D0 is drawn with it.
 ENGINE_CELL_ROUNDS = 30
 NOISE = .01
 GRID = 256

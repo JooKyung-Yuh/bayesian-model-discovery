@@ -1,4 +1,4 @@
-"""Unit ICL-X: the CLOSED plan options (--rounds, --checkpoints, --official-checkpoints, --cap-usd). The oracle is the
+"""the CLOSED plan options (--rounds, --checkpoints, --official-checkpoints, --cap-usd). The oracle is the
 real zero-cost simulator and the client is the tool's fake one; no provider call. No published response is a fixture."""
 
 import json

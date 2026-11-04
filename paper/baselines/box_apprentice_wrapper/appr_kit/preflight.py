@@ -4,7 +4,7 @@
 Checks, each printed as OK / FAIL (no secret value is ever printed):
   python 3.12; every package pinned in requirements_appr_20261008.txt installed at its pinned version; pytensor has a
   C++ compiler; the BoxingGym checkout is at 06c790aa with no local changes in src/, conf/, run_experiment.py, the kit's
-  vendor/run_experiment.py, the checkout's tree entry (and its worktree file, where present) are the CCR-5b v3 base blob
+  vendor/run_experiment.py, the checkout's tree entry (and its worktree file, where present) are the retry patch v3 base blob
   92cdabe2 and the patch applies in memory; `import boxing_gym` resolves to the
   checkout's src; the world pack and the kit files match SHA256SUMS; ANTHROPIC_API_KEY present in the environment by
   name (required only for --mode paid); the output root is writable; an in-process PyMC fit of a tiny model (its

@@ -1,4 +1,4 @@
-"""ForceBench neutral interface (unit FB-NEUTRAL, 2026-10-11): what the language model is told in FB1_INTERFACE_NEUTRAL=1.
+"""ForceBench neutral interface (2026-10-11): what the language model is told in FB1_INTERFACE_NEUTRAL=1.
 
 The engine is unchanged: it fits and simulates every expression exactly as before (the expression in X1..X4 is the force
 law, the acceleration is minus the expression over X3 along the unit position vector, velocity Verlet). Only the text the
@@ -6,7 +6,7 @@ model reads changes. In neutral mode the model learns that a scalar expression i
 coefficient roles as before) is handed to a fixed simulator that returns a sequence of two-component measurements for
 the inputs X2, X3 and a fixed start state; nothing about mechanics.
 
-Pure functions, no engine state, so the packet audit (tools/e2/audit_masked_packets.py) applies the same rewrite to the
+Pure functions, no engine state, so the packet audit of the development tree applies the same rewrite to the
 packet file and the registered texts before it compares them with what a neutral request sent:
   neutral_packet(packet)        a masked belief packet (dict) -> its neutral form
   neutral_packet_text(text)     the same on the engine's serialization (sorted keys, compact JSON); JSON out as JSON in

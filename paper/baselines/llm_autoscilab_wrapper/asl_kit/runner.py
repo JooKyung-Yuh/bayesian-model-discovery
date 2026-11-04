@@ -7,7 +7,7 @@
 Options: --mode released|ef|er (evaluation schedule, see asl_kit/schedule.py; default released = the tip
 behaviour byte for byte), --cap-cell-usd, --cap-folder-usd (folder = the cell's parent), --names masked|shown (BoxingGym/
 ForceBench), --d0 ours|none, --force-noise relative|additive_var (ForceBench; default relative = NewtonBench's
-5 % relative noise, main's decision 2026-10-06; recorded in every receipt), --model (default claude-opus-5-5),
+5 % relative noise, decided 2026-10-06; recorded in every receipt), --model (default claude-opus-5-5),
 --stub (mock Messages API + fake PySR).
 
 Agent configuration (as released, see README):
@@ -257,7 +257,7 @@ def run(args):
                "d0_y": [r.measurement for r in d0]}
     status, error, agent_summary = "completed", None, None
 
-    def _on_sigterm(signum, frame):   # queue.sh running stop: close the cell with a receipt
+    def _on_sigterm(signum, frame):   # a stop signal from the queue: close the cell with a receipt
         raise SystemExit("SIGTERM (running stop)")
     import signal
     signal.signal(signal.SIGTERM, _on_sigterm)

@@ -52,7 +52,7 @@ def forbidden_words(text):
     return sorted({m.group(0).lower() for m in FORBIDDEN.finditer(text)})
 
 
-# ---------------------------------------------------------------- unit ICL-F-NEUTRAL (2026-10-11): the neutral interface
+# ---------------------------------------------------------------- the anonymized-name interface (2026-10-11)
 #: The model-facing interface: "default" (the released prompts, byte for byte) or "neutral" (prompts/neutral/: the engine's
 #: neutral wording of tools/fb1_snapshot/fb1_neutral.py fb_interface_neutral_v1 -- a fixed simulator, the derived inputs X1
 #: and X4, the start state s0a/s0b, X4 values at the measurements; no mechanics word). The numbers are the same.
@@ -61,7 +61,7 @@ INTERFACES = ("default", "neutral", "full")
 NEUTRAL_VERSION = "icl_fb_interface_neutral_v1"
 ENGINE_NEUTRAL_VERSION = "fb_interface_neutral_v1"
 #: In the neutral prompts the engine's word "simulator" is part of the stated interface; every other stem stays forbidden,
-#: and every text must also have 0 hits under the engine's vocabulary rule (tools/e2/fb_vocabulary_audit.py hits_in).
+#: and every text must also have 0 hits under the engine's vocabulary rule (audits/fb_vocabulary_audit.py hits_in).
 NEUTRAL_ALLOWED_STEMS = ("simulat",)
 NEUTRAL_FORBIDDEN = re.compile("|".join([r"\b" + re.escape(word) for word in FORBIDDEN_STEMS if word not in NEUTRAL_ALLOWED_STEMS]
                                         + [r"\b" + re.escape(word) + r"\b" for word in FORBIDDEN_WORDS]), re.IGNORECASE)
@@ -88,7 +88,7 @@ FULL_NAME_MAP = {"X1": "r", "X2": "p1", "X3": "p2", "X4": "t"}
 MASKED_TOKEN = re.compile(r"(?<![A-Za-z0-9_])X[1-4](?![A-Za-z0-9_])")
 FULL_DROPPED_SENTENCE = " X2 and X3 are variable names with no additional meaning provided."
 #: In full mode mechanics words and the native names are allowed; law names, world names and catalogue words are not, and
-#: no masked name X1..X4 may remain (a whole token, the rule of tools/e2/fb_full_prompt_audit.py).
+#: no masked name X1..X4 may remain (a whole token, the rule of audits/fb_full_prompt_audit.py).
 FULL_FORBIDDEN_STEMS = ("gravit", "yukawa", "coulomb", "oscillat", "extra_dimension", "extra dimension", "kaluza", "klein",
                         "newton", "kepler", "hooke", "harmonic", "spring", "inverse square", "inverse-square", "catalog",
                         "forcebench", "discoverphysics", "scienceagent", "nbody", "n-body")

@@ -1,4 +1,4 @@
-"""The experiment budget of the throttled DP-Agent protocol (Unit BASE, 2026-10-05).
+"""The experiment budget of the throttled DP-Agent protocol (2026-10-05).
 
 BudgetGuard stands in for DP's executor on the agent's side only: a request must hold exactly one experiment, and at most
 `budget` experiments run in total. A refused request runs nothing and raises ValueError; DP's agent loop turns that into

@@ -6,7 +6,7 @@
   python -m appr_kit.driver score --cell <cell>       (re-score a finished cell offline from predictions/*.npz)
 
 The released loop is run_experiment.iterative_experiment (use_ppl=True, naive_agent=None, include_prior=True) from the
-checkout's run_experiment.py with the CCR-5b v3 patch applied in memory; see shim.py for the changes and the README.
+checkout's run_experiment.py with the retry patch v3 applied in memory; see shim.py for the changes and the README.
 Outputs in <cell>/: receipt.json, curve.json, curve.csv, laws.jsonl, experiments.jsonl, bg_native_scores.json,
 llm_usage.jsonl, llm_requests.jsonl, llm_responses.jsonl, scientist_messages.json, box_loop.log, predictions/,
 world_build_stdout.txt; work/ (the released code's CWD: logs/, ccr5b_retries.json, oed_llms_stan/); ptc/ (PyTensor).
@@ -63,7 +63,7 @@ INTERFACE_CHANGES = [
      "'measurement unavailable' for that checkpoint (curve status law_error)"},
     {"id": "run_experiment_source", "what": "the released run_experiment.py is read from the kit's verbatim copy "
      "vendor/run_experiment.py (git blob 92cdabe2), checked against the checkout's tree entry at 06c790aa (and its worktree "
-     "file where present): the elice hosts' sparse checkouts (src, conf) have no root files"},
+     "file where present): the development hosts' sparse checkouts (src, conf) have no root files"},
     {"id": "checkpoints", "what": "num_experiments: conf/exp/oed.yaml [0, 1, 3, 5, 7, 10] -> [0, 2, 5, 10, 20, 30] (protocol the shared protocol: "
      "budget 30 experiments after D0); checkpoint 0 is the box loop's prior mode"},
     {"id": "worlds", "what": "env and goal are built the engine's way (worlds.py: env_seed_injection(world_seed) for the whole "
@@ -221,7 +221,7 @@ def run(args):
         os.environ["ANTHROPIC_BASE_URL"] = UNROUTABLE
         os.environ["OPENAI_BASE_URL"] = UNROUTABLE
     elif not os.environ.get("ANTHROPIC_API_KEY"):
-        raise SystemExit("--mode paid needs ANTHROPIC_API_KEY in the environment (run_cell.sh loads it by name)")
+        raise SystemExit("--mode paid needs ANTHROPIC_API_KEY in the environment (read by name, never printed)")
     t0 = time.time()
     started = time.strftime("%Y-%m-%d %H:%M:%S KST")
     checkout = paths.checkout_dir()
@@ -262,7 +262,7 @@ def run(args):
                "pytensor_flags": os.environ.get("PYTENSOR_FLAGS")}
     status, error, termination, rec, scientist = "completed", None, None, None, None
 
-    def _on_sigterm(signum, frame):   # queue.sh running stop: close the cell with a receipt
+    def _on_sigterm(signum, frame):   # a stop signal from the queue: close the cell with a receipt
         raise SystemExit("SIGTERM (running stop)")
 
     signal.signal(signal.SIGTERM, _on_sigterm)

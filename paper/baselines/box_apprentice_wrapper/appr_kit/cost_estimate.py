@@ -6,13 +6,13 @@ replies are short), so per call  input = (request characters + delta) / chars_pe
 replies would add: for the k-th scientist call, (k - 1) x (reply chars - scripted reply chars) for the longer assistant
 turns in its history plus (program block chars - scripted program block chars) once a program is in its system message;
 for a posterior proposal, (critic chars - scripted critic chars) (the previous synthesis is in its system message); for a
-critic call, (program chars - scripted program chars). chars_per_token = 1.94 (the AutoSciLab kit's measurement on 533
+critic call, (program chars - scripted program chars). chars_per_token = 1.94 (the LLM-AutoSciLab wrapper's measurement on 533
 Opus 5.5 requests; its cap rule rounds it down to 1.9).
 Output tokens per call (thinking included): taken from measured Opus 5.5 calls with the same transport settings
 (thinking adaptive, effort medium, max_tokens 16000) - by default the 521 proposer calls of the engine's 2026-10-04 rerun
 (<development path>*/*/cell/llm_transport/*.response.json): scenario low = median, mid = p95,
 high = max of that distribution, for every call of every role.
-Extra calls in the high scenario: 2 CCR-5b re-proposals (proposal + critic each) at two of the posterior checkpoints and
+Extra calls in the high scenario: 2 retry patch re-proposals (proposal + critic each) at two of the posterior checkpoints and
 3 scientist format retries per cell. USD = (input x 4 + output x 20) / 1e6.
 """
 import argparse

@@ -1,4 +1,4 @@
-"""Preflight on bai (0 USD): refuse to start unless the environment can run the released agent as is.
+"""Preflight (0 USD): refuse to start unless the environment can run the released agent as is.
 
   python -m asl_kit.preflight [--pysr-smoke] [--quiet]
 Checks, each printed as OK/FAIL (no secret value is ever printed):

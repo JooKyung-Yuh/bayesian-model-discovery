@@ -1,4 +1,4 @@
-"""Spend of a DP-Agent runs folder (Unit BASE, 2026-10-05): the sum of usd_estimate_total over every <stem>.usage.json,
+"""Spend of a DP-Agent runs folder (2026-10-05): the sum of usd_estimate_total over every <stem>.usage.json,
 which dp_agent_throttled.py rewrites after each call (Opus 5.5 at 4 / 20 USD per 1M input-side / output tokens).
 Prints one line: "<usd> USD over <n> cells (input-side <t_in>, output <t_out>)". Usage: spend_dp.py <runs folder>"""
 import glob

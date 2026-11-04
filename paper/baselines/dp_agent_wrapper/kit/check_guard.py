@@ -1,4 +1,4 @@
-"""0 USD self-test of dp_budget_guard.BudgetGuard (Unit BASE, 2026-10-05). Prints one line per case and 'GUARD OK' at the
+"""0 USD self-test of dp_budget_guard.BudgetGuard (2026-10-05). Prints one line per case and 'GUARD OK' at the
 end; exits 1 on the first failed case. Usage: python check_guard.py"""
 import os
 import sys

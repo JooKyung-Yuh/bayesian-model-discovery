@@ -1,5 +1,5 @@
 """Make one NewtonBench task's sealed manifest from its registration-v1 dry run (or `build`: the draft `main()` computes
-first), and check it with the shared verifier (unit ICL-NG, 2026-10-09; 0 USD, nothing is sent). The sealed file is the
+first), and check it with the shared verifier (0 USD, nothing is sent). The sealed file is the
 draft with status "sealed": the draft binds every file of tools/icl_baseline (the shared verifier requires all of them),
 the engine modules the run executes, the depth manifest, the task's vendored law files and the registration.
 Checks before writing: the draft names the benchmark, the task and this tree's registered settings for it (30 rounds,

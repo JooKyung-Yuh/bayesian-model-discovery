@@ -82,7 +82,7 @@ benchmark is not part of the paper; it serves development and tests.
 
 - **Initial batch.** Round 0 sends twelve independent requests in parallel
   (`--initial-proposals 12`), each for one candidate. If fewer than twelve distinct candidates
-  are admitted, at most two top-up waves ask for the number still missing; a remaining gap is
+  are admitted, at most two refill batches ask for the number still missing; a remaining gap is
   recorded as the shortfall.
 - **Pool of twelve.** The pool keeps at most twelve models (`--active-maximum 12`).
 - **Three candidates per call.** Every later round makes one LLM request for three candidates
@@ -185,7 +185,7 @@ run; check them before sharing a run folder.
 - **Archive (`archive.json`).** Every model proposed or held in a run, with its outcome
   (`active`, `retired_by_evidence`, `rejected`, `duplicate`, `fit_failed`) and reason.
 - **Initial batch (burst).** Round 0's `--initial-proposals K` parallel requests, with at most
-  two top-up waves (`proposals/t00_burst.json`).
+  two refill batches (`proposals/t00_burst.json`).
 - **Multi-candidate paragraph.** Text appended to the system prompt when one request asks for
   several candidates (`--composition-paragraph v2` in the ChemBench runner).
 - **Archive review round, revive.** A round on which the LLM may name up to two retired models

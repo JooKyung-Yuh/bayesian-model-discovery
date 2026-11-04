@@ -52,7 +52,7 @@ SEALED_SETTINGS = {
     "thinking": {"display": "summarized", "type": "adaptive"}, "timeout_seconds": 300,
     "unit_id": "ICL-MASKED-CLOSED-LOOP",
 }
-# Unit ICL-K adds the projection rule to the settings, so a seal made before it (the c5 easy CLOSED
+# The per-kind projection adds the projection rule to the settings, so a seal made before it (the c5 easy CLOSED
 # seal of 2026-10-01) no longer matches and every task gets a new seal.
 ICLK_SETTINGS = {**SEALED_SETTINGS, "projection_rule": "per_kind_max_cost_x1.25_after_10_calls"}
 FIXED3_C_A = (0.03, 0.3, 3.0)
@@ -87,7 +87,7 @@ def test_c5_easy_without_histories_reproduces_the_sealed_d0_requests_and_setting
     if sealed:
         seal = json.loads(Path(sealed).read_text())
         assert draft["d0_prediction_requests"] == seal["d0_prediction_requests"]
-        # The pre-ICL-K seal: the same settings but for the projection rule it did not record.
+        # The earlier seal: the same settings but for the projection rule it did not record.
         assert seal["settings"] == SEALED_SETTINGS
         assert {key: value for key, value in draft["settings"].items() if key != "projection_rule"} == seal["settings"]
 

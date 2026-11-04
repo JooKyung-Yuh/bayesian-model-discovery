@@ -5,7 +5,7 @@ wire (a fake client that accepts any keyword proves nothing). 0 USD: no network.
 
 Run under each SDK pair (both must pass):
   the development host engine venv  anthropic 0.120.2 / httpx 0.27.0
-  a compute host SDK pair    anthropic 0.71.0  / httpx 0.28.1   (<development path>)
+  the released agent's SDK pair   anthropic 0.71.0  / httpx 0.28.1
   env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 <python> tests/test_claude_wire.py
 """
 import json

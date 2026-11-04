@@ -9,7 +9,7 @@ Changes to the released agent (each also listed in receipt["interface_changes"])
                        sent as the Claude system message (base system + latest program [+ critic]); the released
                        function writes scientist.messages[0], which on the Claude branch is the first user turn
   5. start data        our 2 D0 observations in the BASE-1 wording, appended to the system message (driver)
-  6. failed programs   CCR-5b v3 (paths.load_run_experiment applies the patch in memory); wrapped here for scoring
+  6. failed programs   retry patch v3 (paths.load_run_experiment applies the patch in memory); wrapped here for scoring
 Also needed (no effect on what the agent sees): per-cell checkpoint_dir, box-loop log file, an env.run_experiment
 exception guard (an exception becomes the released invalid-design path), and the offline scorer at each checkpoint.
 """
@@ -246,7 +246,7 @@ def install(run_experiment_module, recorder, world):
 
     RE.augment_scientist_with_ppl = augment_scientist_with_ppl
 
-    # 6. CCR-5b v3 (already in RE.ppl_evaluate) + scoring at the checkpoint
+    # 6. retry patch v3 (already in RE.ppl_evaluate) + scoring at the checkpoint
     released_ppl_evaluate = RE.ppl_evaluate
 
     def ppl_evaluate(final_results, goal, scientist, num_evals, include_prior, proposed_programs_all, critic_info_all,

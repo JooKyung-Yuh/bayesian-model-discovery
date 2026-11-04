@@ -112,7 +112,7 @@ sealed paid run still requires the pending the review board decision.
 After ten calls, `c_hi` uses only `cost_basis == "usage"` calls (maximum times 1.25).
 If none exist it uses the current worst-case reservation. Unknown/cache usage still
 charges the full reservation to cumulative spending; it does not inflate that maximum.
-Since October 2 (unit ICL-K) `c_hi` is kept **per request kind** (prediction, selection):
+Since October 2 `c_hi` is kept **per request kind** (prediction, selection):
 the projection is spent plus, for each kind, that kind's remaining initial requests times
 that kind's `c_hi`, and the registered `c_hi` check uses the next request's kind. A kind
 without a usage-based cost in the first ten calls keeps the reservation rule (its largest
