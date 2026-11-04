@@ -94,7 +94,8 @@ environment), `APPR_BG_CHECKOUT`, `APPR_ASL_KIT` (the LLM-AutoSciLab wrapper fol
 `APPR_OUT_ROOT`, `APPR_ENGINE_TREE` (the engine, for tests/test_engine_equality.py). Run from this folder:
 
     "$APPR_VENV/bin/python" -B -m appr_kit.preflight [--quiet] [--mode paid]                       # 0 USD gates
-    "$APPR_VENV/bin/python" -B -m appr_kit.driver --task <task> --seed <seed> --budget 30 --mode <stub|mock-transport|paid> --out <folder>
+    "$APPR_VENV/bin/python" -B -m appr_kit.driver --task <task> --seed <seed> --budget 30 --mode <stub|mock-transport|paid> \
+        --out <cell> --cap-cell-usd 3 --cap-folder-usd <F>                                    # one cell
     "$APPR_VENV/bin/python" -B -m appr_kit.check_cell <cell> ...                                   # 0 USD cells end to end
     "$APPR_VENV/bin/python" -B -m appr_kit.collect <folder> --out <csv>                            # one CSV per runs folder
     "$APPR_VENV/bin/python" -B -m appr_kit.cost_estimate <folder of 0 USD cells>                   # paid-cost projection

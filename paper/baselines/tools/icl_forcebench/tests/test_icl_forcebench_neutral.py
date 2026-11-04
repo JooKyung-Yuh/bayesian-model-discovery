@@ -36,7 +36,10 @@ from tools.icl_forcebench.audits import fb_vocabulary_audit as audit  # noqa: E4
 REGISTRATION = module.ROOT.parent / "icl_baseline" / "prices.json"
 CONTEXT = Context(p_range=(0.1, 10.0), times=tuple(0.5 * k for k in range(1, 11)), pos0=(-2.5, -6.0), vel0=(-0.1, 2.0))
 ENGINE_REFERENCE = module.ROOT / "tests" / "engine_reference" / "fb1_neutral.py"
-ENGINE_NEUTRAL_SHA256 = "102222a8b601a538859529edb21863bc8459487d649b1bc7d6507f2aeb37002a"   # 48c84d5:tools/fb1_snapshot/fb1_neutral.py
+#: The engine branch's file was 48c84d5:tools/fb1_snapshot/fb1_neutral.py, sha256 102222a8...; the published reference copy
+#: differs from it in two docstring lines only (an internal unit name and a development-tree path removed), and this is
+#: its digest.
+ENGINE_NEUTRAL_SHA256 = "fe1ffb3b97ecaed3a3a14e77d8a166a11a3f9c4e5574e86f900aeb75a3cc3f5c"
 #: The engine branch's audit was 48c84d5:audits/fb_vocabulary_audit.py, sha256 b5a012ea...; the published copy under
 #: audits/ differs from it in two docstring lines only (internal unit names removed), and this is its digest.
 ENGINE_AUDIT_SHA256 = "449709928e455016767a6b69fa34203233c1d9fb8daad05fbf7d3186a8d08c5b"
