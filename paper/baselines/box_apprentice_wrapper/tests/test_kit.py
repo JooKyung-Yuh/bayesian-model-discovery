@@ -4,8 +4,8 @@ retry patch v3, the world construction of all 15 cells against the pack, the D0 
 curve rules, the Claude-system augment, the env exception guard, and the retry patch v3 retry flow through the released code.
 
   env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 <venv python> -B tests/test_kit.py
-APPR_ASL_KIT (default <development path>) is the AutoSciLab
-kit used for the scorer comparison; the test is skipped (reported SKIP) where that kit is absent.
+APPR_ASL_KIT names the LLM-AutoSciLab wrapper folder
+used for the scorer comparison; the test is skipped (reported SKIP) where that kit is absent.
 """
 import contextlib
 import json

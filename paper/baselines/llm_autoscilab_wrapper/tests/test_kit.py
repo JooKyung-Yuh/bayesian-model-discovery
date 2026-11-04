@@ -2,8 +2,8 @@
 """Kit checks on the development host (0 USD): leak block, same-world parity, scorer parity with OUR scorers,
 adapter rules, and that the agent configuration equals what the released runners build.
 
-  env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 PYTENSOR_FLAGS=base_compiledir=<development path> \
-    PYTHONPATH=<development path> <development path> tests/test_kit.py
+  env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 PYTENSOR_FLAGS=base_compiledir=<scratch>/pytensor \
+    PYTHONPATH=<repository root>/src:<LLM-AutoSciLab checkout> python -B tests/test_kit.py
 """
 import dataclasses
 import json
