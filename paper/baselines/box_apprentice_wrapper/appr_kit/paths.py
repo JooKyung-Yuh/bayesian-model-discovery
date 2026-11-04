@@ -1,9 +1,9 @@
-"""Where the BoxingGym checkout, the world pack and the CCR-5b v3 patch are, and how the checkout is imported.
+"""Where the BoxingGym checkout, the world pack and the retry patch v3 are, and how the checkout is imported.
 
 The checkout is read and imported only. `import_checkout()` puts <checkout>/src first on sys.path with bytecode
 writing switched off (no __pycache__ is written into the checkout), and `load_run_experiment()` builds the
-`run_experiment` module from the released run_experiment.py source with the CCR-5b v3 patch applied IN MEMORY.
-That source is the kit's verbatim copy vendor/run_experiment.py: the elice hosts' checkouts are sparse (src, conf) and
+`run_experiment` module from the released run_experiment.py source with the retry patch v3 applied IN MEMORY.
+That source is the kit's verbatim copy vendor/run_experiment.py: the development checkouts are sparse (src, conf) and
 have no root files. The copy must have git blob id 92cdabe2..., and the checkout's own tree must name that blob for
 run_experiment.py at 06c790aa (`git rev-parse <commit>:run_experiment.py` reads the tree only, so it works in a sparse,
 blobless clone); where the checkout has the file in its worktree, that file must be the same blob too.
@@ -22,7 +22,7 @@ VENDOR_RUN_EXPERIMENT = os.path.join(KIT_DIR, "vendor", "run_experiment.py")
 REQUIREMENTS_PATH = os.path.join(KIT_DIR, "requirements_appr_20261008.txt")
 SUMS_PATH = os.path.join(KIT_DIR, "SHA256SUMS")
 
-# The world pack of the AutoSciLab kit (unified_run_20261005/autoscilab_kit/packs/boxinggym_worlds.json, listed with
+# The world pack of the LLM-AutoSciLab wrapper (packs/boxinggym_worlds.json, listed with
 # this sha256 in that kit's SHA256SUMS), copied byte for byte.
 # 2026-10-08: the 16-entry pack of the AutoSciLab kit at d49f5c707 (= the 15 entries above byte for byte + peregrines seed 47,
 # the site registry's peregrines seed; cross-checked against the recorded cells at 1ee084be).
@@ -158,7 +158,7 @@ def apply_unified_patch(text, patch_text, target="run_experiment.py"):
 
 
 def load_run_experiment(path=None, module_name="appr_run_experiment_ccr5b_v3"):
-    """The released run_experiment.py (the kit's verbatim copy, blob 92cdabe2) with the CCR-5b v3 patch applied in
+    """The released run_experiment.py (the kit's verbatim copy, blob 92cdabe2) with the retry patch v3 applied in
     memory, as a module object; the checkout's tree is checked to name the same blob at EXPECTED_HEAD."""
     path = path or checkout_dir()
     with open(VENDOR_RUN_EXPERIMENT, "rb") as fh:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Kit tests (0 USD, no network): scorer equality with the AutoSciLab kit's scorer, scorer rules, the pack, the in-memory
-CCR-5b v3 patch, the world construction of all 15 cells against the pack, the D0 wording, the Q-to-question mapping, the
-curve rules, the Claude-system augment, the env exception guard, and the CCR-5b v3 retry flow through the released code.
+"""Kit tests (0 USD, no network): scorer equality with the LLM-AutoSciLab wrapper's scorer, scorer rules, the pack, the in-memory
+retry patch v3, the world construction of all 15 cells against the pack, the D0 wording, the Q-to-question mapping, the
+curve rules, the Claude-system augment, the env exception guard, and the retry patch v3 retry flow through the released code.
 
   env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 <venv python> -B tests/test_kit.py
 APPR_ASL_KIT (default <development path>) is the AutoSciLab

@@ -1,4 +1,4 @@
-"""Unit ICL-F: ForceBench ICL (+LLM design). Synthetic clients, the runner's own DiscoverPhysics
+"""ForceBench ICL (+LLM design). Synthetic clients, the runner's own DiscoverPhysics
 worlds (venv_dp, DP_SCIENCEAGENT_DIR); no provider call, no published response as a fixture. A
 recorded mock cell of the runner is read at test time when ICLF_REFERENCE_CELL names its out/
 folder (never copied into this file)."""
@@ -227,7 +227,7 @@ def test_the_live_path_verifies_a_sealed_draft_and_runs_to_the_client_boundary(t
     assert re.fullmatch(r"[0-9a-f]{64}", draft["settings"]["engine_sha256"])
 
 
-# ---------------------------------------------------------------- unit ICL-X: forecasts at every observation count
+# ---------------------------------------------------------------- forecasts at every observation count
 EVERY = tuple(range(2, 19))
 EVERY_FLAGS = ["--checkpoints", ",".join(str(x) for x in EVERY)]
 

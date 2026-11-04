@@ -1,4 +1,4 @@
-"""Unit ICL-B: BoxingGym ICL (+LLM design). Synthetic observations and clients, the tasks' own
+"""BoxingGym ICL (+LLM design). Synthetic observations and clients, the tasks' own
 zero-cost environments; no provider call, no published response as a fixture."""
 
 import json
@@ -6,10 +6,15 @@ import math
 import re
 from types import SimpleNamespace
 
+import importlib.util
+
 import numpy as np
 import pytest
 
-from bayes_model_discovery.experimental import boxinggym_core as bg
+if importlib.util.find_spec("boxing_gym") is None:
+    pytest.skip("needs the BoxingGym checkout on the path (BMD_BOXINGGYM_SRC)", allow_module_level=True)
+
+from bayes_model_discovery.experimental import boxinggym_core as bg  # noqa: E402
 from bayes_model_discovery.experimental.core_count import seed_for
 from tools.icl_boxinggym import icl_boxinggym as module
 from tools.icl_boxinggym import protocol
@@ -300,7 +305,7 @@ def test_the_live_path_verifies_the_seal_and_runs_to_the_client_boundary(tmp_pat
     assert error.value.code == 2 and not (tmp_path / "y").exists()
 
 
-# ---------------------------------------------------------------- unit ICL-X: budget, checkpoints, worlds
+# ---------------------------------------------------------------- budget, checkpoints, worlds
 PRICES = module.ROOT.parent / "icl_baseline" / "prices.json"
 # A 30-round plan whose checkpoints extend the 2026-10-02 ones (so a 20-round run is a prefix of it); the plan
 # registration v6 states (2, 7, 12, 17, 22, 27, 32) is pinned by the driver test at the end.

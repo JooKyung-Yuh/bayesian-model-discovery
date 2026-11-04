@@ -1,4 +1,4 @@
-"""0 USD check of a stub or mock-transport DP-Agent runs folder (Unit BASE, 2026-10-05). For every cell of the given mode
+"""0 USD check of a stub or mock-transport DP-Agent runs folder (2026-10-05). For every cell of the given mode
 it checks the wrapper's own records against what the scripted client must produce, prints PASS/FAIL per check and
 'DRY CHECK OK' when all pass (exit 0; exit 1 otherwise). It reads no score: the dry law is a fixed script.
   stub           (compliant script): experiments_run = b, nothing refused, law at round b + 1, b + 2 calls

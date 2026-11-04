@@ -276,7 +276,7 @@ def test_official_projection_reduction_counts_and_preserves_sent_bytes(
     assert before
     snapshot = receipt["official_layer_reduction"]
     original = 270 if unit_id == FIXED else 318
-    # Unit ICL-K: the same counts by kind; the first ten CLOSED calls are 4 predictions and 6 selections.
+    # the same counts by kind; the first ten CLOSED calls are 4 predictions and 6 selections.
     by_kind_before = ({"prediction": 138 - 4, "selection": 180 - 6} if unit_id == CLOSED
                       else {"prediction": original - 10, "selection": 0})
     by_kind_after = {**by_kind_before, "prediction": by_kind_before["prediction"] - (original - planned)}

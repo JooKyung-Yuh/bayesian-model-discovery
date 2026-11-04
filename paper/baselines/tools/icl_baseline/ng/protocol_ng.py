@@ -1,4 +1,4 @@
-"""ICL (+LLM design) for NewtonBench, unit ICL-NG (2026-10-09): the registration-v1 prompt assets for a task with n inputs,
+"""ICL (+LLM design) for NewtonBench, 2026-10-09: the registration-v1 prompt assets for a task with n inputs,
 their rendering, the repair text, the forbidden-word precheck and the domain-word count for thinking summaries.
 
 The two assets (prompts/prediction.txt, prompts/selection.txt) are the ChemBench ICL assets of registration v5 section 5

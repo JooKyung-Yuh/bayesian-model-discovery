@@ -10,12 +10,12 @@ nine evaluation designs at 2, 4, 8, 16 and 18 observations; the score is the run
 on the forecast (mean squared error over designs x times x components over VAR_GT). No NLL,
 coverage or KL: a point forecast has none (left blank, disclosed).
 
-Unit ICL-X (2026-10-06): `--checkpoints` states other observation counts to forecast at, e.g. every
+`--checkpoints` states other observation counts to forecast at, e.g. every
 count 2, 3, ..., 18. The default is the runner's (2, 4, 8, 16) and 18, so an unstated option changes
 nothing; stated, the runner's checkpoints must be among them and the last must be D0 + T_EXTRA. The
 value is in `settings()`, which the sealed manifest must match exactly.
 
-Unit ICL-F-NEUTRAL (2026-10-11): `--interface neutral` (or ICL_FB_INTERFACE_NEUTRAL=1) sends the prompts of
+Anonymized-name interface (2026-10-11): `--interface neutral` (or ICL_FB_INTERFACE_NEUTRAL=1) sends the prompts of
 prompts/neutral/, the engine's neutral wording (fb_interface_neutral_v1): a fixed simulator, the derived inputs X1 and X4,
 the start state as s0a/s0b, X4 values at the measurements; no mechanics word. The numbers, the worlds, the candidates, the
 scores and the plan are unchanged. Unstated (and the variable unset), every request is byte for byte the released one and
@@ -95,7 +95,7 @@ from tools.icl_forcebench.protocol import (
 )
 
 UNIT = "ICL-FORCEBENCH-CLOSED-LOOP"
-#: Unit ICL-F-NEUTRAL: the variable that states the neutral interface ("1"; unset, empty or "0" = default).
+#: the variable that states the neutral interface ("1"; unset, empty or "0" = default).
 INTERFACE_ENV = "ICL_FB_INTERFACE_NEUTRAL"
 #: The neutral addendum to registration v2; a neutral seal binds it (dependencies("neutral")).
 NEUTRAL_ADDENDUM = Path(__file__).resolve().parent / "v2" / "ICL_FORCEBENCH_NEUTRAL_ADDENDUM_20261011.md"
@@ -108,7 +108,7 @@ FULL_PROMPT_AUDIT = Path(__file__).resolve().parent / "audits" / "fb_full_prompt
 #: Main's cap (2026-10-02): 15 USD per world; the checks and the per-kind projection are the
 #: ChemBench tool's `Budget`.
 CAP_USD = 15.0
-#: Unit ICL-X: `--cap-usd` states another per-world cap, sealed in the settings; a guard against a mistyped one.
+#: `--cap-usd` states another per-world cap, sealed in the settings; a guard against a mistyped one.
 MAX_CAP_USD = 100.0
 SEEDS = (31, 37, 41)
 ROOT = Path(__file__).resolve().parent
@@ -122,7 +122,7 @@ OBSERVATION_SEED_RULE = "20260906 + (seed - 11)"
 
 
 def checkpoint_plan(checkpoints=CHECKPOINTS):
-    """Unit ICL-X: the observation counts to forecast at, checked: strictly increasing from the
+    """the observation counts to forecast at, checked: strictly increasing from the
     start (2 designs) to the last round (2 + ROUNDS), so no paid selection goes unscored."""
     checkpoints = tuple(int(x) for x in checkpoints)
     if (not checkpoints or checkpoints[0] != 2 or checkpoints[-1] != 2 + ROUNDS
@@ -132,7 +132,7 @@ def checkpoint_plan(checkpoints=CHECKPOINTS):
 
 
 def interface_mode(stated=None, environ=None):
-    """Unit ICL-F-NEUTRAL: the interface from `--interface` and ICL_FB_INTERFACE_NEUTRAL; a contradiction is refused.
+    """the interface from `--interface` and ICL_FB_INTERFACE_NEUTRAL; a contradiction is refused.
     Unit the full-interface ForceBench edition: also ICL_FB_INTERFACE_FULL; full and neutral together (flag and variables in any combination) are refused."""
     environ = os.environ if environ is None else environ
     stated_by_env = []
@@ -174,7 +174,7 @@ def interface_settings(interface):
 
 
 def cap_plan(cap_usd=CAP_USD):
-    """Unit ICL-X: the per-world cap, checked: above 0 and at most MAX_CAP_USD (a NaN fails both)."""
+    """the per-world cap, checked: above 0 and at most MAX_CAP_USD (a NaN fails both)."""
     cap = float(cap_usd)
     if not 0 < cap <= MAX_CAP_USD:
         raise ValueError(f"cap_usd must be above 0 and at most {MAX_CAP_USD}")
@@ -204,8 +204,8 @@ def load_runner(world, seed, checkpoints=CHECKPOINTS):
         module = importlib.reload(module)
     if module.WORLD != world or module.RUN_SEED != int(seed) or module.D0 != 2 or module.D0_POLICY == "mda1":
         raise ValueError("the runner module did not take the world, the seed or the default design policy")
-    # The default plan is the runner's checkpoints and its last round, exactly; a stated plan (unit
-    # ICL-X) must contain the runner's checkpoints and end at the runner's last round.
+    # The default plan is the runner's checkpoints and its last round, exactly; a stated plan
+    # must contain the runner's checkpoints and end at the runner's last round.
     runner_checkpoints_fit = (tuple(module.CHECKPOINTS) == CHECKPOINTS[:-1] if tuple(checkpoints) == CHECKPOINTS
                               else set(module.CHECKPOINTS) <= set(checkpoints))
     if module.T_EXTRA != ROUNDS or module.N_RANDOM_DESIGNS != N_CANDIDATES or module.T_OBS != T_OBS \
@@ -382,7 +382,7 @@ def dependencies(interface="default"):
     files (the shared verifier requires all of them), the engine modules this tool imports, the
     runner and the snapshot modules it imports, and the frozen inputs it reads. The DiscoverPhysics
     package is external: its commit is recorded in the settings (runner_input_provenance).
-    Neutral (unit ICL-F-NEUTRAL): also the neutral prompts, the vocabulary rule and the neutral addendum.
+    Neutral (anonymized names): also the neutral prompts, the vocabulary rule and the neutral addendum.
     Full (unit the full-interface ForceBench edition): also the description file, the full prompt audit and the full addendum."""
     from bayes_model_discovery.experimental import belief_packet, core_count
     from tools.icl_baseline import transport
@@ -619,11 +619,11 @@ def parser():
     result.add_argument("--registration", type=Path, required=True)
     result.add_argument("--max-tokens", type=int, choices=(16000, 32000), default=32000)
     result.add_argument("--global-spent-before", default="unverified")
-    # Unit ICL-X: the observation counts to forecast at; the default is the released plan.
+    # the observation counts to forecast at; the default is the released plan.
     result.add_argument("--checkpoints", type=integer_list, default=CHECKPOINTS, help="comma-separated, e.g. 2,3,...,18")
-    # Unit ICL-X: the per-world cap; the default is the released 15 USD.
+    # the per-world cap; the default is the released 15 USD.
     result.add_argument("--cap-usd", type=float, default=CAP_USD, help=f"per-world cap, above 0 and at most {MAX_CAP_USD}")
-    # Unit ICL-F-NEUTRAL: the model-facing interface; unstated = ICL_FB_INTERFACE_NEUTRAL (1 = neutral), else the released one.
+    # the model-facing interface; unstated = ICL_FB_INTERFACE_NEUTRAL (1 = neutral), else the released one.
     # Unit the full-interface ForceBench edition: or full (ICL_FB_INTERFACE_FULL=1); full and neutral together are refused.
     result.add_argument("--interface", choices=INTERFACES, default=None,
                         help=f"default (the released prompts), neutral or full; unstated, {INTERFACE_ENV}=1 states neutral and "

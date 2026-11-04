@@ -1,6 +1,6 @@
 """STUB ONLY - a stand-in for pysr.PySRRegressor so the released EquationLearner runs on the development host.
 
-PySR/Julia exist only in the bai venv up_asl. This fake implements the four calls the released
+PySR/Julia exist only in the released agent's environment. This fake implements the four calls the released
 learner makes (constructor kwargs, fit(X_df, y), predict(X_df), sympy()) with an ordinary least
 squares fit y ~ c0 + sum_i c_i x_i over the DataFrame's columns. It is never on sys.path in a real
 run (the runner puts tests/stub first only with --stub, and preflight refuses a run where `pysr`

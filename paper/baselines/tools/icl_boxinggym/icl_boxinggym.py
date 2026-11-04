@@ -6,7 +6,7 @@ pool, and forecasts the engine's 256 evaluation points (minus the observed desig
 exclude_observed`) at x = 2, 7, 12, 22 observations. Scores are the engine's: nMSE against the
 noise-free mean on Q and, for a binary task, the Brier score against the held-out outcomes.
 
-Unit ICL-X: `--rounds`, `--checkpoints` and `--seeds` state another budget, other scoring points
+`--rounds`, `--checkpoints` and `--seeds` state another budget, other scoring points
 or other worlds (a seed is the engine's `--seed`: world, evaluation points, pool and start), and
 `--cap-usd` another per-task cap (a plan with more requests needs one: the ten-call projection
 multiplies every remaining request by its kind's largest cost x 1.25). Their defaults are the values
@@ -77,11 +77,11 @@ SEEDS = (31, 37, 41)
 #: observed designs, 20 rounds, the paper design grid.
 PROFILE = {"profile": "paper", "q": 256, "grid": 100, "rounds": ROUNDS, "d0_policy": "random2",
            "q_policy": "exclude_observed"}
-#: Unit ICL-X: the engine's own round bound (boxinggym_core `--rounds` 1..30 since unit U-REC) and
+#: the engine's own round bound (boxinggym_core `--rounds` 1..30) and
 #: the observations before round 1 (`select_d0_designs` random2: two for every task here).
 MAX_ROUNDS = 30
 D0_COUNT = 2
-#: Unit ICL-X: the largest per-task cap `--cap-usd` accepts (a guard against a mistyped cap).
+#: the largest per-task cap `--cap-usd` accepts (a guard against a mistyped cap).
 MAX_CAP_USD = 100.0
 ROOT = Path(__file__).resolve().parent
 ENGINE = Path(bg.__file__).resolve()
@@ -506,7 +506,7 @@ def parser():
     result.add_argument("--registration", type=Path, required=True)
     result.add_argument("--max-tokens", type=int, choices=(16000, 32000), default=32000)
     result.add_argument("--global-spent-before", default="unverified")
-    # Unit ICL-X: budget, scoring points and worlds; the defaults are the 2026-10-02 registration's.
+    # budget, scoring points and worlds; the defaults are the 2026-10-02 registration's.
     result.add_argument("--rounds", type=int, default=ROUNDS)
     result.add_argument("--checkpoints", type=integer_list, default=CHECKPOINTS, help="comma-separated, e.g. 2,7,12,22,32")
     result.add_argument("--seeds", type=integer_list, default=SEEDS, help="comma-separated engine --seed values")

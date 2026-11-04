@@ -8,7 +8,7 @@ round and a `warning` round add no experiment). The law stated in round r has se
 of rounds 1..r-1, so b(r) = executed experiments in rounds < r. When several statements share one b (a round without an
 experiment between two experiments), the latest statement is the row's law; `statements` counts them.
 
-One fitting rule for every row of the curve (2026-10-08, REVIEW-ER): the law's declared constants (fit_parameters()) are
+One fitting rule for every row of the curve (2026-10-08): the law's declared constants (fit_parameters()) are
 refitted on ALL executed experiments the agent had seen at that b, with DP's evaluator functions (_compile_law,
 _compile_fit_parameters, _validate_fit_spec, _fit_law_parameters and mse_fitting._LOSS_FNS[world], the functions
 mse_fitting.fit_law uses), reading the experiments from the run log (what DP's trajectory CSV would hold; the wrapper runs

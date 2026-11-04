@@ -257,7 +257,7 @@ packaged prompt files are in `src/bayes_model_discovery/experimental/prompts/`;
 | system prompt `v2.6.7.1` | `prompts/proposer_system_v2_6_7_1.txt` | `5d21ea8534d6aeae3f8f97caedc3ad1d60bc5dc5565caa6c19a535fc9667f207` |
 | NeuronBench mechanism prompt `v3.0` | `prompts/proposer_system_v3_0_mechanism.txt` | `8d578e80b4d6cb83cc16eaeb2dd5681e179f3e3efff04c6ad0264babab140ef8` |
 | paragraph of the initial batch | `prompts/slot_burst_paragraph_v1.txt` | `3155653c9968352ba8f5758ba39ac6a75e20b466139543cc9a1a5dd377638ba2` |
-| paragraph of the top-up waves | `prompts/slot_burst_refill_paragraph_v1.txt` | `7581cd50c981e9ae83e8171e6b98c63f3fde88440ca96a5136af12446225ff82` |
+| paragraph of the refill batches | `prompts/slot_burst_refill_paragraph_v1.txt` | `7581cd50c981e9ae83e8171e6b98c63f3fde88440ca96a5136af12446225ff82` |
 | table of coefficient roles and priors | `prompts/slot_fixed_role_prior_v1.json` | `82a432fe3f7615ca5d1f76bbda27cc70d81c0801cc94f28397ca388aa27de984` |
 | repair-turn text | `prompts/slot_repair_v1.txt` | `8a31a92c58f35c61e566eda7f83f1e9c27a2e7bb4fbe822644a69f62e6f937af` |
 | repair-turn text after an empty reply | `prompts/slot_repair_v1_empty.txt` | `f6d969239867cffc98b06b165d0e15028caefddd415273ef6bc2ecc5d44c5260` |

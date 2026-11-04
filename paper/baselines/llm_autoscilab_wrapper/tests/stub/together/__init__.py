@@ -1,6 +1,6 @@
 """STUB ONLY - the development host has no `together` package; autoscilab/llm/client.py imports it at module top.
 
-The Claude path never constructs a Together client. In a real bai run the released venv's own
+The Claude path never constructs a Together client. In a real run the released environment's own
 `together` is imported (the runner adds tests/stub to sys.path only with --stub).
 """
 STUB = True

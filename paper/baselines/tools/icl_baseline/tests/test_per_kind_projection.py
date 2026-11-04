@@ -1,4 +1,4 @@
-"""Unit ICL-K: the ten-call projection by request kind.
+"""the ten-call projection by request kind.
 
 Synthetic clients and bodies only; the one replay test reads the recorded accounting rows of the
 stopped c5 easy run from its folder at test time (skipped where that folder is absent) and puts

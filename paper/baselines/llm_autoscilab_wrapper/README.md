@@ -2,7 +2,7 @@
 
 Runs the released LLM-AutoSciLab (Kabra et al.; github.com/scientific-discovery/LLM-AutoSciLab at commit
 9a37255ff5432a7155b6cde8985e9654f2f8f272, no edits) as the external baseline on ChemBench, BoxingGym and
-ForceBench with claude-opus-5-5. NeuronBench is excluded (user decision 2026-10-05 23:3x).
+ForceBench with claude-opus-5-5. NeuronBench is excluded (decision of 2026-10-05).
 
 ## What is changed, and what is not
 
@@ -36,7 +36,7 @@ released loop asks for ground truth in four places (discovery.py 1928, 1971, 218
 RMSLE in the prompt, the GT-best equation, and a final selection that prefers the GT-best law. All four are
 inside try/except in the released code, so the block removes that feedback without other effects; every
 attempt is counted in the receipt, and the prompts are audited for "GT RMSLE" (must be 0). This is the
-oracle-blocked variant of 2026-09-06 (BoxingGym-Baseline-Evals/specs/r1-bridge/015_chembench_noleak.py),
+oracle-blocked variant of 2026-09-06,
 done with a subclass instead of class-attribute replacement.
 
 D0 injection: our D0 is added to the loop's store before the first iteration and `_oracle_calls` stays 0, so
@@ -102,21 +102,18 @@ staged PySR iterations (ChemBench), the final fit and the LLM arbitration, the l
 config's early stop (`confidence_threshold` 0.9) stays and has more chances under ef / er (receipt
 `early_termination`, rows `_carried_after_termination`). Under er the strict NewtonBench loop makes 3 (+1 analysis)
 calls per experiment and the ChemBench loop 1 (+ conditional analysis), and PySR runs after every iteration: expect
-roughly 5-8 x the released calls and 30-60 min per cell (measure on the canary plans `bai/plans/canary_er.txt`,
-`canary_ef.txt`; 0 USD: `bai/plans/mock_schedule.txt` (er) and `mock_schedule_ef.txt` (ef; a separate plan because its cell
-name equals the er plan's first line and a cell folder is never reused) - run the 0 USD plans with caps folder 5 / cell 2, since
-the stub's synthetic usage counts against the caps). Plan files with `_er` carry `--mode er` on every line.
+roughly 5-8 x the released calls and 30-60 min per cell (measure on a canary cell first; in the 0 USD modes the stub's synthetic usage counts against the caps, so
+give them caps of about 5 USD per folder and 2 per cell).
 The receipt's `fits.rows` lists every `EquationLearner.fit` call (b, stored points, seconds, returned a law) so the
 PySR time of a cell can be read directly. Under ef / er the receipt's `released_config` block holds the APPLIED values (it is
-`dataclasses.asdict` of the config the loop ran with); the released values are in `schedule.released_values`. The site arm for er is labelled "AutoSciLab - every round (1 experiment per
-round)"; the released runs stay as they are.
+`dataclasses.asdict` of the config the loop ran with); the released values are in `schedule.released_values`. The released runs stay as they are.
 
 ## Information conditions (fairness)
 
 - **ForceBench is easier for AutoSciLab than for us.** Our engine and ICL see whole noisy trajectories and
   never a force; this oracle lets AutoSciLab measure the force itself at a chosen distance (and time, for
   the oscillator). Only the scoring is on trajectories. The measurement noise is NewtonBench's own 5 %
-  relative noise, sigma = max(0.05 |F|, 1e-9) (default, main's decision 2026-10-06; recorded in every
+  relative noise, sigma = max(0.05 |F|, 1e-9) (default, decided 2026-10-06; recorded in every
   receipt). The brief's mapping, sigma_F = 0.05 sqrt(var_F), stays available as `--force-noise additive_var`
   but is not used: sigma_F is 3-8 % of the median |F| on gravity, yukawa and oscillator, 28 % on
   extra_dimensions and 3.9x the median |F| on coulomb_easy (one scoring trajectory passes at r = 0.10, so
@@ -128,7 +125,7 @@ round)"; the released runs stay as they are.
   noncompetitive."). Our runs see X1..X7 and no description.
 - BoxingGym defaults to our masking (X1..Xn, ranges, output type and support) because the released code has no
   BoxingGym text; `--names shown` gives native names and one-line task descriptions (closer to MDA v5).
-  Decision (main, 2026-10-06): BoxingGym runs masked. ForceBench is masked the same way (X1..X4, ranges).
+  Decision (2026-10-06): BoxingGym runs masked. ForceBench is masked the same way (X1..X4, ranges).
 - **The three benchmarks therefore differ in masking.** ChemBench's released prompt is unmasked (input names,
   mechanism grammar, goal sentence, domain id), while BoxingGym and ForceBench run under our masking. A
   ChemBench gap between AutoSciLab and our runs mixes the method difference with this information difference.
@@ -140,7 +137,7 @@ round)"; the released runs stay as they are.
 - Call budget differs by design: the released agent made 7 (ChemBench), 14-15 (BoxingGym; 7 in a cell that
   stopped early) and 14-15 (ForceBench) Claude calls per run in the stub runs - more when replies request
   fewer experiments than the iteration cap, since outside the forced sweep iterations an iteration runs
-  min(requested experiments, cap, remaining budget) - while our protocol U makes 10 initial calls plus one
+  min(requested experiments, cap, remaining budget) - while our protocol makes 10 initial calls plus one
   per round. Seeds only change AutoSciLab's numpy streams (and, on
   BoxingGym/ForceBench, the observation noise); Claude replies are not deterministic.
 - PySR's operator set gets sin/cos only for three NewtonBench domain ids (learner.py 75-81), so the oscillator's
@@ -151,40 +148,31 @@ round)"; the released runs stay as they are.
 - asl_kit/claude_client.py - Claude path, usage ledger, caps
 - asl_kit/protocol.py - leak block, D0 injection, per-experiment law recorder, run wrapper
 - asl_kit/chem.py, asl_kit/boxinggym.py, asl_kit/forcebench.py - oracles and scorers
-- asl_kit/runner.py - `run` / `score`; asl_kit/preflight.py - bai preflight; asl_kit/collect.py - one CSV per
-  runs folder (queue.sh calls it at the end and writes FOLDER_RECEIPT.json); asl_kit/paths.py
-- packs/ - chembench_eval256.json, boxinggym_worlds.json, forcebench_truth.json (built by build/*.py on the development host;
+- asl_kit/runner.py - `run` / `score`; asl_kit/preflight.py - preflight; asl_kit/collect.py - one CSV per
+  runs folder (writes FOLDER_RECEIPT.json); asl_kit/paths.py
+- packs/ (not in this tree) - chembench_eval256.json, boxinggym_worlds.json, forcebench_truth.json, built by build/*.py from the benchmark checkouts and our recorded runs (the build scripts carry `<development path>` where a record path was;
   every BoxingGym entry is cross-checked against our recorded cells - seeds, world parameters, D0 designs and
   observations, Q, pool - and survival's Q is read from those recorded cells because re-drawing it with the
   goal's balanced rejection sampler costs tens of minutes per world)
-- bai/ - asl_env.sh, preflight.sh, run_cell.sh, queue.sh, plans/*.txt
 - tests/ - test_claude_wire.py (MockTransport, both SDK pairs), test_kit.py, stub/ (fake PySR, dummy
   together, mock Messages API - used only with --stub / --mock-llm)
 
 ## Commands
 
-the development host, 0 USD (stub: mocked Messages API + least-squares stand-in for PySR):
+One cell, 0 USD (`--stub`: mocked Messages API and a least-squares stand-in for PySR). Run from the
+repository root with the engine's environment, `paper/baselines` and `src` on `PYTHONPATH`, and the
+LLM-AutoSciLab checkout at `ASL_CHECKOUT` (or `BMD_AUTOSCILAB`):
 
-    cd <development path> && env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 \
-      PYTHONPATH=<development path>:<development path> \
-      <development path> -B -m asl_kit.runner run --benchmark boxinggym \
+    env -u FORCE_COLOR PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=paper/baselines/llm_autoscilab_wrapper:src \
+      python -B -m asl_kit.runner run --benchmark boxinggym \
       --task death --seed 31 --budget 30 --out <cell> --cap-folder-usd 20 --stub
 
-bai (the full sequence with absolute paths is in the dated addendum of UNIT_ASL_REPORT.md): copy this
-folder to <development path> bai/asl_env.sh
-points JULIA_DEPOT_PATH at the depot repaired on a compute host (two entries and a trailing ':'; no fresh
-instantiate) with PYTHON_JULIAPKG_OFFLINE=yes and one Julia thread per cell; on another host export
-ASL_JULIA_DEPOT_PATH with that host's repaired depot before sourcing. If preflight reports `import anthropic`
-FAIL, install the SDK into up_asl (anthropic==0.71.0, the a compute host pair the wire tests cover) and run
-tests/test_claude_wire.py with up_asl's python (0 USD). Then
-
-    bash bai/preflight.sh --pysr-smoke                                    # once, alone
-    bash bai/queue.sh bai/plans/mock_bai.txt asl_mock_bai 50 20 1         # 0 USD: real PySR, mocked Claude
-    bash bai/queue.sh bai/plans/capacity_mock_chembench.txt asl_capacity_chembench 100 20 <N>
-                                                     # 0 USD capacity smoke at the planned N, with a 1 s sampler
-    # canary and paid waves: caps from main's F4 cost table, MAX_PARALLEL from the capacity smoke
+A paid cell needs the released agent's own environment (PySR with its Julia depot, the released
+`requirements`), `ANTHROPIC_API_KEY` in the environment, and the data packs built by `build/*.py`;
+`python -B -m asl_kit.preflight` checks that environment first (0 USD). The queue and host scripts of
+the development runs are not in this tree.
 
 Mocked calls record synthetic token counts and synthetic USD in llm_usage.jsonl (flagged `mock`), and those
-count against the caps, hence the high caps on the mock plan. `--mock-llm` alone keeps the real PySR (bai);
-`--stub` adds the least-squares stand-in for PySR (the development host). A cell that finished after a cap refusal inside
+count against the caps, hence the high caps for 0 USD runs. `--mock-llm` alone keeps the real PySR;
+`--stub` adds the least-squares stand-in for PySR. A cell that finished after a cap refusal inside
 one of the released loop's try/except call sites is marked `completed_with_cap_refusals` (exit 5).

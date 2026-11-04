@@ -1,12 +1,12 @@
 """DP-Agent (DiscoverPhysics ScienceAgent) under MDA's throttled protocol: one experiment per round, at most b experiments.
 
-Unit BASE (fork of main-session (2)), 2026-10-05, for the Opus 5.5 baseline. Derived from
-<development path> (013 v4b, the wrapper of the
+2026-10-05, for the Opus 5.5 baseline. Derived from
+an earlier wrapper (013 v4b, the wrapper of the
 2026-09-06/07 Opus-4.7 runs). The DiscoverPhysics checkout is not edited: run_discovery.main() runs as it is, with the
 patches below applied inside this process only.
 
 Differences from 013 (each one is recorded in the cell's wrapper.json):
-  1. --dp-root names the DiscoverPhysics checkout (013 hard-coded the bai path).
+  1. --dp-root names the DiscoverPhysics checkout (013 hard-coded a host path).
   2. --plot is not passed (the plot is not a result; the development host's venv_dp has no matplotlib).
   3. --engine is the engine our ForceBench runner scores against (FB1_FIXED_IC_MANIFEST_v5: gravity and yukawa field,
      the other three nbody); 013 used run_discovery's default engine.
@@ -171,7 +171,7 @@ try:
 except Exception as e:
     HTTPX_VERSION = f"unavailable: {type(e).__name__}"
 write_json(OUT(".wrapper.json"), {
-    "wrapper": "dp_agent_throttled.py (Unit BASE, from 013 v4b)", "wrapper_v2": "2026-10-08 main: thinking-first reply reorder + agent max_tokens 16000 (Opus 5.5); judge unchanged", "wrapper_sha256": hashlib.sha256(open(__file__, "rb").read()).hexdigest(),
+    "wrapper": "dp_agent_throttled.py (from 013 v4b)", "wrapper_v2": "2026-10-08: thinking-first reply reorder + agent max_tokens 16000 (Opus 5.5); judge unchanged", "wrapper_sha256": hashlib.sha256(open(__file__, "rb").read()).hexdigest(),
     "guard_sha256": hashlib.sha256(open(os.path.join(KIT, "dp_budget_guard.py"), "rb").read()).hexdigest(),
     "mode": a.mode, "world": a.world, "engine": ENGINE, "budget": B, "max_rounds": MAX_ROUNDS, "min_rounds": MIN_ROUNDS,
     "seed": a.seed, "model": a.model, "judge": a.judge, "sigma_world": SIGMA, "noise_frac": a.noise_frac,

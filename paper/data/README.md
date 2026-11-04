@@ -4,7 +4,7 @@ These files hold the numbers the appendix tables and the learning-curve figures 
 series and the aggregates computed from them. They are not the run records (those stay with the
 development repository); every number here is derived from a run record by the rules stated in each file's
 `description` or `rule` field and in the appendix. Record paths, host names and internal campaign names were
-removed by `sanitize_tables.py`, which is kept here for the record (its `<record path>` marks a removed path).
+removed before publication (a `<record path>` marks a removed path).
 
 `tables.py` renders the appendix tables from the JSON files (`python paper/data/tables.py` prints them all;
 `--table E1` prints one). It reads only this folder and needs no engine.

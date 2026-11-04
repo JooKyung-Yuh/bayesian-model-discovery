@@ -10,7 +10,7 @@ STUB_DIR = os.path.join(KIT_DIR, "tests", "stub")
 
 # The released code: github.com/scientific-discovery/LLM-AutoSciLab at this commit (no edits).
 EXPECTED_HEAD = "9a37255ff5432a7155b6cde8985e9654f2f8f272"
-DEFAULT_CHECKOUT = "<development path>"   # the development host; bai sets ASL_CHECKOUT
+DEFAULT_CHECKOUT = "<development path>"   # override with ASL_CHECKOUT
 
 
 def checkout_dir():

@@ -1,5 +1,5 @@
-"""`--resume` for the NewtonBench task mode (unit ICL-NG, 2026-10-09; main's decision (6) of 20:4x KST): the ChemBench v6
-resume of unit ICL-RUN (commit a693e409f8e6b4c5cda75c167f11ccc9e6241a99, registration v6-r 315f5e2) with the same
+"""`--resume` for the NewtonBench task mode (2026-10-09): the ChemBench v6
+resume (commit a693e409f8e6b4c5cda75c167f11ccc9e6241a99, registration v6-r 315f5e2) with the same
 semantics, carried into the NewtonBench files only. That commit changed tools/icl_baseline/transport.py and
 icl_baseline.py; this branch changes no existing file, so the resume state, its file rule and its replay live here and
 in icl_ng.py, and a run that is not resumed still goes through the shared, unchanged `Transport.call`.

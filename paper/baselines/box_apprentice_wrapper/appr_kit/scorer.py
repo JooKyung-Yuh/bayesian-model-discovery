@@ -1,4 +1,4 @@
-"""Our metric on the Apprentice's predictions: the AutoSciLab kit's BoxingGym scoring rules, applied to an array.
+"""Our metric on the Apprentice's predictions: the LLM-AutoSciLab wrapper's BoxingGym scoring rules, applied to an array.
 
 `unobserved_q_mask` and `nmse_truth` are copied verbatim from the AutoSciLab kit
 (unified_run_20261005/autoscilab_kit/asl_kit/boxinggym.py, sha256 52ef85f8...; there they are boxinggym_core's
