@@ -1,0 +1,13 @@
++def _ccr5c_json_default(o):
++    """CCR-5c (bai minimal patch, ruling 11): make numpy arrays/scalars JSON-serializable at save time only.
++    No effect on any computation; without it location_finding_source crashes when writing results."""
++    if isinstance(o, np.ndarray):
++        return o.tolist()
++    if isinstance(o, np.generic):
++        return o.item()
++    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
++
++
++def _ccr5b_placeholder(proposed_programs_all, critic_info_all, critic_mode):
++    """CCR-5b v3: when every proposal failed, leave a documented placeholder so the upstream
++    augment_scientist_with_ppl asserts do not crash the run (failure path only)."""

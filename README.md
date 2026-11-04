@@ -118,6 +118,7 @@ them, install the `notebooks` extra into the engine environment
 | `tools/fb1_snapshot/run_gravity.py` | the ForceBench runner, a standalone script with its own jax environment |
 | `scripts/` | `bmd_run.py` runs one cell of any benchmark; `provision.sh` sets up a clean Linux host |
 | `examples/` | the five notebooks |
+| `paper/` | the paper's own material: `paper/data/` (the numbers behind the figures and appendix tables, with the scripts that build them), `paper/recovery_judge/` (the deterministic structural-recovery judge and its tests), `paper/baselines/` (our code around the four baselines: the ICL baseline and the LLM-AutoSciLab, Box's Apprentice and DP-Agent wrappers; the released baseline code itself is fetched, not copied) |
 | `tools/release/` | the release checks (`release_checks.sh`) and the syntax-tree comparison (`ast_equiv.py`) of [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) |
 
 <details>

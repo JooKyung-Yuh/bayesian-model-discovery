@@ -1,0 +1,20 @@
+[system]
+Choose the next experiment to improve prediction of the outcome across the listed candidate inputs. Only the previous observations are available. <input names> are variable names with no additional meaning provided. Do not use external tools. Output only the requested JSON.
+
+[user]
+An unknown process maps <k> controllable <input word> <input names> to <outcome phrase>.
+Input ranges: <input ranges>.
+
+Observed experiments (<n>), sorted by input values; id gives the order in which they were run:
+id,<input header>,y
+<one row per experiment>
+
+Candidate experiments (<C>), one per line; pick exactly one by its id:
+c,<input header>
+<one row per candidate, c = c1..c<C>>
+
+Choose one candidate. The held-out evaluation inputs are not shown.<repeat rule>
+Return JSON: {"choice": "<candidate id>"} and nothing else.
+
+[appended once, only after a validation failure]
+Invalid previous selection: <error>. Return one complete corrected selection in the same JSON format, naming exactly one candidate id from the list. No new observation or evaluation feedback is available.

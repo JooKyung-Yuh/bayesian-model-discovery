@@ -95,6 +95,8 @@ API keys are read only from environment variables (`ANTHROPIC_API_KEY`, `OPENAI_
 runs need none. A paid run takes the path of a dotenv file that holds the key; see
 [`USAGE.md`](USAGE.md#paid-runs).
 
+The baseline wrappers under `paper/baselines/` read the same checkouts through these variables and a few of their own (`DP_SCIENCEAGENT_DIR`, `APPR_BG_CHECKOUT`, `APPR_ASL_KIT`); each wrapper's README lists what it needs and what its tests need.
+
 ## What the tests need
 
 | Tier | Needs |

@@ -1,0 +1,10 @@
+[system]
+Choose the next experiment to improve prediction of y across the declared input ranges. Only the previous observations are available. X1 through X7 are variable names with no additional meaning provided. Do not use external tools. Output only the requested JSON.
+
+[user]
+(the same first two lines and observation table as 5.1)
+Choose one new experiment. The held-out evaluation inputs are not shown. Every input must lie inside its range, bounds included; you may repeat an earlier experiment.
+Return JSON: {"x": {"X1": <number>, "X2": <number>, "X3": <number>, "X4": <number>, "X5": <number>, "X6": <number>, "X7": <number>}} and nothing else.
+
+[appended once, only after a validation failure]
+Invalid previous selection: <error>. Return one complete corrected selection in the same JSON format, with all seven inputs inside their ranges. No new observation or evaluation feedback is available.

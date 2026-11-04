@@ -1,0 +1,20 @@
+[system]
+You are a careful quantitative forecaster. Predict outcomes directly from the observed examples. C_A, C_I, C_B, C_P, Enz, T and pH are variable names; no further description is provided. Do not use external tools, propose a model, or write code. Output only the requested JSON.
+
+[user]
+An unknown process maps seven controllable inputs C_A, C_I, C_B, C_P, Enz, T, pH to a positive outcome y.
+Input ranges: C_A [0.01, 100.0], C_I [0.0, 50.0], C_B [0.01, 100.0], C_P [0.0, 20.0], Enz [0.01, 10.0], T [278.0, 368.0], pH [4.0, 10.0].
+
+Observed experiments (<n>), sorted by input values; id gives the order in which they were run:
+id,C_A,C_I,C_B,C_P,Enz,T,pH,y
+<one row per experiment>
+
+New inputs (<Q>):
+q,C_A,C_I,C_B,C_P,Enz,T,pH
+<one row per new input, q = q1..q<Q>>
+
+For each new input, give your best deterministic point estimate of y from the observed examples. Return values on the original y scale; do not generate a new random measurement. Include each requested query ID exactly once. Each value must be a positive finite JSON number.
+Return JSON: {"predictions": {"q1": <number>, ..., "q<Q>": <number>}} and nothing else.
+
+[appended once, only after a validation failure]
+Previous output failed schema validation: <error>. Correct the reported validation problems and return the complete JSON {"predictions": {...}} with every query ID from q1 to q<Q> exactly once, each a positive finite number. Preserve predictions for IDs whose values were already valid. No feedback about prediction accuracy is provided.

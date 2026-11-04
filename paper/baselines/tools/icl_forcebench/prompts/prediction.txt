@@ -1,0 +1,19 @@
+[system]
+You are a careful quantitative forecaster. Predict the recorded output series directly from the observed examples. Do not use external tools, propose a model, or write code. Output only the requested JSON.
+
+[user]
+An unknown process is driven by two control inputs X2 and X3, each set in [<lo>, <hi>], and produces a two-component output (u, v) recorded at ten fixed times t1..t10 = <times>. Every experiment starts from the same initial output (u0, v0) = (<u0>, <v0>) with initial rate of change (<du0>, <dv0>) per unit time. X2 and X3 are variable names with no additional meaning provided.
+
+Observed experiments (<n>); id gives the order in which they were run; u_k and v_k are the output components at time t_k:
+id,X2,X3,u1,v1,u2,v2,u3,v3,u4,v4,u5,v5,u6,v6,u7,v7,u8,v8,u9,v9,u10,v10
+<one row per experiment>
+
+Held-out input settings (<Q>):
+q,X2,X3
+<one row per held-out setting, q = q1..q<Q>>
+
+For each held-out setting, give your best deterministic point estimate of the output series from the observed examples: ten pairs [u_k, v_k] in time order, each a finite JSON number on the original scale. Include each requested query ID exactly once.
+Return JSON: {"predictions": {"q1": [[u1, v1], ..., [u10, v10]], ..., "q<Q>": [...]}} and nothing else.
+
+[appended once, only after a validation failure]
+Previous output failed schema validation: <error>. Correct the reported validation problems and return the complete JSON {"predictions": {...}} with every query ID from q1 to q<Q> exactly once, each a list of ten [u, v] pairs of finite numbers. Preserve predictions for IDs whose values were already valid. No feedback about prediction accuracy is provided.

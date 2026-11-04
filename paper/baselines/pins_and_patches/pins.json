@@ -1,0 +1,35 @@
+{
+ "boxinggym": {
+  "upstream_url": "https://github.com/kanishkg/boxing-gym",
+  "upstream_commit_or_tag": "b43e38c (upstream main as of 2026-09-04; merge-base of our fork)",
+  "used_commit": "04bce56ca17d5a46246b2a061ffb3f91b6783d04",
+  "used_repo": "https://github.com/JooKyung-Yuh/BoxingGym (fork of kanishkg/boxing-gym; adds analysis/phase2 - our registered code - and removes vendored data; src/boxing_gym differences vs upstream in patches/boxinggym_fork_04bce56_vs_upstream_b43e38c_src.patch)",
+  "license": "MIT",
+  "note": "Every baseline run used the fork checkout with the patches of patches/ applied, placed on PYTHONPATH ahead of any installed copy."
+ },
+ "discoverphysics": {
+  "upstream_url": "https://github.com/SampsonML/DiscoverPhysics",
+  "upstream_commit_or_tag": "33b7fa9df96de9c35744efd181ca7e5a8dd60ad5",
+  "license": "MIT",
+  "modified": false
+ },
+ "llm_autoscilab": {
+  "upstream_url": "https://github.com/scientific-discovery/LLM-AutoSciLab",
+  "upstream_commit_or_tag": "9a37255ff5432a7155b6cde8985e9654f2f8f272",
+  "license": "NONE (no LICENSE file in repo)",
+  "modified": false
+ },
+ "neuronbench": {
+  "upstream_url": "https://github.com/murphyk/neuronbench",
+  "upstream_commit_or_tag": "c354622458c460b419cab821d482c879f0578377 (pip git pin, version 0.1.0)",
+  "license": "see upstream (not vendored)",
+  "modified": false
+ },
+ "mda_reimpl": {
+  "upstream_url": "(none - MDA has no public code) arXiv:2608.09696v4",
+  "upstream_commit_or_tag": "n/a",
+  "license": "ours",
+  "modified": "REIMPLEMENTATION"
+ },
+ "_provenance": "git -C <clone> remote get-url origin; git rev-parse HEAD; pip freeze | grep neuronbench (recorded 2026-09-05)"
+}

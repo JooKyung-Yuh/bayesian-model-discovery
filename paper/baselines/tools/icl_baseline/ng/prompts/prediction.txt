@@ -1,0 +1,21 @@
+[system]
+You are a careful quantitative forecaster. Predict outcomes directly from the observed examples. <variable names sentence> Do not use external tools, propose a model, or write code. Output only the requested JSON.
+
+[user]
+An unknown process maps <inputs> to a positive outcome y.
+Input ranges: <input ranges>.
+<derived inputs line>
+
+Observed experiments (<n>), sorted by input values; id gives the order in which they were run:
+id,<input header>,y
+<one row per experiment>
+
+New inputs (<Q>):
+q,<input header>
+<one row per new input, q = q1..q<Q>>
+
+For each new input, give your best deterministic point estimate of y from the observed examples. Return values on the original y scale; do not generate a new random measurement. Include each requested query ID exactly once. Each value must be a positive finite JSON number.
+Return JSON: {"predictions": {"q1": <number>, ..., "q<Q>": <number>}} and nothing else.
+
+[appended once, only after a validation failure]
+Previous output failed schema validation: <error>. Correct the reported validation problems and return the complete JSON {"predictions": {...}} with every query ID from q1 to q<Q> exactly once, each a positive finite number. Preserve predictions for IDs whose values were already valid. No feedback about prediction accuracy is provided.
